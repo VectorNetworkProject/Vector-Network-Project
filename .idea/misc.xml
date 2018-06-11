@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FUSUsageTrigger">
+    <session id="-53453902">
+      <usages-collector id="statistics.php.composer.actions">
+        <counts>
+          <entry key="init_from_MainMenu" value="2" />
+          <entry key="install_from_MainMenu" value="1" />
+          <entry key="self-update_from_MainMenu" value="1" />
+          <entry key="updateAll_from_MainMenu" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="ES6" />
+  </component>
+</project>

@@ -8,23 +8,28 @@
 
 namespace Core;
 
-use Core\Checker\PlayerAddressChecker;
-use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerPreLoginEvent;
-use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\plugin\PluginBase;
+use Core\Checker\{
+    PlayerAddressChecker
+};
+use pocketmine\{
+    event\Listener,
+    event\player\PlayerJoinEvent,
+    event\player\PlayerPreLoginEvent,
+    event\player\PlayerQuitEvent,
+    plugin\PluginBase,
+    utils\TextFormat
+};
 
 class Main extends PluginBase implements Listener
 {
     public function onEnable()
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getLogger()->info("Games_Coreを読み込みました。");
+        $this->getLogger()->info(TextFormat::GREEN."Games_Coreを読み込みました。");
     }
     public function onDisable()
     {
-        $this->getLogger()->info("Games_Coreを終了しました。");
+        $this->getLogger()->info(TextFormat::RED."Games_Coreを終了しました。");
     }
     public function onPreLogin(PlayerPreLoginEvent $event) {
         $player = $event->getPlayer();

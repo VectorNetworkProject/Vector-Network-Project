@@ -23,3 +23,6 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+composer.json
+.php_cs.cache
+composer.phar

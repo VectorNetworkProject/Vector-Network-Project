@@ -26,3 +26,9 @@
 composer.json
 .php_cs.cache
 composer.phar
+.idea/misc.xml
+.idea/modules.xml
+.idea/php.xml
+.idea/workspace.xml
+.idea/Vector-Network-Project.iml
+.idea/vcs.xml

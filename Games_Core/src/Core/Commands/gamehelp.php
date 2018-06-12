@@ -8,13 +8,12 @@
 
 namespace Core\Commands;
 
-
-use Core\Main;
-use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
-use pocketmine\Player;
-use pocketmine\utils\TextFormat;
+use Core\{
+    Main
+};
+use pocketmine\{
+    command\Command, command\CommandSender, network\mcpe\protocol\ModalFormRequestPacket, Player, utils\TextFormat
+};
 
 class gamehelp extends Command
 {

@@ -8,7 +8,9 @@
 
 namespace Core\Checker;
 
-use pocketmine\utils\Utils;
+use pocketmine\{
+    utils\Utils
+};
 
 class PlayerAddressChecker
 {

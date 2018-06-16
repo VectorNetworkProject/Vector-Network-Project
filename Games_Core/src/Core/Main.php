@@ -9,8 +9,7 @@
 namespace Core;
 
 use Core\{
-    Checker\PlayerAddressChecker,
-    Commands\gamehelp
+    Checker\PlayerAddressChecker, Commands\adchat, Commands\gamehelp
 };
 
 use pocketmine\{
@@ -57,7 +56,8 @@ class Main extends PluginBase implements Listener
     private function registerCommands()
     {
         $commands = [
-           new gamehelp($this)
+            new gamehelp($this),
+            new adchat($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

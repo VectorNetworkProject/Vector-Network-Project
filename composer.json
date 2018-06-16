@@ -1,0 +1,11 @@
+{
+  "name": "inkohx/vector-network-project",
+  "description": "Vector Network Server plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "InkoHX",
+      "homepage": "https://twitter.com/InkoHX"
+    }
+  ]
+}

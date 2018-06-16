@@ -23,12 +23,9 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
-composer.json
+
+# IDE
+/.idea/*
+
 .php_cs.cache
 composer.phar
-.idea/misc.xml
-.idea/modules.xml
-.idea/php.xml
-.idea/workspace.xml
-.idea/Vector-Network-Project.iml
-.idea/vcs.xml

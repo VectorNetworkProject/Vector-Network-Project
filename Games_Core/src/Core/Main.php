@@ -8,9 +8,11 @@
 
 namespace Core;
 
-use Core\Checker\{
-    PlayerAddressChecker
+use Core\{
+    Checker\PlayerAddressChecker,
+    Commands\gamehelp
 };
+
 use pocketmine\{
     event\Listener,
     event\player\PlayerJoinEvent,
@@ -22,6 +24,7 @@ use pocketmine\{
 
 class Main extends PluginBase implements Listener
 {
+    public static $instance = null;
     public function onEnable()
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -31,7 +34,8 @@ class Main extends PluginBase implements Listener
     {
         $this->getLogger()->info(TextFormat::RED."Games_Coreを終了しました。");
     }
-    public function onPreLogin(PlayerPreLoginEvent $event) {
+    public function onPreLogin(PlayerPreLoginEvent $event)
+    {
         $player = $event->getPlayer();
         $check = new PlayerAddressChecker();
         if ($check->Checker($player->getAddress())) {
@@ -48,5 +52,18 @@ class Main extends PluginBase implements Listener
     public function onQuit(PlayerQuitEvent $event)
     {
         $event->setQuitMessage(null);
+    }
+
+    private function registerCommands()
+    {
+        $commands = [
+           new gamehelp($this)
+       ];
+        $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
+    }
+    public function onLoad()
+    {
+        self::$instance = $this;
+        $this->registerCommands();
     }
 }

@@ -2,3 +2,13 @@ name: Games_Core
 main: Core\Main
 api: 3.0.0
 version: 1.0.0
+commands:
+  gamehelp:
+   usage: "使い方: /gamehelp"
+   permission: vector.network.player
+   description: "Vector Network で使えるコマンド一覧を表示します。"
+permissions:
+  vector.network.player:
+    default: true
+  vector.network.admin:
+    default: op

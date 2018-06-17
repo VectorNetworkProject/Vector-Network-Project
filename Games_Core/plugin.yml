@@ -7,10 +7,6 @@ commands:
     usage: "/gamehelp"
     permission: vector.network.player
     description: "Vector Network で使えるコマンド一覧を表示します。"
-  adchat:
-    usage: "/adchat <message>"
-    permission: vector.network.admin
-    description: "オペレーター権限を持っている人が使えるコマンド(Admin Only)"
 permissions:
   vector.network.player:
     default: true

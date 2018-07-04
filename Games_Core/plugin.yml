@@ -1,8 +1,6 @@
 name: Games_Core
 main: Core\Main
-api: 
-  - 3.0.0
-  - 4.0.0
+api: 4.0.0
 version: 0.0.5
 commands:
   gamehelp:

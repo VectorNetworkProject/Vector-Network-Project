@@ -40,7 +40,7 @@ class Main extends PluginBase
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }
-    public function onLoad() : void 
+    public function onLoad() : void
     {
         self::$instance = $this;
         $this->registerCommands();

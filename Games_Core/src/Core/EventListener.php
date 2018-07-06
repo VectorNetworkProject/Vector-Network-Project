@@ -26,7 +26,8 @@ class EventListener implements Listener
     {
         $this->plugin = $plugin;
     }
-    public function onJoin(PlayerJoinEvent $event) {
+    public function onJoin(PlayerJoinEvent $event)
+    {
         $event->setJoinMessage(null);
     }
     public function onQuit(PlayerQuitEvent $event)

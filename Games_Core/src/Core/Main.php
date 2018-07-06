@@ -24,12 +24,12 @@ use pocketmine\{
 class Main extends PluginBase
 {
     public static $instance = null;
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getLogger()->info(TextFormat::GREEN."Games_Coreを読み込みました。");
     }
-    public function onDisable()
+    public function onDisable() : void
     {
         $this->getLogger()->info(TextFormat::RED."Games_Coreを終了しました。");
     }
@@ -40,7 +40,7 @@ class Main extends PluginBase
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }
-    public function onLoad()
+    public function onLoad() : void 
     {
         self::$instance = $this;
         $this->registerCommands();

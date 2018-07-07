@@ -24,8 +24,10 @@
 /app/Config/database.php
 /vendors/*
 
-# IDE
+# JetBrains IDE
 /.idea/*
 
 .php_cs.cache
 composer.phar
+composer.json
+/Tban/*

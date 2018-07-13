@@ -19,6 +19,11 @@ class BanAPI extends PluginBase
         $this->getLogger()->info('BanAPIを読み込みました。');
     }
 
+    /**
+     * @param Player $player
+     * @param string $reason
+     * @param string $by
+     */
     public function addBan(Player $player, string $reason, string $by)
     {
         $bantime = date("Y/m/d H:i:s");
@@ -28,6 +33,10 @@ class BanAPI extends PluginBase
         $this->getLogger()->info($player->getName()."をBANしました。");
         $this->getServer()->broadcastMessage($player->getName()." は $by によってBANされました。\n理由: $reason");
     }
+
+    /**
+     * @param Player $player
+     */
     public function unBan(Player $player) {
         $this->getServer()->getIPBans()->remove($player);
         $this->getServer()->getNameBans()->remove($player);

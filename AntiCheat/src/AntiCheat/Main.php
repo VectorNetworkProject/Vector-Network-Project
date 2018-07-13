@@ -8,30 +8,29 @@
 
 namespace AntiCheat;
 
-use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerToggleFlightEvent;
-use pocketmine\plugin\PluginBase;
-use pocketmine\utils\TextFormat;
-use uramnoil\tban\TBan;
+use pocketmine\{
+    event\Listener,
+    event\player\PlayerToggleFlightEvent,
+    plugin\PluginBase
+};
 
 class Main extends PluginBase implements Listener
 {
+    private $banapi;
     public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->banapi = $this->getServer()->getPluginManager()->getPlugin("BanAPI");
     }
 
     public function onToggleFlight(PlayerToggleFlightEvent $event) : void
     {
-        $bantime = new \DateTime('3000/1/1 00:00:00');
         $player = $event->getPlayer();
         if (!$player->isOp()) {
             if ($event->isFlying()) {
-                $player->kick(TextFormat::RED."[AntiCheat]".TextFormat::YELLOW." あなたはBANされました。\n".TextFormat::RED."理由: Flying", false);
-                TBan::create($player->getName(), $bantime);
+                $this->banapi->addBan($player, "Flying", "AntiCheat");
             } else {
-                $player->kick(TextFormat::RED."[AntiCheat]".TextFormat::YELLOW." あなたはBANされました。\n".TextFormat::RED."理由: Flying", false);
-                TBan::create($player->getName(), $bantime);
+                $this->banapi->addBan($player, "Flying", "AntiCheat");
             }
         }
     }

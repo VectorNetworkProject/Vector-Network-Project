@@ -25,10 +25,9 @@ class BanAPI extends PluginBase
      */
     public function addBan(Player $player, string $reason, string $by)
     {
-        $bantime = date("Y/m/d H:i:s");
         $player->kick($reason, true);
-        $this->getServer()->getIPBans()->addBan($player->getAddress(), $reason, $bantime, $player->getName());
-        $this->getServer()->getNameBans()->addBan($player, $reason, $bantime, $player->getName());
+        $this->getServer()->getIPBans()->addBan($player->getAddress(), $reason, null, $player->getName());
+        $this->getServer()->getNameBans()->addBan($player, $reason, null, $player->getName());
         $this->getLogger()->info($player->getName()."をBANしました。");
         $this->getServer()->broadcastMessage($player->getName()." は $by によってBANされました。\n理由: $reason");
     }

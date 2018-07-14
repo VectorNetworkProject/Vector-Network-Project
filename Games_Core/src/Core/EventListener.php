@@ -8,11 +8,8 @@
 
 namespace Core;
 
-use Core\Checker\{
-    PlayerAddressChecker
-};
-
 use Core\Entity\Bossbar;
+use Core\Player\PlayerAddressChecker;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
@@ -31,6 +28,7 @@ class EventListener implements Listener
         $event->setJoinMessage(null);
         $bossbar = new Bossbar("§l§6Vector §bNetwork §eProject", 100, 100);
         $bossbar->sendBar($event->getPlayer());
+        $event->getPlayer()->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 3, 5, 3);
     }
     public function onQuit(PlayerQuitEvent $event)
     {

@@ -21,10 +21,10 @@ use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase
 {
-    public static $datafolder;
-    public static $instance = null;
+    public static $datafolder, $instance = null;
     public function onEnable() : void
     {
+        self::$datafolder = $this->getDataFolder();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getLogger()->info(TextFormat::GREEN."Games_Coreを読み込みました。");
     }

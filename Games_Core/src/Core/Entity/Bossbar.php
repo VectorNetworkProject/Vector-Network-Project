@@ -2,17 +2,15 @@
 
 namespace Core\Entity;
 
-use pocketmine\{
-    entity\Attribute,
-    entity\Entity,
-    entity\EntityIds,
-    math\Vector3,
-    network\mcpe\protocol\AddEntityPacket,
-    network\mcpe\protocol\BossEventPacket,
-    network\mcpe\protocol\SetEntityDataPacket,
-    network\mcpe\protocol\UpdateAttributesPacket,
-    Player
-};
+use pocketmine\entity\Attribute;
+use pocketmine\entity\Entity;
+use pocketmine\entity\EntityIds;
+use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\network\mcpe\protocol\BossEventPacket;
+use pocketmine\network\mcpe\protocol\SetEntityDataPacket;
+use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
+use pocketmine\Player;
 
 class Bossbar extends Vector3
 {

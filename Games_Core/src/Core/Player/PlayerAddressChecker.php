@@ -6,7 +6,7 @@
  * Time: 18:51
  */
 
-namespace Core\Checker;
+namespace Core\Player;
 
 use pocketmine\{
     utils\Utils

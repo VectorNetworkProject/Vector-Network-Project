@@ -27,6 +27,5 @@
 # JetBrains IDE
 /.idea/*
 
-.php_cs.cache
 composer.phar
 composer.json

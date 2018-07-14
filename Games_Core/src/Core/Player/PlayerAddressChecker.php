@@ -15,10 +15,10 @@ use pocketmine\{
 class PlayerAddressChecker
 {
     /**
-     * @param $ip
+     * @param string $ip
      * @return bool
      */
-    public function Checker($ip) : bool
+    public function Checker(string $ip) : bool
     {
         $userip = explode('.', $ip);
         if ($ip === "127.0.0.1" || ($userip[0] === "192" && $userip[1] === "168")) {

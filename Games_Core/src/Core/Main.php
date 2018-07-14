@@ -16,10 +16,8 @@ use Core\{
     Commands\gamehelp
 };
 
-use pocketmine\{
-    plugin\PluginBase,
-    utils\TextFormat
-};
+use pocketmine\plugin\PluginBase;
+use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase
 {

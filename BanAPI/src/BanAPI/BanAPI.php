@@ -8,7 +8,6 @@
 
 namespace BanAPI;
 
-
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
@@ -37,7 +36,8 @@ class BanAPI extends PluginBase
     /**
      * @param Player $player
      */
-    public function unBan(Player $player) {
+    public function unBan(Player $player)
+    {
         $this->getServer()->getIPBans()->remove($player);
         $this->getServer()->getNameBans()->remove($player);
         $this->getLogger()->info($player->getName()."のBANを解除しました。");

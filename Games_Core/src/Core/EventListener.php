@@ -12,13 +12,11 @@ use Core\Checker\{
     PlayerAddressChecker
 };
 
-use pocketmine\{
-    event\Listener,
-    event\player\PlayerJoinEvent,
-    event\player\PlayerLoginEvent,
-    event\player\PlayerPreLoginEvent,
-    event\player\PlayerQuitEvent
-};
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerPreLoginEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 
 class EventListener implements Listener
 {
@@ -55,7 +53,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $name = $player->getName();
         $data = new DataFile($name);
-        if(($user = $data->get('userdata')) === null){
+        if (($user = $data->get('userdata')) === null) {
             $user = [
                 'name' => $name,
                 'money' => 0,

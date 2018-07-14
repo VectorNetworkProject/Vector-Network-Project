@@ -12,13 +12,11 @@ use Core\{
     Main
 };
 
-use pocketmine\{
-    command\CommandSender,
-    command\PluginCommand,
-    network\mcpe\protocol\ModalFormRequestPacket,
-    Player,
-    utils\TextFormat
-};
+use pocketmine\command\CommandSender;
+use pocketmine\command\PluginCommand;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
+use pocketmine\Player;
+use pocketmine\utils\TextFormat;
 
 class gamehelp extends PluginCommand
 {

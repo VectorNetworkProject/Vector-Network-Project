@@ -8,11 +8,9 @@
 
 namespace AntiCheat;
 
-use pocketmine\{
-    event\Listener,
-    event\player\PlayerToggleFlightEvent,
-    plugin\PluginBase
-};
+use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerToggleFlightEvent;
+use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase implements Listener
 {

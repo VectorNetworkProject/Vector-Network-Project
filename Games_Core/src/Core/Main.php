@@ -23,6 +23,7 @@ use pocketmine\{
 
 class Main extends PluginBase
 {
+    public static $datafolder;
     public static $instance = null;
     public function onEnable() : void
     {

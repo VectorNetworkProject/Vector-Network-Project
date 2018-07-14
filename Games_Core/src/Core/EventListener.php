@@ -26,9 +26,11 @@ class EventListener implements Listener
     public function onJoin(PlayerJoinEvent $event)
     {
         $event->setJoinMessage(null);
+        $player = $event->getPlayer();
         $bossbar = new Bossbar("§l§6Vector §bNetwork §eProject", 100, 100);
-        $bossbar->sendBar($event->getPlayer());
-        $event->getPlayer()->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 3, 5, 3);
+        $bossbar->sendBar($player);
+        $player->sendMessage("§a---===< §6Vector §bNetwork §eProject §a>===---\n§bDeveloped by InkoHX\n§bGitHub: §7https://github.com/InkoHX/Vector-Network-Project\n§bTwitter: §7https://twitter.com/InkoHX\n§9Discord: §7https://discord.gg/EF2G5dh\n§a---=============================---");
+        //$event->getPlayer()->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 3, 5, 3);
     }
     public function onQuit(PlayerQuitEvent $event)
     {
@@ -57,9 +59,10 @@ class EventListener implements Listener
         if (($user = $data->get('userdata')) === null) {
             $user = [
                 'name' => $name,
-                'money' => 0,
+                'money' => 1000,
                 'networklevel' => 1,
                 'exp' => 0,
+                'maxexp' => 0,
                 'firstlogin' => date('Y:m:d_H:i:s'),
                 'lastlogin' => date('Y:m:d_H:i:s'),
             ];

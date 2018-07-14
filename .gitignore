@@ -29,3 +29,4 @@
 
 composer.phar
 composer.json
+.php_cs.cache

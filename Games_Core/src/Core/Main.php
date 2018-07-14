@@ -21,7 +21,8 @@ use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase
 {
-    public static $datafolder, $instance = null;
+    public static $datafolder;
+    public static $instance = null;
     public function onEnable() : void
     {
         date_default_timezone_set("Asia/Tokyo");

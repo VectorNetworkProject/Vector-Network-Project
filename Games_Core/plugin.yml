@@ -7,6 +7,10 @@ commands:
     usage: "/gamehelp"
     permission: vector.network.player
     description: "Vector Network で使えるコマンド一覧を表示します。"
+  ping:
+    usage: "/ping"
+    permission: vector.network.player
+    description: "応答速度を計測します。"
 permissions:
   vector.network.player:
     default: true

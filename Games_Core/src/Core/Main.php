@@ -16,7 +16,7 @@
 namespace Core;
 
 use Core\{
-    Commands\gamehelp
+    Commands\gamehelp, Commands\ping
 };
 
 use pocketmine\plugin\PluginBase;
@@ -40,7 +40,8 @@ class Main extends PluginBase
     private function registerCommands()
     {
         $commands = [
-            new gamehelp($this)
+            new gamehelp($this),
+            new ping($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

@@ -22,16 +22,32 @@ class DataFile
         }
     }
 
+    /**
+     * @param $file
+     * @param string $data
+     * @param int $format
+     */
     public function write($file, $data = '', $format = 0)
     {
         file_put_contents($this->dir . $file, base64_encode(gzencode(json_encode($data, $format), 9)));
     }
 
+    /**
+     * @param $file
+     * @param bool $bool
+     * @return mixed|null
+     */
     public function get($file, $bool = true)
     {
         return file_exists($this->dir . $file) ? json_decode(gzdecode(base64_decode(file_get_contents($this->dir . $file))), $bool) : null;
     }
 
+    /**
+     * @param $dir
+     * @param $file
+     * @param string $data
+     * @param int $format
+     */
     public static function writeTo($dir, $file, $data = '', $format = 0)
     {
         if (!file_exists($dir)) {
@@ -40,16 +56,32 @@ class DataFile
         file_put_contents($dir . $file, base64_encode(gzencode(json_encode($data, $format), 9)));
     }
 
+    /**
+     * @param $dir
+     * @param $file
+     * @param bool $bool
+     * @return mixed|null
+     */
     public static function readFrom($dir, $file, $bool = true)
     {
         return file_exists($dir . $file) ? json_decode(gzdecode(base64_decode(file_get_contents($dir . $file))), $bool) : null;
     }
 
+    /**
+     * @param $path
+     * @param string $data
+     * @param int $format
+     */
     public static function writeToPath($path, $data = '', $format = 0)
     {
         file_put_contents($path, base64_encode(gzencode(json_encode($data, $format), 9)));
     }
 
+    /**
+     * @param $path
+     * @param bool $bool
+     * @return mixed|null
+     */
     public static function readFromPath($path, $bool = true)
     {
         return file_exists($path) ? json_decode(gzdecode(base64_decode(file_get_contents($path))), $bool) : null;

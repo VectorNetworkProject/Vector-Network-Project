@@ -2,15 +2,17 @@
 
 namespace Core\Entity;
 
-use pocketmine\entity\Attribute;
-use pocketmine\entity\Entity;
-use pocketmine\entity\EntityIds;
-use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\AddEntityPacket;
-use pocketmine\network\mcpe\protocol\BossEventPacket;
-use pocketmine\network\mcpe\protocol\SetEntityDataPacket;
-use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
-use pocketmine\Player;
+use pocketmine\{
+    entity\Attribute,
+    entity\Entity,
+    entity\EntityIds,
+    math\Vector3,
+    network\mcpe\protocol\AddEntityPacket,
+    network\mcpe\protocol\BossEventPacket,
+    network\mcpe\protocol\SetEntityDataPacket,
+    network\mcpe\protocol\UpdateAttributesPacket,
+    Player
+};
 
 class Bossbar extends Vector3
 {
@@ -20,6 +22,12 @@ class Bossbar extends Vector3
     protected $metadata = [];
     protected $viewers = [];
 
+    /**
+     * Bossbar constructor.
+     * @param string $title
+     * @param float $hp
+     * @param float $maxHp
+     */
     public function __construct(string $title, float $hp = 1, float $maxHp = 1)
     {
         parent::__construct(0, 0, 0);
@@ -34,6 +42,11 @@ class Bossbar extends Vector3
         $this->entityId = Entity::$entityCount++;
     }
 
+    /**
+     * @param float|null $hp
+     * @param float|null $maxHp
+     * @param bool $update
+     */
     public function setHealthPercent(float $hp = null, float $maxHp = null, bool $update = true)
     {
         if ($maxHp !== null) {
@@ -50,6 +63,10 @@ class Bossbar extends Vector3
         }
     }
 
+    /**
+     * @param Player $player
+     * @param bool $isViewer
+     */
     public function sendBar(Player $player, bool $isViewer = true)
     {
         $pk = new AddEntityPacket;
@@ -73,6 +90,9 @@ class Bossbar extends Vector3
         }
     }
 
+    /**
+     * @param Player $player
+     */
     public function BossbarUpdate(Player $player)
     {
         $pk = new BossEventPacket;
@@ -90,14 +110,12 @@ class Bossbar extends Vector3
         $mpk->metadata = $this->metadata;
         $player->dataPacket($mpk);
     }
-
     public function BossbarUpdateAll() : void
     {
         foreach ($this->viewers as $player) {
             $this->BossbarUpdate($player);
         }
     }
-
     protected function getHealthPacket() : UpdateAttributesPacket
     {
         $attr = Attribute::getAttribute(Attribute::HEALTH);
@@ -108,7 +126,6 @@ class Bossbar extends Vector3
         $pk->entries = [$attr];
         return $pk;
     }
-
     public function getMetadata(int $key)
     {
         return isset($this->metadata[$key]) ? $this->metadata[$key][1] : null;

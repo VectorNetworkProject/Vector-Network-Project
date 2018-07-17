@@ -8,6 +8,9 @@
  *     \/ \___|\___|\__\___/|_|  |_| \_|\___|\__| \_/\_/ \___/|_|  |_|\_\_|   |_|  \___/| |\___|\___|\__|
  *                                                                                     _/ |
  *                                                                                    |__/
+ * Dev: InkoHX
+ * ServerSoftware: PocketMine-MP
+ * LICENSE: MIT
  */
 
 namespace Core;

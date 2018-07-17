@@ -15,9 +15,9 @@
 
 namespace Core;
 
-use Core\{
-    Commands\gamehelp, Commands\ping
-};
+use Core\Commands\gamehelp;
+use Core\Commands\ping;
+use Core\Task\Tip;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
@@ -31,6 +31,7 @@ class Main extends PluginBase
         date_default_timezone_set("Asia/Tokyo");
         self::$datafolder = $this->getDataFolder();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+        $this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180*20);
         $this->getLogger()->info(TextFormat::GREEN."Games_Coreを読み込みました。");
     }
     public function onDisable() : void

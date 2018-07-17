@@ -50,8 +50,8 @@ class gamehelp extends PluginCommand
         if ($sender instanceof Player) {
             $message = [];
             /* $packet = new ModalFormRequestPacket();
-            $packet->formId = 156461;
-            $packet->formData = json_decode($message, true); */
+            $packet->formId = mt_rand(1111111,9999999);
+            $packet->formData = json_encode($message); */
             $sender->sendMessage("test");
             return true;
         }

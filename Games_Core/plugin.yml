@@ -11,6 +11,10 @@ commands:
     usage: "/ping"
     permission: vector.network.player
     description: "応答速度を計測します。"
+  stats:
+    usage: "/stats"
+    permission: vector.network.player
+    description: "自分のステータスを表示します。"
 permissions:
   vector.network.player:
     default: true

@@ -17,6 +17,7 @@ namespace Core;
 
 use Core\Commands\gamehelp;
 use Core\Commands\ping;
+use Core\Commands\stats;
 use Core\Task\Tip;
 
 use pocketmine\plugin\PluginBase;
@@ -42,7 +43,8 @@ class Main extends PluginBase
     {
         $commands = [
             new gamehelp($this),
-            new ping($this)
+            new ping($this),
+            new stats($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

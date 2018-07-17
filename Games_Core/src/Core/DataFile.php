@@ -10,13 +10,12 @@ namespace Core;
 
 class DataFile
 {
-    private $folderName = '/players';
+    private $folderName = "/players";
     private $dir = null;
 
     public function __construct($name)
     {
-        $this->dir = Main::$datafolder . $this->folderName . '/' . strtoupper(substr($name, 0, 1)) . '/' . strtolower($name) . '/';
-
+        $this->dir = Main::$datafolder . $this->folderName . "/" . strtoupper(substr($name, 0, 1)) . "/" . strtolower($name) . "/";
         if (!file_exists($this->dir)) {
             mkdir($this->dir, 0755, true);
         }
@@ -27,7 +26,7 @@ class DataFile
      * @param string $data
      * @param int $format
      */
-    public function write($file, $data = '', $format = 0)
+    public function write($file, $data = "", $format = 0)
     {
         file_put_contents($this->dir . $file, base64_encode(gzencode(json_encode($data, $format), 9)));
     }
@@ -48,7 +47,7 @@ class DataFile
      * @param string $data
      * @param int $format
      */
-    public static function writeTo($dir, $file, $data = '', $format = 0)
+    public static function writeTo($dir, $file, $data = "", $format = 0)
     {
         if (!file_exists($dir)) {
             mkdir($dir, 0755, true);
@@ -72,7 +71,7 @@ class DataFile
      * @param string $data
      * @param int $format
      */
-    public static function writeToPath($path, $data = '', $format = 0)
+    public static function writeToPath($path, $data = "", $format = 0)
     {
         file_put_contents($path, base64_encode(gzencode(json_encode($data, $format), 9)));
     }

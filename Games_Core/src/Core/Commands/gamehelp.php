@@ -20,7 +20,7 @@ use pocketmine\utils\TextFormat;
 
 class gamehelp extends PluginCommand
 {
-    private $plugin;
+    protected $plugin;
     /**
      * gamehelp constructor.
      * @param Main $plugin
@@ -55,7 +55,7 @@ class gamehelp extends PluginCommand
             $sender->sendMessage("test");
             return true;
         }
-        $this->plugin->getLogger()->info(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
+        $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
         return true;
     }
 }

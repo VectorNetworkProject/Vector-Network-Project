@@ -10,6 +10,7 @@ namespace Core;
 
 use Core\Entity\Bossbar;
 use Core\Player\PlayerAddressChecker;
+use Core\Task\JoinTitle;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
@@ -33,8 +34,7 @@ class EventListener implements Listener
         $level = $user["networklevel"];
         $bossbar = new Bossbar("   §l§6Vector §bNetwork §eProject\n\n§l§eMoney: $money §bNetworkLevel: $level", 100, 100);
         $bossbar->sendBar($player);
-        $player->sendMessage("§a---===< §6Vector §bNetwork §eProject §a>===---\n§bDeveloped by InkoHX\n§bGitHub: §7https://github.com/InkoHX/Vector-Network-Project\n§bTwitter: §7https://twitter.com/InkoHX\n§9Discord: §7https://discord.gg/EF2G5dh\n§a---=============================---");
-        //$event->getPlayer()->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 3, 5, 3);
+        $this->plugin->getScheduler()->scheduleDelayedTask(new JoinTitle($this->plugin, $player), 100);
     }
     public function onQuit(PlayerQuitEvent $event)
     {

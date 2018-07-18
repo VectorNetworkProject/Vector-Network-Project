@@ -9,17 +9,14 @@
 namespace Core;
 
 use Core\Entity\Bossbar;
-use Core\Player\PlayerAddressChecker;
 use Core\Task\JoinTitle;
 use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\Player;
 
 class EventListener implements Listener
 {
@@ -51,19 +48,7 @@ class EventListener implements Listener
         $user["lastlogin"] = date("Y:m:d H:i:s");
         $data->write("userdata", $user);
     }
-    public function onPreLogin(PlayerPreLoginEvent $event)
-    {
-        $player = $event->getPlayer();
-        /*
-        $check = new PlayerAddressChecker();
-        if ($check->Checker($player->getAddress())) {
-            $this->plugin->getLogger()->info($player->getName()."は国内からのアクセスです。");
-        } else {
-            $player->kick("§l§6Vector §bNetwork\n§r§fあなたはサーバーからキックされました。\n§7理由: §f国外からのアクセス", false);
-            $this->plugin->getLogger()->info($player->getName()."は国外からのアクセスの為キックしました。");
-        }
-        */
-    }
+    public function onPreLogin(PlayerPreLoginEvent $event) {}
     public function onLogin(PlayerLoginEvent $event)
     {
         $player = $event->getPlayer();

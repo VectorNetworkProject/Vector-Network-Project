@@ -11,12 +11,15 @@ namespace Core;
 use Core\Entity\Bossbar;
 use Core\Player\PlayerAddressChecker;
 use Core\Task\JoinTitle;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\Player;
 
 class EventListener implements Listener
 {
@@ -45,7 +48,7 @@ class EventListener implements Listener
         $event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
         $data = new DataFile($player->getName());
         $user = $data->get("userdata");
-        $user["lastlogin"] = date("Y:m:d_H:i:s");
+        $user["lastlogin"] = date("Y:m:d H:i:s");
         $data->write("userdata", $user);
     }
     public function onPreLogin(PlayerPreLoginEvent $event)
@@ -71,15 +74,31 @@ class EventListener implements Listener
                 "networklevel" => 1,
                 "exp" => 0,
                 "maxexp" => 0,
-                "firstlogin" => date("Y:m:d_H:i:s"),
-                "lastlogin" => date("Y:m:d_H:i:s")
+                "firstlogin" => date("Y:m:d H:i:s"),
+                "lastlogin" => date("Y:m:d H:i:s")
             ];
             $data->write("userdata", $user);
+        }
+        if (($survival = $data->get("survival")) === null) {
+            $survival = [
+                "name" => $name,
+                "kill" => 0,
+                "death" => 0,
+                "break" => 0,
+                "place" => 0
+            ];
+            $data->write('survival', $survival);
         }
     }
     public function onDeath(PlayerDeathEvent $event)
     {
-        $event->setKeepInventory(true);
         $event->setDeathMessage(null);
+        /*
+        $cause = $event->getPlayer()->getLastDamageCause();
+        if ($cause instanceof EntityDamageByEntityEvent and $cause->getDamager() instanceof Player) {
+            $killer = $cause->getDamager();
+        }
+        */
     }
+    public function onPlace(BlockPlaceEvent $event) {}
 }

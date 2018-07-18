@@ -37,20 +37,27 @@ class stats extends PluginCommand
         if ($sender instanceof Player) {
             $name = $sender->getName();
             $datafile = new DataFile($name);
-            $data = $datafile->get('USERDATA');
-            $level = $data['networklevel'];
-            $money = $data['money'];
-            $exp = $data['exp'];
-            $firstlogin = $data['firstlogin'];
-            $lastlogin = $data['lastlogin'];
-            $maxexp = $data['maxexp'];
+            $userdata = $datafile->get('USERDATA');
+            $ffapvp = $datafile->get('FFAPVP');
+            $level = $userdata['networklevel'];
+            $money = $userdata['money'];
+            $exp = $userdata['exp'];
+            $firstlogin = $userdata['firstlogin'];
+            $lastlogin = $userdata['lastlogin'];
+            $maxexp = $userdata['maxexp'];
+            $ffapvp_kill = $ffapvp['kill'];
+            $ffapvp_death = $ffapvp['death'];
             $status = [
                 "type" => "custom_form",
-                "title" => "$name のステータス",
+                "title" => "§l$name のステータス",
                 "content" => [
                     [
                         "type" => "label",
-                        "text" => "現在のレベル: $level\n現在の経験値: $exp (次のレベルアップまで: $maxexp xp必要です。)\nVNCoin: $money\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
+                        "text" => "現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
+                    ],
+                    [
+                        "type" => "label",
+                        "text" => "---=== §cFFAPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death"
                     ]
                 ]
             ];

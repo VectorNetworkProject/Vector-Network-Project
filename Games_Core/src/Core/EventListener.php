@@ -9,13 +9,15 @@
 namespace Core;
 
 use Core\Entity\Bossbar;
-use Core\Game\Survival\FFAPvPCore;
+use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Task\JoinTitle;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\Player;
 
 class EventListener implements Listener
 {
@@ -46,7 +48,7 @@ class EventListener implements Listener
         $event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
         $data = new DataFile($player->getName());
         $user = $data->get("USERDATA");
-        $user["lastlogin"] = date("Y:m:d H:i:s");
+        $user["lastlogin"] = date("Y年m月d日 H時i分s秒");
         $data->write("USERDATA", $user);
     }
     public function onLogin(PlayerLoginEvent $event)
@@ -61,8 +63,8 @@ class EventListener implements Listener
                 "networklevel" => 1,
                 "exp" => 0,
                 "maxexp" => 0,
-                "firstlogin" => date("Y:m:d H:i:s"),
-                "lastlogin" => date("Y:m:d H:i:s")
+                "firstlogin" => date("Y年m月d日 H時i分s秒"),
+                "lastlogin" => date("Y年m月d日 H時i分s秒")
             ];
             $data->write("USERDATA", $user);
         }
@@ -76,6 +78,14 @@ class EventListener implements Listener
         }
     }
     public function onDeath(PlayerDeathEvent $event) {
-        $this->ffapvp->AddDeathCount($event->getPlayer());
+        $player = $event->getPlayer();
+        $cause = $player->getLastDamageCause();
+        $this->ffapvp->AddDeathCount($player);
+        if ($cause instanceof EntityDamageByEntityEvent) {
+            $damager = $cause->getDamager();
+            if ($damager instanceof Player) {
+                $this->ffapvp->AddKillCount($damager);
+            }
+        }
     }
 }

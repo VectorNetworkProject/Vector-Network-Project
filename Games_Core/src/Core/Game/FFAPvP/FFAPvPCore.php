@@ -6,7 +6,7 @@
  * Time: 16:58
  */
 
-namespace Core\Game\Survival;
+namespace Core\Game\FFAPvP;
 
 use Core\DataFile;
 use Core\Main;
@@ -29,9 +29,9 @@ class FFAPvPCore
             $player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
         }
     }
-    public function AddKillCount(Player $player, string $name) {
+    public function AddKillCount(Player $player) {
         if ($player->getLevel()->getName() === $this->worldname) {
-            $datafile = new DataFile($name);
+            $datafile = new DataFile($player->getName());
             $data = $datafile->get('FFPAPVP');
             $data['kill'] += 1;
             $datafile->write('FFAPVP', $data);

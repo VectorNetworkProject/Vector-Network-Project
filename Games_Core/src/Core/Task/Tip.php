@@ -21,9 +21,9 @@ class Tip extends PluginTask
         if ($rand === 1) {
             $this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7このゲームはまだ未完成です。");
         } elseif ($rand === 2) {
-            $this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7test2");
+            $this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7/statsで自分のステータスを確認出来ます。");
         } elseif ($rand === 3) {
-            $this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7test3");
+            $this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7/pingで応答速度を計測出来ます。");
         }
     }
 }

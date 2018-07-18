@@ -37,7 +37,7 @@ class JoinTitle extends PluginTask
     public function onRun(int $currentTick)
     {
         $player = $this->player;
-        $player->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 3, 5, 3);
+        $player->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 40, 100, 40);
         $player->sendMessage("§a---===< §6Vector §bNetwork §eProject §a>===---\n§bDeveloped by InkoHX\n§bGitHub: §7https://github.com/InkoHX/Vector-Network-Project\n§bTwitter: §7https://twitter.com/InkoHX\n§9Discord: §7https://discord.gg/EF2G5dh\n§a---=============================---");
     }
 }

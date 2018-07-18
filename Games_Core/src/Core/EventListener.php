@@ -54,6 +54,7 @@ class EventListener implements Listener
     public function onPreLogin(PlayerPreLoginEvent $event)
     {
         $player = $event->getPlayer();
+        /*
         $check = new PlayerAddressChecker();
         if ($check->Checker($player->getAddress())) {
             $this->plugin->getLogger()->info($player->getName()."は国内からのアクセスです。");
@@ -61,6 +62,7 @@ class EventListener implements Listener
             $player->kick("§l§6Vector §bNetwork\n§r§fあなたはサーバーからキックされました。\n§7理由: §f国外からのアクセス", false);
             $this->plugin->getLogger()->info($player->getName()."は国外からのアクセスの為キックしました。");
         }
+        */
     }
     public function onLogin(PlayerLoginEvent $event)
     {

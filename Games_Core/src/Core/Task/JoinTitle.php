@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: PCink
+ * User: InkoHX
  * Date: 2018/07/18
  * Time: 10:37
  */
@@ -15,6 +15,12 @@ use pocketmine\plugin\Plugin;
 class JoinTitle extends PluginTask
 {
     protected $player;
+
+    /**
+     * JoinTitle constructor.
+     * @param Plugin $plugin
+     * @param Player $player
+     */
     public function __construct(Plugin $plugin, Player $player)
     {
         parent::__construct($plugin);
@@ -31,7 +37,7 @@ class JoinTitle extends PluginTask
     public function onRun(int $currentTick)
     {
         $player = $this->player;
-        $player->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 5, 5, 5);
+        $player->addTitle("§6Vector §bNetwork", "§eDeveloped by InkoHX", 3, 5, 3);
         $player->sendMessage("§a---===< §6Vector §bNetwork §eProject §a>===---\n§bDeveloped by InkoHX\n§bGitHub: §7https://github.com/InkoHX/Vector-Network-Project\n§bTwitter: §7https://twitter.com/InkoHX\n§9Discord: §7https://discord.gg/EF2G5dh\n§a---=============================---");
     }
 }

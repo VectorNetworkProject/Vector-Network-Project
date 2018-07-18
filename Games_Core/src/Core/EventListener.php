@@ -12,6 +12,7 @@ use Core\Entity\Bossbar;
 use Core\Player\PlayerAddressChecker;
 use Core\Task\JoinTitle;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
@@ -27,8 +28,9 @@ class EventListener implements Listener
     public function onJoin(PlayerJoinEvent $event)
     {
         $datafile = new DataFile($event->getPlayer()->getName());
-        $event->setJoinMessage(null);
         $player = $event->getPlayer();
+        $name = $player->getName();
+        $event->setJoinMessage("§b[§a参加§b] §7$name が参加しました。");
         $user = $datafile->get("userdata");
         $money = $user["money"];
         $level = $user["networklevel"];
@@ -38,8 +40,9 @@ class EventListener implements Listener
     }
     public function onQuit(PlayerQuitEvent $event)
     {
-        $event->setQuitMessage(null);
         $player = $event->getPlayer();
+        $name = $player->getName();
+        $event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
         $data = new DataFile($player->getName());
         $user = $data->get("userdata");
         $user["lastlogin"] = date("Y:m:d_H:i:s");
@@ -73,5 +76,10 @@ class EventListener implements Listener
             ];
             $data->write("userdata", $user);
         }
+    }
+    public function onDeath(PlayerDeathEvent $event)
+    {
+        $event->setKeepInventory(true);
+        $event->setDeathMessage(null);
     }
 }

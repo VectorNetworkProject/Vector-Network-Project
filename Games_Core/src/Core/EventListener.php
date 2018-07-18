@@ -9,21 +9,22 @@
 namespace Core;
 
 use Core\Entity\Bossbar;
+use Core\Game\Survival\FFAPvPCore;
 use Core\Task\JoinTitle;
-use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
-use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 
 class EventListener implements Listener
 {
     private $plugin = null;
+    protected $ffapvp;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
+        $this->ffapvp = new FFAPvPCore($this->plugin);
     }
     public function onJoin(PlayerJoinEvent $event)
     {
@@ -31,7 +32,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $name = $player->getName();
         $event->setJoinMessage("§b[§a参加§b] §7$name が参加しました。");
-        $user = $datafile->get("userdata");
+        $user = $datafile->get("USERDATA");
         $money = $user["money"];
         $level = $user["networklevel"];
         $bossbar = new Bossbar("   §l§6Vector §bNetwork §eProject\n\n§l§eMoney: $money §bNetworkLevel: $level", 100, 100);
@@ -44,17 +45,16 @@ class EventListener implements Listener
         $name = $player->getName();
         $event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
         $data = new DataFile($player->getName());
-        $user = $data->get("userdata");
+        $user = $data->get("USERDATA");
         $user["lastlogin"] = date("Y:m:d H:i:s");
-        $data->write("userdata", $user);
+        $data->write("USERDATA", $user);
     }
-    public function onPreLogin(PlayerPreLoginEvent $event) {}
     public function onLogin(PlayerLoginEvent $event)
     {
         $player = $event->getPlayer();
         $name = $player->getName();
         $data = new DataFile($name);
-        if (($user = $data->get("userdata")) === null) {
+        if (($user = $data->get("USERDATA")) === null) {
             $user = [
                 "name" => $name,
                 "money" => 1000,
@@ -64,28 +64,18 @@ class EventListener implements Listener
                 "firstlogin" => date("Y:m:d H:i:s"),
                 "lastlogin" => date("Y:m:d H:i:s")
             ];
-            $data->write("userdata", $user);
+            $data->write("USERDATA", $user);
         }
-        if (($survival = $data->get("survival")) === null) {
-            $survival = [
+        if (($ffapvp = $data->get("FFAPVP")) === null) {
+            $ffapvp = [
                 "name" => $name,
                 "kill" => 0,
-                "death" => 0,
-                "break" => 0,
-                "place" => 0
+                "death" => 0
             ];
-            $data->write('survival', $survival);
+            $data->write('FFAPVP', $ffapvp);
         }
     }
-    public function onDeath(PlayerDeathEvent $event)
-    {
-        $event->setDeathMessage(null);
-        /*
-        $cause = $event->getPlayer()->getLastDamageCause();
-        if ($cause instanceof EntityDamageByEntityEvent and $cause->getDamager() instanceof Player) {
-            $killer = $cause->getDamager();
-        }
-        */
+    public function onDeath(PlayerDeathEvent $event) {
+        $this->ffapvp->AddDeathCount($event->getPlayer());
     }
-    public function onPlace(BlockPlaceEvent $event) {}
 }

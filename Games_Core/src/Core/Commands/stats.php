@@ -37,7 +37,7 @@ class stats extends PluginCommand
         if ($sender instanceof Player) {
             $name = $sender->getName();
             $datafile = new DataFile($name);
-            $data = $datafile->get('userdata');
+            $data = $datafile->get('USERDATA');
             $level = $data['networklevel'];
             $money = $data['money'];
             $exp = $data['exp'];

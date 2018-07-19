@@ -10,6 +10,8 @@ namespace Core\Commands;
 
 use Core\DataFile;
 use Core\Main;
+use Core\Player\Level;
+use Core\Player\Money;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
@@ -19,12 +21,16 @@ use pocketmine\utils\TextFormat;
 class stats extends PluginCommand
 {
     protected $plugin;
+    protected $level;
+    protected $money;
     public function __construct(Main $plugin)
     {
         parent::__construct("stats", $plugin);
         $this->setPermission("vector.network.player");
         $this->setDescription("自分のステータスを表示します。");
         $this->plugin = $plugin;
+        $this->level = new Level();
+        $this->money = new Money();
     }
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
@@ -39,9 +45,9 @@ class stats extends PluginCommand
             $datafile = new DataFile($name);
             $userdata = $datafile->get('USERDATA');
             $ffapvp = $datafile->get('FFAPVP');
-            $level = $userdata['networklevel'];
-            $money = $userdata['money'];
-            $exp = $userdata['exp'];
+            $level = $this->level->getLevel($name);
+            $money = $this->money->getMoney($name);
+            $exp = $this->level->getExp($name);
             $firstlogin = $userdata['firstlogin'];
             $lastlogin = $userdata['lastlogin'];
             $maxexp = $userdata['maxexp'];

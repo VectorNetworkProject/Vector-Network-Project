@@ -70,7 +70,7 @@ class stats extends PluginCommand
                 ]
             ];
             $modal = new ModalFormRequestPacket();
-            $modal->formId = mt_rand(1111111,9999999);
+            $modal->formId = mt_rand(1111111, 9999999);
             $modal->formData = json_encode($status);
             $sender->dataPacket($modal);
             return true;

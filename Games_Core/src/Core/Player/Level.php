@@ -8,7 +8,6 @@
 
 namespace Core\Player;
 
-
 use Core\DataFile;
 
 class Level
@@ -17,7 +16,8 @@ class Level
      * @param string $name
      * @return int
      */
-    public function getLevel(string $name) : int {
+    public function getLevel(string $name) : int
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         return $data['networklevel'];
@@ -27,7 +27,8 @@ class Level
      * @param string $name
      * @return int
      */
-    public function getExp(string $name) : int {
+    public function getExp(string $name) : int
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         return $data['exp'];
@@ -37,7 +38,8 @@ class Level
      * @param string $name
      * @return int
      */
-    public function getMaxExp(string $name) : int {
+    public function getMaxExp(string $name) : int
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         return $data['maxexp'];
@@ -47,7 +49,8 @@ class Level
      * @param string $name
      * @param int $level
      */
-    public function setLevel(string $name, int $level) {
+    public function setLevel(string $name, int $level)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['networklevel'] = $level;
@@ -58,7 +61,8 @@ class Level
      * @param string $name
      * @param int $exp
      */
-    public function setExp(string $name, int $exp) {
+    public function setExp(string $name, int $exp)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['exp'] = $exp;
@@ -69,7 +73,8 @@ class Level
      * @param string $name
      * @param int $maxexp
      */
-    public function setMaxExp(string $name, int $maxexp) {
+    public function setMaxExp(string $name, int $maxexp)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['maxexp'] = $maxexp;
@@ -80,7 +85,8 @@ class Level
      * @param string $name
      * @param int $level
      */
-    public function addLevel(string $name, int $level) {
+    public function addLevel(string $name, int $level)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['networklevel'] += $level;
@@ -91,7 +97,8 @@ class Level
      * @param string $name
      * @param int $exp
      */
-    public function addExp(string $name, int $exp) {
+    public function addExp(string $name, int $exp)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['exp'] += $exp;
@@ -102,7 +109,8 @@ class Level
      * @param string $name
      * @param int $maxexp
      */
-    public function addMaxExp(string $name, int $maxexp) {
+    public function addMaxExp(string $name, int $maxexp)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['maxexp'] += $maxexp;

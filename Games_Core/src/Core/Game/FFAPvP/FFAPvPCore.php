@@ -29,7 +29,8 @@ class FFAPvPCore
             $player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
         }
     }
-    public function AddKillCount(Player $player) {
+    public function AddKillCount(Player $player)
+    {
         if ($player->getLevel()->getName() === $this->worldname) {
             $datafile = new DataFile($player->getName());
             $data = $datafile->get('FFAPVP');

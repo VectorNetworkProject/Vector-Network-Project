@@ -10,8 +10,10 @@ namespace Core\Commands;
 
 use Core\DataFile;
 use Core\Main;
+use Core\Player\KD;
 use Core\Player\Level;
 use Core\Player\Money;
+use Core\Player\Rank;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
@@ -23,6 +25,8 @@ class stats extends PluginCommand
     protected $plugin;
     protected $level;
     protected $money;
+    protected $rank;
+    protected $kd;
     public function __construct(Main $plugin)
     {
         parent::__construct("stats", $plugin);
@@ -31,6 +35,8 @@ class stats extends PluginCommand
         $this->plugin = $plugin;
         $this->level = new Level();
         $this->money = new Money();
+        $this->rank = new Rank($this->plugin);
+        $this->kd = new KD();
     }
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
@@ -53,15 +59,16 @@ class stats extends PluginCommand
             $maxexp = $userdata['maxexp'];
             $ffapvp_kill = $ffapvp['kill'];
             $ffapvp_death = $ffapvp['death'];
-            $ffapvp_killanddeath = $ffapvp_kill / $ffapvp_death;
-            $ffapvp_kd = floor($ffapvp_killanddeath * pow(10, 2)) / pow(10, 2);
+            $ffapvp_kd = $this->kd->FFAKD($name);
+            $rank = $this->rank->getRank($name);
+            $tag = $userdata['tag'];
             $status = [
                 "type" => "custom_form",
                 "title" => "§l$name のステータス",
                 "content" => [
                     [
                         "type" => "label",
-                        "text" => "現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
+                        "text" => "現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
                     ],
                     [
                         "type" => "label",

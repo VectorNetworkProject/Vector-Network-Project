@@ -25,6 +25,7 @@ class PlayerDeath
     }
     public function event(PlayerDeathEvent $event)
     {
+        $event->setDeathMessage(null);
         $player = $event->getPlayer();
         $cause = $player->getLastDamageCause();
         $this->ffapvp->AddDeathCount($player);

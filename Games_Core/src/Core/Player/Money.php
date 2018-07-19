@@ -20,8 +20,7 @@ class Money
     public function getMoney(string $name) : int {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
-        $Money = $data['money'];
-        return $Money;
+        return $data['money'];
     }
 
     /**

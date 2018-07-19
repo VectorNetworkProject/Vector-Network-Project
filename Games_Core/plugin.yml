@@ -17,6 +17,10 @@ commands:
     usage: "/stats"
     permission: vector.network.player
     description: "自分のステータスを表示します。"
+  rankshop:
+    usage: "/rankshop"
+    permission: vector.network.player
+    description: "§6V§bN§eCoin§rを使ってランクを買います。"
 permissions:
   vector.network.player:
     default: true

@@ -21,6 +21,10 @@ commands:
     usage: "/rankshop"
     permission: vector.network.player
     description: "§6V§bN§eCoin§rを使ってランクを買います。"
+  setmoney:
+    usage: "/setmoney <Name> <int>"
+    permission: vector.network.admin
+    description: "Admin Command"
 permissions:
   vector.network.player:
     default: true

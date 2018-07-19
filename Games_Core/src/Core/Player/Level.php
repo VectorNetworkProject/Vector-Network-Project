@@ -9,7 +9,7 @@
 namespace Core\Player;
 
 
-class LevelSystem
+class Level
 {
 
 }

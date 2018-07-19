@@ -53,6 +53,8 @@ class stats extends PluginCommand
             $maxexp = $userdata['maxexp'];
             $ffapvp_kill = $ffapvp['kill'];
             $ffapvp_death = $ffapvp['death'];
+            $ffapvp_killanddeath = $ffapvp_kill / $ffapvp_death;
+            $ffapvp_kd = floor($ffapvp_killanddeath * pow(10, 2)) / pow(10, 2);
             $status = [
                 "type" => "custom_form",
                 "title" => "§l$name のステータス",
@@ -63,7 +65,7 @@ class stats extends PluginCommand
                     ],
                     [
                         "type" => "label",
-                        "text" => "---=== §cFFAPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death"
+                        "text" => "---=== §cFFAPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death\n§eK§7/§cD§r: $ffapvp_kd"
                     ]
                 ]
             ];

@@ -12,6 +12,7 @@ use Core\Event\DataPacketReceive;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerJoin;
 use Core\Event\PlayerLogin;
+use Core\Event\PlayerMove;
 use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Game\FFAPvP\FFAPvPCore;
@@ -19,6 +20,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
@@ -33,6 +35,7 @@ class EventListener implements Listener
     protected $playerdeathevent;
     protected $datapacketreceiveevent;
     protected $playerprelogin;
+    protected $playermoveevent;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -43,6 +46,7 @@ class EventListener implements Listener
         $this->playerdeathevent = new PlayerDeath($this->plugin);
         $this->datapacketreceiveevent = new DataPacketReceive($this->plugin);
         $this->playerprelogin = new PlayerPreLogin($this->plugin);
+        $this->playermoveevent = new PlayerMove($this->plugin);
     }
     public function onJoin(PlayerJoinEvent $event)
     {
@@ -65,5 +69,8 @@ class EventListener implements Listener
     }
     public function pnPreLogin(PlayerPreLoginEvent $event) {
         $this->playerprelogin->event($event);
+    }
+    public function onMove(PlayerMoveEvent $event) {
+        $this->playermoveevent->event($event);
     }
 }

@@ -32,7 +32,7 @@ class FFAPvPCore
     public function AddKillCount(Player $player) {
         if ($player->getLevel()->getName() === $this->worldname) {
             $datafile = new DataFile($player->getName());
-            $data = $datafile->get('FFPAPVP');
+            $data = $datafile->get('FFAPVP');
             $data['kill'] += 1;
             $datafile->write('FFAPVP', $data);
         }

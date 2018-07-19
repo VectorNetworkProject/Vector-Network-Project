@@ -31,6 +31,8 @@ class PlayerLogin
                 "networklevel" => 1,
                 "exp" => 0,
                 "maxexp" => 0,
+                "rank" => "NoRank",
+                "tag" => "NoTag",
                 "firstlogin" => date("Y年m月d日 H時i分s秒"),
                 "lastlogin" => date("Y年m月d日 H時i分s秒")
             ];

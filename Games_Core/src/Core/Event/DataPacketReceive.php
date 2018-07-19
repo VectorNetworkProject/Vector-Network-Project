@@ -11,16 +11,18 @@ namespace Core\Event;
 
 use Core\Main;
 use Core\Player\Money;
+use Core\Player\Rank;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
 {
-    protected $plugin, $money, $ok, $error;
+    protected $plugin, $money, $ok, $error, $rank;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $this->money = new Money();
+        $this->rank = new Rank($this->plugin);
         $this->ok = "§7[§a成功§7] §a購入に成功しました。";
         $this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
     }
@@ -34,7 +36,7 @@ class DataPacketReceive
                     case '0':
                         if ($this->money->reduceMoney($player->getName(), 1500000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 1);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -42,7 +44,7 @@ class DataPacketReceive
                     case '1':
                         if ($this->money->reduceMoney($player->getName(), 1000000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 2);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -50,7 +52,7 @@ class DataPacketReceive
                     case '2':
                         if ($this->money->reduceMoney($player->getName(), 700000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 3);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -58,7 +60,7 @@ class DataPacketReceive
                     case '3':
                         if ($this->money->reduceMoney($player->getName(), 500000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 4);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -66,7 +68,7 @@ class DataPacketReceive
                     case '4':
                         if ($this->money->reduceMoney($player->getName(), 300000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 5);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -74,7 +76,7 @@ class DataPacketReceive
                     case '5':
                         if ($this->money->reduceMoney($player->getName(), 100000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 6);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -82,7 +84,7 @@ class DataPacketReceive
                     case '6':
                         if ($this->money->reduceMoney($player->getName(), 50000)) {
                             $player->sendMessage($this->ok);
-                            //書き込み
+                            $this->rank->setRank($player->getName(), 7);
                         } else {
                             $player->sendMessage($this->error);
                         }

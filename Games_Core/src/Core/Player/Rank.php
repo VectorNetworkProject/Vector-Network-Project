@@ -45,7 +45,7 @@ class Rank
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         if ($rankid === 1) {
-            $data['rank'] = "§4V§nN§r";
+            $data['rank'] = "§6V§bN§r";
         } elseif ($rankid === 2) {
             $data['rank'] = "§5S§r";
         } elseif ($rankid === 3) {
@@ -61,5 +61,6 @@ class Rank
         } else {
             $this->plugin->getLogger()->error("ランクIDが違います RankID: ".$rankid);
         }
+        $datafile->write('USERDATA', $data);
     }
 }

@@ -8,6 +8,7 @@
 
 namespace Core;
 
+use Core\Event\DataPacketReceive;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerJoin;
 use Core\Event\PlayerLogin;
@@ -18,6 +19,7 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
 
 class EventListener implements Listener
 {
@@ -27,6 +29,7 @@ class EventListener implements Listener
     protected $playerquitevent;
     protected $playerloginevent;
     protected $playerdeathevent;
+    protected $datapacketreceiveevent;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -35,6 +38,7 @@ class EventListener implements Listener
         $this->playerquitevent = new PlayerQuit($this->plugin);
         $this->playerloginevent = new PlayerLogin($this->plugin);
         $this->playerdeathevent = new PlayerDeath($this->plugin);
+        $this->datapacketreceiveevent = new DataPacketReceive($this->plugin);
     }
     public function onJoin(PlayerJoinEvent $event)
     {
@@ -51,5 +55,8 @@ class EventListener implements Listener
     public function onDeath(PlayerDeathEvent $event)
     {
         $this->playerdeathevent->event($event);
+    }
+    public function onReceive(DataPacketReceiveEvent $event) {
+        $this->datapacketreceiveevent->event($event);
     }
 }

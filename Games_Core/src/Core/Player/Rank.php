@@ -69,8 +69,7 @@ class Rank
             default:
                 $this->plugin->getLogger()->error("ランクIDが違います RankID: ".$rankid);
                 break;
-                
-            $datafile->write('USERDATA', $data);
         }
+        $datafile->write('USERDATA', $data);
     }
 }

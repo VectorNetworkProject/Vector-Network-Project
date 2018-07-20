@@ -52,4 +52,15 @@ class Money
             return true;
         }
     }
+
+    /**
+     * @param string $name
+     * @param int $money
+     */
+    public function addMoney(string $name, int $money) {
+        $datafile = new DataFile($name);
+        $data = $datafile->get('USERDATA');
+        $data['money'] += $money;
+        $datafile->write('USERDATA', $data);
+    }
 }

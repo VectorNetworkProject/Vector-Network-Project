@@ -83,7 +83,7 @@ class Tag
         if ((0 <= $colorid) && ($colorid <= 16)){
             $data['tag'] = Tag::$colors[$colorid].$tag."§r";
             $usertag = $data['tag'];
-            $message = "§7[§a成功§7] §7あなたのタグを【 $usertag §7】設定しました。";
+            $message = "§7[§a成功§7] §7あなたのタグを【 $usertag §7】に設定しました。";
         } else {
             $data['tag'] = "§r$tag";
             $message = "§7[§cエラー§7] §c指定したカラーIDが見つからなかった為デフォルトの色にしました。";

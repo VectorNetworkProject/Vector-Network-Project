@@ -34,7 +34,7 @@ class settag extends PluginCommand
         if (!$this->testPermission($sender)) {
             return false;
         }
-        if (!($sender instanceof Player)) {
+        if (!$sender instanceof Player) {
             $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
             return true;
         }

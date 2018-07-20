@@ -36,23 +36,23 @@ class Tag
     private static $colors = [];
 
     public static function registerColors(){
-        Tag::$colors[Tag::BLACK] = "§0$tag";
-        Tag::$colors[Tag::DARK_BLUE] = "§1$tag";
-        Tag::$colors[Tag::DARK_GREEN] = "§2$tag";
-        Tag::$colors[Tag::DARK_AQUA] = "§3$tag";
-        Tag::$colors[Tag::DARK_RED] = "§4$tag";
-        Tag::$colors[Tag::PURPLE] = "§5$tag";
-        Tag::$colors[Tag::GOLD] = "§6$tag";
-        Tag::$colors[Tag::GRAY] = "§7$tag";
-        Tag::$colors[Tag::DARK_GRAY] = "§8$tag";
-        Tag::$colors[Tag::BLUE] = "§9$tag";
-        Tag::$colors[Tag::LIGHT_GREEN] = "§a$tag";
-        Tag::$colors[Tag::AQUA] = "§b$tag";
-        Tag::$colors[Tag::RED] = "§c$tag";
-        Tag::$colors[Tag::PINK] = "§d$tag";
-        Tag::$colors[Tag::YELLOW] = "§e$tag";
-        Tag::$colors[Tag::WHITE] = "§f$tag";
-        Tag::$colors[Tag::NO_COLLOR] = "$tag";
+        Tag::$colors[Tag::BLACK] = "§0";
+        Tag::$colors[Tag::DARK_BLUE] = "§1";
+        Tag::$colors[Tag::DARK_GREEN] = "§2";
+        Tag::$colors[Tag::DARK_AQUA] = "§3";
+        Tag::$colors[Tag::DARK_RED] = "§4";
+        Tag::$colors[Tag::PURPLE] = "§5";
+        Tag::$colors[Tag::GOLD] = "§6";
+        Tag::$colors[Tag::GRAY] = "§7";
+        Tag::$colors[Tag::DARK_GRAY] = "§8";
+        Tag::$colors[Tag::BLUE] = "§9";
+        Tag::$colors[Tag::LIGHT_GREEN] = "§a";
+        Tag::$colors[Tag::AQUA] = "§b";
+        Tag::$colors[Tag::RED] = "§c";
+        Tag::$colors[Tag::PINK] = "§d";
+        Tag::$colors[Tag::YELLOW] = "§e";
+        Tag::$colors[Tag::WHITE] = "§f";
+        Tag::$colors[Tag::NO_COLLOR] = "§r";
     }
 
     /**
@@ -81,15 +81,14 @@ class Tag
         }
 
         if ((0 <= $colorid) && ($colorid <= 16)){
-            $data['tag'] = Tag::$colors[$colorid];
-            $message = "§7[§a成功§7] §7あなたのタグを【 $usertag §7】に設定しました。";
+            $data['tag'] = Tag::$colors[$colorid].$tag."§r";
+            $usertag = $data['tag'];
+            $message = "§7[§a成功§7] §7あなたのタグを【 $usertag §7】設定しました。";
         } else {
-            $data['tag'] = "$tag";
-            $message = "§7[§cエラー§7] 指定したカラーIDが見つからなかった為デフォルトの色にしました。";
+            $data['tag'] = "§r$tag";
+            $message = "§7[§cエラー§7] §c指定したカラーIDが見つからなかった為デフォルトの色にしました。";
         }
-
         $datafile->write('USERDATA', $data);
-        $usertag = $data['tag'];
         $player->sendMessage($message);
     }
 }

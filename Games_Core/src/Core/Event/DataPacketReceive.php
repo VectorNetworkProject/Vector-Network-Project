@@ -103,7 +103,7 @@ class DataPacketReceive
                     } else {
                         $tag = $data[2];
                     }
-                    $this->tag->setTag($player, $tag, $data[2]);
+                    $this->tag->setTag($player, $tag, $data[1]);
                 }
             }
         }

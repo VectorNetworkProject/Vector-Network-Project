@@ -12,7 +12,7 @@ namespace Core\Commands;
 use Core\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
@@ -55,7 +55,7 @@ class settag extends PluginCommand
                     ]
                 ]
             ];
-            $modal = new ModalFormResponsePacket();
+            $modal = new ModalFormRequestPacket();
             $modal->formId = 8489612;
             $modal->formData = json_encode($settag);
             $sender->dataPacket($modal);

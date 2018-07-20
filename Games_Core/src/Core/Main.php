@@ -29,13 +29,24 @@ class Main extends PluginBase
 {
     public static $datafolder;
     public static $instance = null;
+    const STARTMESSAGE = "\n
+§6__     __        _            §b _   _      _                      _   §e ____            _           _   
+§6\ \   / /__  ___| |_ ___  _ __§b| \ | | ___| |___      _____  _ __| | _§e|  _ \ _ __ ___ (_) ___  ___| |_ 
+§6 \ \ / / _ \/ __| __/ _ \| '__§b|  \| |/ _ \ __\ \ /\ / / _ \| '__| |/ /§e |_) | '__/ _ \| |/ _ \/ __| __|
+§6  \ V /  __/ (__| || (_) | |  §b| |\  |  __/ |_ \ V  V / (_) | |  |   <§e|  __/| | | (_) | |  __/ (__| |_ 
+§6   \_/ \___|\___|\__\___/|_|  §b|_| \_|\___|\__| \_/\_/ \___/|_|  |_|\_\§e_|   |_|  \___// |\___|\___|\__|
+                                                                                   |__/               
+                     §7Developers: §bInkoHX & MazaiCrafty
+                     §aLICENSE: §cMIT
+                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1265
+    ";
     public function onEnable() : void
     {
         date_default_timezone_set("Asia/Tokyo");
         self::$datafolder = $this->getDataFolder();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180*20);
-        $this->getLogger()->info(TextFormat::GREEN."Games_Coreを読み込みました。");
+        $this->getLogger()->info(self::STARTMESSAGE);
     }
     public function onDisable() : void
     {

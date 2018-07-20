@@ -24,14 +24,10 @@ class PlayerJoin
     }
     public function event(PlayerJoinEvent $event)
     {
-        $datafile = new DataFile($event->getPlayer()->getName());
         $player = $event->getPlayer();
         $name = $player->getName();
         $event->setJoinMessage("§b[§a参加§b] §7$name が参加しました。");
-        $user = $datafile->get("USERDATA");
-        $money = $user["money"];
-        $level = $user["networklevel"];
-        $bossbar = new Bossbar("   §l§6Vector §bNetwork §eProject\n\n§l§eMoney: $money §bNetworkLevel: $level", 100, 100);
+        $bossbar = new Bossbar("  §l§6Vector §bNetwork §eProject\n\n    §r§7Welcome to Games Server", 100, 100);
         $bossbar->sendBar($player);
         $this->plugin->getScheduler()->scheduleDelayedTask(new JoinTitle($this->plugin, $player), 100);
     }

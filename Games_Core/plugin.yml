@@ -25,6 +25,10 @@ commands:
     usage: "/setmoney <Name> <int>"
     permission: vector.network.admin
     description: "Admin Command"
+  settag:
+    usage: "/settag"
+    permission: vector.network.player
+    description: "§6V§bN§eCoin§rを使ってタグを設定します。"
 permissions:
   vector.network.player:
     default: true

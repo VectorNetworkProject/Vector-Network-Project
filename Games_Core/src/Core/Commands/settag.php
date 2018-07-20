@@ -34,34 +34,34 @@ class settag extends PluginCommand
         if (!$this->testPermission($sender)) {
             return false;
         }
-        if ($sender instanceof Player) {
-            $settag = [
-                "type" => "custom_form",
-                "title" => "Tag設定メニュー",
-                "content" => [
-                    [
-                      "type" => "label",
-                      "text" => "§6V§bN§eCoin§rを§61000§r消費してタグを設定します。"
-                    ],
-                    [
-                        "type" => "dropdown",
-                        "text" => "タグの色を選択して下さい(選択してない場合は色なしになります。)",
-                        "options" => ["§0黒色", "§1暗い青色", "§2緑色", "§3暗い水色", "§4暗い赤色", "§5紫色", "§6金色", "§7灰色", "§8青色", "§a緑色", "§b水色", "§c赤色", "§d桃色", "§e黄色", "§f白色"]
-                    ],
-                    [
-                        "type" => "input",
-                        "text" => "設定するタグの名前を入力してください。",
-                        "placeholder" => "最大8文字"
-                    ]
-                ]
-            ];
-            $modal = new ModalFormRequestPacket();
-            $modal->formId = 8489612;
-            $modal->formData = json_encode($settag);
-            $sender->dataPacket($modal);
+        if (!$sender instanceof Player) {
+            $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
             return true;
         }
-        $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
+        $settag = [
+            "type" => "custom_form",
+            "title" => "Tag設定メニュー",
+            "content" => [
+                [
+                  "type" => "label",
+                  "text" => "§6V§bN§eCoin§rを§61000§r消費してタグを設定します。"
+                ],
+                [
+                    "type" => "dropdown",
+                    "text" => "タグの色を選択して下さい(選択してない場合は色なしになります。)",
+                    "options" => ["§0黒色", "§1暗い青色", "§2緑色", "§3暗い水色", "§4暗い赤色", "§5紫色", "§6金色", "§7灰色", "§8青色", "§a緑色", "§b水色", "§c赤色", "§d桃色", "§e黄色", "§f白色"]
+                ],
+                [
+                    "type" => "input",
+                    "text" => "設定するタグの名前を入力してください。",
+                    "placeholder" => "最大8文字"
+                ]
+            ]
+        ];
+        $modal = new ModalFormRequestPacket();
+        $modal->formId = 8489612;
+        $modal->formData = json_encode($settag);
+        $sender->dataPacket($modal);
         return true;
     }
 }

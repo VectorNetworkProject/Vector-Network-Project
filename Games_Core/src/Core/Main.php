@@ -22,6 +22,7 @@ use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Task\Tip;
+use Core\Player\Tag;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
@@ -48,6 +49,8 @@ class Main extends PluginBase
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180*20);
         $this->getLogger()->info(self::STARTMESSAGE);
+        
+        Tag::registerColors();
     }
     public function onDisable() : void
     {

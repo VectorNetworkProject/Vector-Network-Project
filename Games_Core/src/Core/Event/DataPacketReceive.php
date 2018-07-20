@@ -12,17 +12,19 @@ namespace Core\Event;
 use Core\Main;
 use Core\Player\Money;
 use Core\Player\Rank;
+use Core\Player\Tag;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
 {
-    protected $plugin, $money, $ok, $error, $rank;
+    protected $plugin, $money, $ok, $error, $rank, $tag;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $this->money = new Money();
         $this->rank = new Rank($this->plugin);
+        $this->tag = new Tag();
         $this->ok = "§7[§a成功§7] §a購入に成功しました。";
         $this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
     }
@@ -89,6 +91,19 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
+                }
+            }
+            if ($packet->formId === 8489612) {
+                $data = json_decode($packet->formData, true);
+                if (empty($data)) {
+                    $player->sendMessage("§7[§c失敗§7] §cタグ名を記入して下さい。");
+                } else {
+                    if (empty($data[2])) {
+                        $tag = "NoTag";
+                    } else {
+                        $tag = $data[2];
+                    }
+                    $this->tag->setTag($player, $tag, $data[2]);
                 }
             }
         }

@@ -19,6 +19,7 @@ use Core\Commands\gamehelp;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
 use Core\Commands\setmoney;
+use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Task\Tip;
 
@@ -59,7 +60,8 @@ class Main extends PluginBase
             new ping($this),
             new stats($this),
             new rankshop($this),
-            new setmoney($this)
+            new setmoney($this),
+            new settag($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

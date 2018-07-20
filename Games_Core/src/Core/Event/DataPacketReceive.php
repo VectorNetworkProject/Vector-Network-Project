@@ -103,7 +103,12 @@ class DataPacketReceive
                     } else {
                         $tag = $data[2];
                     }
-                    $this->tag->setTag($player, $tag, $data[1]);
+                    if ($this->money->reduceMoney($player->getName(), 1000)) {
+                        $player->sendMessage("§7[§b情報§7] §6V§bN§eCoin§7を§61000§7消費しました。");
+                        $this->tag->setTag($player, $tag, $data[1]);
+                    } else {
+                        $player->sendMessage($this->error);
+                    }
                 }
             }
         }

@@ -33,7 +33,7 @@ class DataPacketReceive
             if ($packet->formId === 45661984) {
                 $data = json_decode($packet->formData, true);
                 switch ($data) {
-                    case '0':
+                    case 0:
                         if ($this->money->reduceMoney($player->getName(), 1500000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 1);
@@ -41,7 +41,7 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
-                    case '1':
+                    case 1:
                         if ($this->money->reduceMoney($player->getName(), 1000000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 2);
@@ -49,7 +49,7 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
-                    case '2':
+                    case 2:
                         if ($this->money->reduceMoney($player->getName(), 700000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 3);
@@ -57,7 +57,7 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
-                    case '3':
+                    case 3:
                         if ($this->money->reduceMoney($player->getName(), 500000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 4);
@@ -65,7 +65,7 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
-                    case '4':
+                    case 4:
                         if ($this->money->reduceMoney($player->getName(), 300000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 5);
@@ -73,7 +73,7 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
-                    case '5':
+                    case 5:
                         if ($this->money->reduceMoney($player->getName(), 100000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 6);
@@ -81,7 +81,7 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
-                    case '6':
+                    case 6:
                         if ($this->money->reduceMoney($player->getName(), 50000)) {
                             $player->sendMessage($this->ok);
                             $this->rank->setRank($player->getName(), 7);

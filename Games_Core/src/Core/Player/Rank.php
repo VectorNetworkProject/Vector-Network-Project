@@ -8,7 +8,6 @@
 
 namespace Core\Player;
 
-
 use Core\DataFile;
 use Core\Main;
 
@@ -41,7 +40,8 @@ class Rank
      * @param string $name
      * @param int $rankid
      */
-    public function setRank(string $name, int $rankid) {
+    public function setRank(string $name, int $rankid)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         switch ($rankid) {

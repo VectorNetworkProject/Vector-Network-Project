@@ -17,7 +17,11 @@ use pocketmine\event\player\PlayerMoveEvent;
 
 class PlayerMove
 {
-    protected $money, $level, $plugin, $rank, $tag;
+    protected $money;
+    protected $level;
+    protected $plugin;
+    protected $rank;
+    protected $tag;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -27,7 +31,8 @@ class PlayerMove
         $this->tag = new Tag();
     }
 
-    public function event(PlayerMoveEvent $event) {
+    public function event(PlayerMoveEvent $event)
+    {
         $player = $event->getPlayer();
         $money = $this->money->getMoney($player->getName());
         $level = $this->level->getLevel($player->getName());

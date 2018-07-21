@@ -64,13 +64,16 @@ class EventListener implements Listener
     {
         $this->playerdeathevent->event($event);
     }
-    public function onReceive(DataPacketReceiveEvent $event) {
+    public function onReceive(DataPacketReceiveEvent $event)
+    {
         $this->datapacketreceiveevent->event($event);
     }
-    public function pnPreLogin(PlayerPreLoginEvent $event) {
+    public function pnPreLogin(PlayerPreLoginEvent $event)
+    {
         $this->playerprelogin->event($event);
     }
-    public function onMove(PlayerMoveEvent $event) {
+    public function onMove(PlayerMoveEvent $event)
+    {
         $this->playermoveevent->event($event);
     }
 }

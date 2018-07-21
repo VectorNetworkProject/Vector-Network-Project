@@ -8,7 +8,6 @@
 
 namespace Core\Commands;
 
-
 use Core\Main;
 use Core\Player\Money;
 use pocketmine\command\CommandSender;
@@ -18,7 +17,8 @@ use pocketmine\plugin\Plugin;
 
 class setmoney extends PluginCommand
 {
-    protected $plugin, $money;
+    protected $plugin;
+    protected $money;
     public function __construct(Main $plugin)
     {
         parent::__construct("setmoney", $plugin);

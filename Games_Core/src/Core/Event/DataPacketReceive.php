@@ -8,7 +8,6 @@
 
 namespace Core\Event;
 
-
 use Core\Main;
 use Core\Player\Money;
 use Core\Player\Rank;
@@ -18,7 +17,12 @@ use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
 {
-    protected $plugin, $money, $ok, $error, $rank, $tag;
+    protected $plugin;
+    protected $money;
+    protected $ok;
+    protected $error;
+    protected $rank;
+    protected $tag;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -28,7 +32,8 @@ class DataPacketReceive
         $this->ok = "§7[§a成功§7] §a購入に成功しました。";
         $this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
     }
-    public function event(DataPacketReceiveEvent $event) {
+    public function event(DataPacketReceiveEvent $event)
+    {
         $packet = $event->getPacket();
         $player = $event->getPlayer();
         if ($packet instanceof ModalFormResponsePacket) {

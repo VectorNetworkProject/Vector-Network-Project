@@ -8,7 +8,6 @@
 
 namespace Core\Event;
 
-
 use Core\Main;
 use pocketmine\event\player\PlayerPreLoginEvent;
 
@@ -19,7 +18,8 @@ class PlayerPreLogin
     {
         $this->plugin = $plugin;
     }
-    public function event(PlayerPreLoginEvent $event) {
+    public function event(PlayerPreLoginEvent $event)
+    {
         $player = $event->getPlayer();
         if ($this->plugin->getServer()->hasWhitelist()) {
             if (!$this->plugin->getServer()->isWhitelisted(strtolower($player->getName()))) {

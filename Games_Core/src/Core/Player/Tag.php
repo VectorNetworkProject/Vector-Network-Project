@@ -8,13 +8,11 @@
 
 namespace Core\Player;
 
-
 use Core\DataFile;
 use pocketmine\Player;
 
 class Tag
 {
-
     const BLACK = 0;
     const DARK_BLUE = 1;
     const DARK_GREEN = 2;
@@ -35,7 +33,8 @@ class Tag
 
     private static $colors = [];
 
-    public static function registerColors(){
+    public static function registerColors()
+    {
         Tag::$colors[Tag::BLACK] = "§0";
         Tag::$colors[Tag::DARK_BLUE] = "§1";
         Tag::$colors[Tag::DARK_GREEN] = "§2";
@@ -75,12 +74,12 @@ class Tag
     {
         $datafile = new DataFile($player->getName());
         $data = $datafile->get('USERDATA');
-        if (mb_strlen($tag) >= 9){
+        if (mb_strlen($tag) >= 9) {
             $player->sendMessage("§7[§c失敗§7] §cタグは8文字以内にして下さい");
             return;
         }
 
-        if ((0 <= $colorid) && ($colorid <= 16)){
+        if ((0 <= $colorid) && ($colorid <= 16)) {
             $data['tag'] = Tag::$colors[$colorid].$tag."§r";
             $usertag = $data['tag'];
             $message = "§7[§a成功§7] §7あなたのタグを【 $usertag §7】に設定しました。";

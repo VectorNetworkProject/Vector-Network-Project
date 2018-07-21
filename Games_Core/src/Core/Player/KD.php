@@ -8,12 +8,12 @@
 
 namespace Core\Player;
 
-
 use Core\DataFile;
 
 class KD
 {
-    public function FFAKD(string $name) {
+    public function FFAKD(string $name)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('FFAPVP');
         $kill = $data['kill'];

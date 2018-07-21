@@ -17,11 +17,11 @@ abstract class PluginTask extends Task
 
     /**
      * PluginTask constructor.
-     * @param Plugin $owner
+     * @param Plugin $plugin
      */
-    public function __construct(Plugin $owner)
+    public function __construct(Plugin $plugin)
     {
-        $this->owner = $owner;
+        $this->owner = $plugin;
     }
 
     /**

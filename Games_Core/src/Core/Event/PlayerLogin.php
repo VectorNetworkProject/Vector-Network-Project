@@ -30,9 +30,9 @@ class PlayerLogin
                 "money" => 1000,
                 "networklevel" => 1,
                 "exp" => 0,
-                "maxexp" => 0,
-                "rank" => "NoRank",
-                "tag" => "NoTag",
+                "maxexp" => 50,
+                "rank" => "§rNoRank",
+                "tag" => "§rNoTag",
                 "firstlogin" => date("Y年m月d日 H時i分s秒"),
                 "lastlogin" => date("Y年m月d日 H時i分s秒")
             ];

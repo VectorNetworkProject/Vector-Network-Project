@@ -12,7 +12,10 @@ use Core\Main;
 use Core\Player\Money;
 use Core\Player\Rank;
 use Core\Player\Tag;
+use Core\Task\Teleport\TeleportFFAPvPTask;
+use Core\Task\Teleport\TeleportLobbyTask;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
@@ -114,6 +117,32 @@ class DataPacketReceive
                     } else {
                         $player->sendMessage($this->error);
                     }
+                }
+            }
+            if ($packet->formId === 45786154) {
+                $data = json_decode($packet->formData, true);
+                switch ($data) {
+                    case 0:
+                        if ($player->getLevel()->getName() === "lobby") {
+                            $player->sendMessage("§c既にロビーに居ます。");
+                        } else {
+                           $player->sendMessage("§e10秒後テレポートします。");
+                           $this->plugin->getScheduler()->scheduleDelayedTask(new TeleportLobbyTask($this->plugin, $player), 10*20);
+                        }
+                        break;
+                    case 1:
+                        if ($player->getLevel()->getName() === "ffapvp") {
+                            $player->sendMessage("§c既にFFAPvPに居ます");
+                        } else {
+                            if ($player->getLevel()->getName() === "lobby") {
+                                $player->teleport(new Position(255, 4, 255, $this->plugin->getServer()->getLevelByName("ffapvp")));
+                                $player->sendMessage("§aテレポートしました。");
+                            } else {
+                                $player->sendMessage("§e10秒後テレポートします。");
+                                $this->plugin->getScheduler()->scheduleDelayedTask(new TeleportFFAPvPTask($this->plugin, $player), 10*20);
+                            }
+                        }
+                        break;
                 }
             }
         }

@@ -29,6 +29,10 @@ commands:
     usage: "/settag"
     permission: vector.network.player
     description: "§6V§bN§eCoin§rを使ってタグを設定します。"
+  selectgame:
+    usage: "/selectgame"
+    permission: vector.network.player
+    description: "遊びたいゲームを選択できます。"
 permissions:
   vector.network.player:
     default: true

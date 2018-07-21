@@ -42,7 +42,7 @@ class Main extends PluginBase
                                                                                    |__/               
                      §7Developers: §bInkoHX & MazaiCrafty
                      §aLICENSE: §cMIT
-                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1265
+                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1273
     ";
     public function onEnable() : void
     {

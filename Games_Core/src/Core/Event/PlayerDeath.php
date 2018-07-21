@@ -28,11 +28,13 @@ class PlayerDeath
         $event->setDeathMessage(null);
         $player = $event->getPlayer();
         $cause = $player->getLastDamageCause();
-        $this->ffapvp->AddDeathCount($player);
-        if ($cause instanceof EntityDamageByEntityEvent) {
-            $damager = $cause->getDamager();
-            if ($damager instanceof Player) {
-                $this->ffapvp->AddKillCount($damager);
+        if ($player->getLevel()->getName() === "ffapvp") {
+            $this->ffapvp->AddDeathCount($player);
+            if ($cause instanceof EntityDamageByEntityEvent) {
+                $damager = $cause->getDamager();
+                if ($damager instanceof Player) {
+                    $this->ffapvp->AddKillCount($damager);
+                }
             }
         }
     }

@@ -144,4 +144,17 @@ class Level
             $player->sendMessage("§a+$rand EXP");
         }
     }
+    public function Checking(Player $player)
+    {
+        $exp = $this->getExp($player->getName());
+        $maxexp = $this->getMaxExp($player->getName());
+        if ($exp >= $maxexp) {
+            $this->addMaxExp($player->getName(), 50);
+            $this->addLevel($player->getName(), 1);
+            $this->setExp($player->getName(), 0);
+            $level = $this->getLevel($player->getName());
+            $name = $player->getName();
+            $this->server->broadcastMessage("§7[§b情報§7] $name が Lv.$level になりました。");
+        }
+    }
 }

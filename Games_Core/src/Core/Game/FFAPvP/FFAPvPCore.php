@@ -12,6 +12,7 @@ use Core\DataFile;
 use Core\Main;
 use Core\Player\Level;
 use Core\Player\Money;
+use Core\Task\LevelCheckingTask;
 use pocketmine\Player;
 
 class FFAPvPCore
@@ -45,6 +46,7 @@ class FFAPvPCore
             $this->money->addMoney($player->getName(), $rand);
             $player->sendMessage("§a+$rand §6V§bN§eCoin");
             $this->level->LevelSystem($player);
+            $this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
         }
     }
 }

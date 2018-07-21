@@ -24,6 +24,7 @@ use Core\Commands\stats;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
+use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
@@ -48,6 +49,13 @@ class Main extends PluginBase
         self::$datafolder = $this->getDataFolder();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180*20);
+        $this->getServer()->loadLevel("ffapvp");
+        $lobby = $this->getServer()->getLevelByName("lobby");
+        $ffapvp = $this->getServer()->getLevelByName("ffapvp");
+        $ffapvp->setTime(Level::TIME_DAY);
+        $lobby->setTime(Level::TIME_DAY);
+        $lobby->stopTime();
+        $ffapvp->stopTime();
         $this->getLogger()->info(self::STARTMESSAGE);
         
         Tag::registerColors();

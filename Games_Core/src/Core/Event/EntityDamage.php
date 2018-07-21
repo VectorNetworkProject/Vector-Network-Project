@@ -8,7 +8,6 @@
 
 namespace Core\Event;
 
-
 use Core\Main;
 use pocketmine\event\entity\EntityDamageEvent;
 
@@ -19,7 +18,8 @@ class EntityDamage
     {
         $this->plugin = $plugin;
     }
-    public function event(EntityDamageEvent $event) {
+    public function event(EntityDamageEvent $event)
+    {
         $entity = $event->getEntity();
         if ($entity->getLevel()->getName() === "lobby") {
             $event->setCancelled(true);

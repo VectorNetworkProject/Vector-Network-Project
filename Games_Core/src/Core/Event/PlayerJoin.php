@@ -18,7 +18,10 @@ use pocketmine\event\player\PlayerJoinEvent;
 
 class PlayerJoin
 {
-    protected $plugin, $level, $rank, $tag;
+    protected $plugin;
+    protected $level;
+    protected $rank;
+    protected $tag;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;

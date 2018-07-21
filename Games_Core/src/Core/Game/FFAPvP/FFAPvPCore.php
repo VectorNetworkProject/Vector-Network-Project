@@ -17,7 +17,9 @@ use pocketmine\Player;
 
 class FFAPvPCore
 {
-    protected $money, $level, $plugin;
+    protected $money;
+    protected $level;
+    protected $plugin;
     public $worldname = "ffapvp";
     public function __construct(Main $plugin)
     {

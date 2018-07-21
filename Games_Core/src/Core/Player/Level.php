@@ -128,7 +128,8 @@ class Level
     /**
      * @param Player $player
      */
-    public function LevelSystem(Player $player) {
+    public function LevelSystem(Player $player)
+    {
         $exp = $this->getExp($player->getName());
         $maxexp = $this->getMaxExp($player->getName());
         if ($exp >= $maxexp) {

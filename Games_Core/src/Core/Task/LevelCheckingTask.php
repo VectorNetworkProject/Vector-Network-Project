@@ -8,14 +8,14 @@
 
 namespace Core\Task;
 
-
 use Core\Player\Level;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 
 class LevelCheckingTask extends PluginTask
 {
-    protected $level, $player;
+    protected $level;
+    protected $player;
     public function __construct(Plugin $plugin, Player $player)
     {
         parent::__construct($plugin);

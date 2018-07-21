@@ -80,7 +80,8 @@ class EventListener implements Listener
     {
         $this->playermoveevent->event($event);
     }
-    public function onEntityDamage(EntityDamageEvent $event) {
+    public function onEntityDamage(EntityDamageEvent $event)
+    {
         $this->entitydamage->event($event);
     }
 }

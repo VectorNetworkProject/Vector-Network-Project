@@ -52,8 +52,8 @@ class Main extends PluginBase
         $this->getServer()->loadLevel("ffapvp");
         $lobby = $this->getServer()->getLevelByName("lobby");
         $ffapvp = $this->getServer()->getLevelByName("ffapvp");
-        $ffapvp->setTime(Level::TIME_DAY);
-        $lobby->setTime(Level::TIME_DAY);
+        $ffapvp->setTime(Level::TIME_FULL);
+        $lobby->setTime(Level::TIME_FULL);
         $lobby->stopTime();
         $ffapvp->stopTime();
         $this->getLogger()->info(self::STARTMESSAGE);

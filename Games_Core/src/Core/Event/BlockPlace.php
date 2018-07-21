@@ -19,9 +19,11 @@ class BlockPlace
     }
     public function event(BlockPlaceEvent $event)
     {
+        /*
         $player = $event->getPlayer();
         if (!$player->isOp()) {
             $event->setCancelled(true);
         }
+        */
     }
 }

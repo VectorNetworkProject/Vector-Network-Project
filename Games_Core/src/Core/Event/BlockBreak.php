@@ -21,9 +21,11 @@ class BlockBreak
 
     public function event(BlockBreakEvent $event)
     {
+        /*
         $player = $event->getPlayer();
         if (!$player->isOp()) {
             $event->setCancelled(true);
         }
+        */
     }
 }

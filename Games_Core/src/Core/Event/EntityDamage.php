@@ -20,9 +20,11 @@ class EntityDamage
     }
     public function event(EntityDamageEvent $event)
     {
+        /*
         $entity = $event->getEntity();
         if ($entity->getLevel()->getName() === "lobby") {
             $event->setCancelled(true);
         }
+        */
     }
 }

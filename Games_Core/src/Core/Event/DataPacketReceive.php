@@ -42,7 +42,7 @@ class DataPacketReceive
         if ($packet instanceof ModalFormResponsePacket) {
             if ($packet->formId === 45661984) {
                 $data = json_decode($packet->formData, true);
-                switch ($data) {
+                switch ($data[0]) {
                     case 0:
                         if ($this->money->reduceMoney($player->getName(), 1500000)) {
                             $player->sendMessage($this->ok);
@@ -99,6 +99,9 @@ class DataPacketReceive
                             $player->sendMessage($this->error);
                         }
                         break;
+                    default:
+                        $player->sendMessage("§7[§c失敗§7] §c購入をキャンセルしました。");
+                        break;
                 }
             }
             if ($packet->formId === 8489612) {
@@ -121,13 +124,13 @@ class DataPacketReceive
             }
             if ($packet->formId === 45786154) {
                 $data = json_decode($packet->formData, true);
-                switch ($data) {
+                switch ($data[0]) {
                     case 0:
                         if ($player->getLevel()->getName() === "lobby") {
                             $player->sendMessage("§c既にロビーに居ます。");
                         } else {
-                           $player->sendMessage("§e10秒後テレポートします。");
-                           $this->plugin->getScheduler()->scheduleDelayedTask(new TeleportLobbyTask($this->plugin, $player), 10*20);
+                            $player->sendMessage("§e10秒後テレポートします。");
+                            $this->plugin->getScheduler()->scheduleDelayedTask(new TeleportLobbyTask($this->plugin, $player), 10*20);
                         }
                         break;
                     case 1:

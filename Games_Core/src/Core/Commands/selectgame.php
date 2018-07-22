@@ -38,15 +38,13 @@ class selectgame extends PluginCommand
             return true;
         }
         $gamesmenu = [
-            "type" => "form",
+            "type" => "custom_form",
             "title" => "ゲーム選択",
-            "content" => "ゲームを選択して下さい。",
-            "buttons" => [
+            "content" => [
                 [
-                    "text" => "ロビー"
-                ],
-                [
-                    "text" => "FFAPvP"
+                    "type" => "dropdown",
+                    "text" => "まだ開発中の為一つしかゲームがありません。",
+                    "options" => ["ロビー", "FFAPvP"]
                 ]
             ]
         ];

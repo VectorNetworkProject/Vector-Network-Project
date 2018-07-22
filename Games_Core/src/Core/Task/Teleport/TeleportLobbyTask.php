@@ -8,7 +8,6 @@
 
 namespace Core\Task\Teleport;
 
-
 use Core\Main;
 use Core\Task\PluginTask;
 use pocketmine\level\Position;

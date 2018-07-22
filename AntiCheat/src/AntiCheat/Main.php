@@ -34,7 +34,8 @@ class Main extends PluginBase implements Listener
             }
         }
     }
-    public function onReceive(DataPacketReceiveEvent $event) {
+    public function onReceive(DataPacketReceiveEvent $event)
+    {
         $packet = $event->getPacket();
         if ($packet instanceof LoginPacket) {
             if ($packet->clientId === 0) {

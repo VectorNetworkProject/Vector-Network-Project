@@ -31,7 +31,7 @@ class DataPacketReceive
         $this->plugin = $plugin;
         $this->money = new Money();
         $this->rank = new Rank($this->plugin);
-        $this->tag = new Tag();
+        $this->tag = new Tag($this->plugin);
         $this->ok = "§7[§a成功§7] §a購入に成功しました。";
         $this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
     }
@@ -46,7 +46,7 @@ class DataPacketReceive
                     case 0:
                         if ($this->money->reduceMoney($player->getName(), 1500000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 1);
+                            $this->rank->setRank($player, 1);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -54,7 +54,7 @@ class DataPacketReceive
                     case 1:
                         if ($this->money->reduceMoney($player->getName(), 1000000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 2);
+                            $this->rank->setRank($player, 2);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -62,7 +62,7 @@ class DataPacketReceive
                     case 2:
                         if ($this->money->reduceMoney($player->getName(), 700000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 3);
+                            $this->rank->setRank($player, 3);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -70,7 +70,7 @@ class DataPacketReceive
                     case 3:
                         if ($this->money->reduceMoney($player->getName(), 500000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 4);
+                            $this->rank->setRank($player, 4);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -78,7 +78,7 @@ class DataPacketReceive
                     case 4:
                         if ($this->money->reduceMoney($player->getName(), 300000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 5);
+                            $this->rank->setRank($player, 5);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -86,7 +86,7 @@ class DataPacketReceive
                     case 5:
                         if ($this->money->reduceMoney($player->getName(), 100000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 6);
+                            $this->rank->setRank($player, 6);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -94,7 +94,7 @@ class DataPacketReceive
                     case 6:
                         if ($this->money->reduceMoney($player->getName(), 50000)) {
                             $player->sendMessage($this->ok);
-                            $this->rank->setRank($player->getName(), 7);
+                            $this->rank->setRank($player, 7);
                         } else {
                             $player->sendMessage($this->error);
                         }
@@ -139,6 +139,7 @@ class DataPacketReceive
                         } else {
                             if ($player->getLevel()->getName() === "lobby") {
                                 $player->teleport(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
+                                $player->setSpawn(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
                                 $player->sendMessage("§aテレポートしました。");
                             } else {
                                 $player->sendMessage("§e10秒後テレポートします。");

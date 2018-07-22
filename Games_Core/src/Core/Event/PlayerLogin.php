@@ -11,6 +11,7 @@ namespace Core\Event;
 use Core\DataFile;
 use Core\Main;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\level\Position;
 
 class PlayerLogin
 {
@@ -46,5 +47,6 @@ class PlayerLogin
             ];
             $data->write('FFAPVP', $ffapvp);
         }
+        $player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
     }
 }

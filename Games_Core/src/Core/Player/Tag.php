@@ -9,6 +9,7 @@
 namespace Core\Player;
 
 use Core\DataFile;
+use Core\Main;
 use pocketmine\Player;
 
 class Tag
@@ -54,6 +55,15 @@ class Tag
         Tag::$colors[Tag::NO_COLLOR] = "§r";
     }
 
+    protected $level;
+    protected $rank;
+
+    public function __construct(Main $plugin)
+    {
+        $this->rank = new Rank($plugin);
+        $this->level = new Level($plugin);
+    }
+
     /**
      * @param Player $player
      * @return mixed
@@ -88,6 +98,12 @@ class Tag
             $message = "§7[§cエラー§7] §c指定したカラーIDが見つからなかった為デフォルトの色にしました。";
         }
         $datafile->write('USERDATA', $data);
+        $name = $player->getName();
+        $level = $this->level->getLevel($player->getName());
+        $playerrank = $this->rank->getRank($player->getName());
+        $tag = $this->getTag($player);
+        $player->setNameTag("§7[§r $playerrank §7] §r$name");
+        $player->setDisplayName("§7[§r $playerrank §7][ §rLv.$level §7][§r $tag §7] §r$name");
         $player->sendMessage($message);
     }
 }

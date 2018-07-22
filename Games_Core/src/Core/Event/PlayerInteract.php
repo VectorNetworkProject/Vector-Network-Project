@@ -10,10 +10,7 @@ namespace Core\Event;
 
 use Core\Main;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\item\Durable;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\nbt\tag\CompoundTag;
 
 class PlayerInteract
 {

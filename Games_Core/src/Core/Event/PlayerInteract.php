@@ -39,6 +39,7 @@ class PlayerInteract
                 $item = Item::get(Item::WOODEN_SWORD, 0, 1);
                 $player->getInventory()->addItem($item);
                 $player->getInventory()->addItem(Item::get(Item::STEAK, 0, 64));
+                $player->sendMessage("§a初期装備を与えました。テスト公開ですがお楽しみください");
             }
         }
     }

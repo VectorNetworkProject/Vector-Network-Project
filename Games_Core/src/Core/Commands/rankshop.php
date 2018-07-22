@@ -41,11 +41,11 @@ class rankshop extends PluginCommand
                     [
                         "type" => "dropdown",
                         "text" => "§6V§bN§eCoin§rを消費してランクを買う事が出来ます。",
-                        "options" => ["§6V§bN", "§5S", "§6A", "§cB", "§aC", "§3D", "§7E"]
+                        "options" => ["§6V§bN", "§5S", "§eA", "§cB", "§aC", "§3D", "§7E"]
                     ],
                     [
                         "type" => "label",
-                        "text" => "§6V§bN  §61500000 §eCoin\n§5S  §61000000 §eCoin\n§6A  §6700000 §eCoin\n§cB  §6500000 §eCoin\n§aC  §6300000 §eCoin\n§3D  §6100000 §eCoin\n§7E  §650000 §eCoin"
+                        "text" => "§6V§bN  §61500000 §eCoin\n§5S  §61000000 §eCoin\n§eA  §6700000 §eCoin\n§cB  §6500000 §eCoin\n§aC  §6300000 §eCoin\n§3D  §6100000 §eCoin\n§7E  §650000 §eCoin"
                     ]
                 ]
             ];

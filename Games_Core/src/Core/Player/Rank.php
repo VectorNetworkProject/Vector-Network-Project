@@ -52,7 +52,7 @@ class Rank
                 $data['rank'] = "§5S§r";
                 break;
             case 3:
-                $data['rank'] = "§6A§r";
+                $data['rank'] = "§eA§r";
                 break;
             case 4:
                 $data['rank'] = "§cB§r";

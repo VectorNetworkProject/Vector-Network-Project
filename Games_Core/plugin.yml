@@ -5,10 +5,6 @@ version: 1.6.0
 author: "VectorNetworkDevelopmentTeam"
 authors: ['InkoHX', 'MazaiCrafty']
 commands:
-  gamehelp:
-    usage: "/gamehelp"
-    permission: vector.network.player
-    description: "Vector Network で使えるコマンド一覧を表示します。"
   ping:
     usage: "/ping"
     permission: vector.network.player

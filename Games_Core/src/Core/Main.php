@@ -16,7 +16,6 @@
 namespace Core;
 
 use Core\Commands\debug;
-use Core\Commands\gamehelp;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
 use Core\Commands\selectgame;
@@ -69,7 +68,6 @@ class Main extends PluginBase
     private function registerCommands()
     {
         $commands = [
-            new gamehelp($this),
             new ping($this),
             new stats($this),
             new rankshop($this),

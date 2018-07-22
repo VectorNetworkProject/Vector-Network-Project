@@ -9,21 +9,15 @@
 namespace Core\Player;
 
 use Core\DataFile;
-use Core\Main;
 use pocketmine\Player;
 use pocketmine\Server;
 
 class Level
 {
     protected $server;
-    protected $rank;
-    protected $tag;
-
-    public function __construct(Main $plugin)
+    public function __construct()
     {
         $this->server = Server::getInstance();
-        $this->rank = new Rank($plugin);
-        $this->tag = new Tag($plugin);
     }
 
     /**
@@ -161,10 +155,6 @@ class Level
             $this->setExp($player->getName(), 0);
             $level = $this->getLevel($player->getName());
             $name = $player->getName();
-            $playerrank = $this->rank->getRank($player->getName());
-            $tag = $this->tag->getTag($player);
-            $player->setNameTag("§7[§r $playerrank §7] §r$name");
-            $player->setDisplayName("§7[§r $playerrank §7][ §rLv.$level §7][§r $tag §7] §r$name");
             $this->server->broadcastMessage("§7[§b情報§7] $name が Lv.$level になりました。");
         }
     }

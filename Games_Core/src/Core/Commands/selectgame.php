@@ -20,7 +20,7 @@ class selectgame extends PluginCommand
     protected $plugin;
     public function __construct(Main $plugin)
     {
-        parent::__construct("sg", $plugin);
+        parent::__construct("selectgame", $plugin);
         $this->setPermission("vector.network.player");
         $this->setDescription("遊びたいゲームを選択できます。");
         $this->plugin = $plugin;

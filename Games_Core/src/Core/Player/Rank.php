@@ -10,13 +10,10 @@ namespace Core\Player;
 
 use Core\DataFile;
 use Core\Main;
-use pocketmine\Player;
 
 class Rank
 {
     protected $plugin;
-    protected $tag;
-    protected $level;
 
     /**
      * Rank constructor.
@@ -25,8 +22,6 @@ class Rank
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        $this->level = new Level($this->plugin);
-        $this->tag = new Tag($this->plugin);
     }
 
     /**
@@ -42,11 +37,12 @@ class Rank
     }
 
     /**
-     * @param Player $player
+     * @param string $name
      * @param int $rankid
-     */public function setRank(Player $player, int $rankid)
+     */
+    public function setRank(string $name, int $rankid)
     {
-        $datafile = new DataFile($player->getName());
+        $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         switch ($rankid) {
             case 1:
@@ -75,11 +71,5 @@ class Rank
                 break;
         }
         $datafile->write('USERDATA', $data);
-        $name = $player->getName();
-        $level = $this->level->getLevel($player->getName());
-        $playerrank = $this->getRank($player->getName());
-        $tag = $this->tag->getTag($player);
-        $player->setNameTag("§7[§r $playerrank §7] §r$name");
-        $player->setDisplayName("§7[§r $playerrank §7][ §rLv.$level §7][§r $tag §7] §r$name");
     }
 }

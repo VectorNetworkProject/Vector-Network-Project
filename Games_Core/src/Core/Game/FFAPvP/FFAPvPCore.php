@@ -25,7 +25,7 @@ class FFAPvPCore
     {
         $this->plugin = $plugin;
         $this->money = new Money();
-        $this->level = new Level($this->plugin);
+        $this->level = new Level();
     }
     public function AddDeathCount(Player $player)
     {

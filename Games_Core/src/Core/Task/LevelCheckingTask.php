@@ -19,7 +19,7 @@ class LevelCheckingTask extends PluginTask
     public function __construct(Plugin $plugin, Player $player)
     {
         parent::__construct($plugin);
-        $this->level = new Level($plugin);
+        $this->level = new Level();
         $this->player = $player;
     }
     public function onRun(int $currentTick)

@@ -28,9 +28,9 @@ class StatusTask extends PluginTask
         parent::__construct($plugin);
         $this->player = $player;
         $this->money = new Money();
-        $this->level = new Level();
+        $this->level = new Level($plugin);
         $this->rank = new Rank($plugin);
-        $this->tag = new Tag();
+        $this->tag = new Tag($plugin);
     }
     public function onRun(int $currentTick)
     {

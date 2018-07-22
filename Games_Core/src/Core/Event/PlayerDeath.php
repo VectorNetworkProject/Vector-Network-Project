@@ -12,6 +12,7 @@ use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Main;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\item\Item;
 use pocketmine\Player;
 
 class PlayerDeath
@@ -28,11 +29,17 @@ class PlayerDeath
         $event->setDeathMessage(null);
         $player = $event->getPlayer();
         $cause = $player->getLastDamageCause();
-        $this->ffapvp->AddDeathCount($player);
-        if ($cause instanceof EntityDamageByEntityEvent) {
-            $damager = $cause->getDamager();
-            if ($damager instanceof Player) {
-                $this->ffapvp->AddKillCount($damager);
+        if ($player->getLevel()->getName() === "ffapvp") {
+            $event->setDrops([Item::get(0, 0, 0)]);
+            $player->setMaxHealth(20);
+            $this->ffapvp->AddDeathCount($player);
+            if ($cause instanceof EntityDamageByEntityEvent) {
+                $damager = $cause->getDamager();
+                if ($damager instanceof Player) {
+                    $this->ffapvp->AddKillCount($damager);
+                    $damager->setMaxHealth($damager->getMaxHealth() + 1);
+                    $damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
+                }
             }
         }
     }

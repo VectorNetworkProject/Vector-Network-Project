@@ -8,16 +8,24 @@
 
 namespace Core;
 
+use Core\Event\BlockBreak;
+use Core\Event\BlockPlace;
 use Core\Event\DataPacketReceive;
+use Core\Event\EntityDamage;
 use Core\Event\PlayerDeath;
+use Core\Event\PlayerInteract;
 use Core\Event\PlayerJoin;
 use Core\Event\PlayerLogin;
 use Core\Event\PlayerMove;
 use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Game\FFAPvP\FFAPvPCore;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -36,6 +44,10 @@ class EventListener implements Listener
     protected $datapacketreceiveevent;
     protected $playerprelogin;
     protected $playermoveevent;
+    protected $entitydamage;
+    protected $blockbreakevent;
+    protected $blockplaceevent;
+    protected $playerinteractevent;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -47,6 +59,10 @@ class EventListener implements Listener
         $this->datapacketreceiveevent = new DataPacketReceive($this->plugin);
         $this->playerprelogin = new PlayerPreLogin($this->plugin);
         $this->playermoveevent = new PlayerMove($this->plugin);
+        $this->entitydamage = new EntityDamage($this->plugin);
+        $this->blockbreakevent = new BlockBreak($this->plugin);
+        $this->blockplaceevent = new BlockPlace($this->plugin);
+        $this->playerinteractevent = new PlayerInteract($this->plugin);
     }
     public function onJoin(PlayerJoinEvent $event)
     {
@@ -64,13 +80,32 @@ class EventListener implements Listener
     {
         $this->playerdeathevent->event($event);
     }
-    public function onReceive(DataPacketReceiveEvent $event) {
+    public function onReceive(DataPacketReceiveEvent $event)
+    {
         $this->datapacketreceiveevent->event($event);
     }
-    public function pnPreLogin(PlayerPreLoginEvent $event) {
+    public function pnPreLogin(PlayerPreLoginEvent $event)
+    {
         $this->playerprelogin->event($event);
     }
-    public function onMove(PlayerMoveEvent $event) {
+    public function onMove(PlayerMoveEvent $event)
+    {
         $this->playermoveevent->event($event);
+    }
+    public function onEntityDamage(EntityDamageEvent $event)
+    {
+        $this->entitydamage->event($event);
+    }
+    public function onBreak(BlockBreakEvent $event)
+    {
+        $this->blockbreakevent->event($event);
+    }
+    public function onPlace(BlockPlaceEvent $event)
+    {
+        $this->blockplaceevent->event($event);
+    }
+    public function onInteract(PlayerInteractEvent $event)
+    {
+        $this->playerinteractevent->event($event);
     }
 }

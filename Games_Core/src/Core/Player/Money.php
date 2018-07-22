@@ -57,7 +57,8 @@ class Money
      * @param string $name
      * @param int $money
      */
-    public function addMoney(string $name, int $money) {
+    public function addMoney(string $name, int $money)
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $data['money'] += $money;

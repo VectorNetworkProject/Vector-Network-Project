@@ -15,15 +15,17 @@
 
 namespace Core;
 
-use Core\Commands\gamehelp;
+use Core\Commands\debug;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
+use Core\Commands\selectgame;
 use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
+use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
@@ -40,7 +42,7 @@ class Main extends PluginBase
                                                                                    |__/               
                      §7Developers: §bInkoHX & MazaiCrafty
                      §aLICENSE: §cMIT
-                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1265
+                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1273
     ";
     public function onEnable() : void
     {
@@ -48,6 +50,13 @@ class Main extends PluginBase
         self::$datafolder = $this->getDataFolder();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180*20);
+        $this->getServer()->loadLevel("ffapvp");
+        $lobby = $this->getServer()->getLevelByName("lobby");
+        $ffapvp = $this->getServer()->getLevelByName("ffapvp");
+        $ffapvp->setTime(Level::TIME_FULL);
+        $lobby->setTime(Level::TIME_FULL);
+        $lobby->stopTime();
+        $ffapvp->stopTime();
         $this->getLogger()->info(self::STARTMESSAGE);
         
         Tag::registerColors();
@@ -59,12 +68,13 @@ class Main extends PluginBase
     private function registerCommands()
     {
         $commands = [
-            new gamehelp($this),
             new ping($this),
             new stats($this),
             new rankshop($this),
             new setmoney($this),
-            new settag($this)
+            new settag($this),
+            new selectgame($this),
+            new debug($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

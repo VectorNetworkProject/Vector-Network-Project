@@ -33,7 +33,7 @@ class stats extends PluginCommand
         $this->setPermission("vector.network.player");
         $this->setDescription("自分のステータスを表示します。");
         $this->plugin = $plugin;
-        $this->level = new Level();
+        $this->level = new Level($this->plugin);
         $this->money = new Money();
         $this->rank = new Rank($this->plugin);
         $this->kd = new KD();

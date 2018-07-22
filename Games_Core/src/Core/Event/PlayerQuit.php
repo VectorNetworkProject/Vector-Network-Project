@@ -9,7 +9,6 @@
 namespace Core\Event;
 
 use Core\DataFile;
-use Core\EventListener;
 use Core\Main;
 use pocketmine\event\player\PlayerQuitEvent;
 

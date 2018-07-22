@@ -8,7 +8,6 @@
 
 namespace Core\Commands;
 
-
 use Core\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
@@ -36,30 +35,17 @@ class rankshop extends PluginCommand
         }
         if ($sender instanceof Player) {
             $rankmenu = [
-                "type" => "form",
+                "type" => "custom_form",
                 "title" => "RankShop",
-                "content" => "§6V§bN§eCoin§rを使ってランクを買う事が出来ます。",
-                "buttons" => [
+                "content" => [
                     [
-                        "text" => "§6V§bN\n§61500000 §eCoin"
+                        "type" => "dropdown",
+                        "text" => "§6V§bN§eCoin§rを消費してランクを買う事が出来ます。",
+                        "options" => ["§6V§bN", "§5S", "§eA", "§cB", "§aC", "§3D", "§7E"]
                     ],
                     [
-                        "text" => "§5S\n§61000000 §eCoin"
-                    ],
-                    [
-                        "text" => "§6A\n§6700000 §eCoin"
-                    ],
-                    [
-                        "text" => "§cB\n§6500000 §eCoin"
-                    ],
-                    [
-                        "text" => "§aC\n§6300000 §eCoin"
-                    ],
-                    [
-                        "text" => "§3D\n§6100000 §eCoin"
-                    ],
-                    [
-                        "text" => "§7E\n§650000 §eCoin"
+                        "type" => "label",
+                        "text" => "§6V§bN  §61500000 §eCoin\n§5S  §61000000 §eCoin\n§eA  §6700000 §eCoin\n§cB  §6500000 §eCoin\n§aC  §6300000 §eCoin\n§3D  §6100000 §eCoin\n§7E  §650000 §eCoin"
                     ]
                 ]
             ];

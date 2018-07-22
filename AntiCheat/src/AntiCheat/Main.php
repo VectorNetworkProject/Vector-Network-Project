@@ -10,6 +10,8 @@ namespace AntiCheat;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerToggleFlightEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase implements Listener
@@ -29,6 +31,16 @@ class Main extends PluginBase implements Listener
                 $this->banapi->addBan($player, "Flying", "AntiCheat");
             } else {
                 $this->banapi->addBan($player, "Flying", "AntiCheat");
+            }
+        }
+    }
+    public function onReceive(DataPacketReceiveEvent $event)
+    {
+        $packet = $event->getPacket();
+        if ($packet instanceof LoginPacket) {
+            if ($packet->clientId === 0) {
+                $player = $event->getPlayer();
+                $this->banapi->addBan($player, "Toolbox", "AntiCheat");
             }
         }
     }

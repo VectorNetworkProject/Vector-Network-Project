@@ -8,13 +8,12 @@
 
 namespace Core\Player;
 
-
 use Core\DataFile;
+use Core\Main;
 use pocketmine\Player;
 
 class Tag
 {
-
     const BLACK = 0;
     const DARK_BLUE = 1;
     const DARK_GREEN = 2;
@@ -35,24 +34,34 @@ class Tag
 
     private static $colors = [];
 
-    public static function registerColors(){
-        Tag::$colors[Tag::BLACK] = "§0$tag";
-        Tag::$colors[Tag::DARK_BLUE] = "§1$tag";
-        Tag::$colors[Tag::DARK_GREEN] = "§2$tag";
-        Tag::$colors[Tag::DARK_AQUA] = "§3$tag";
-        Tag::$colors[Tag::DARK_RED] = "§4$tag";
-        Tag::$colors[Tag::PURPLE] = "§5$tag";
-        Tag::$colors[Tag::GOLD] = "§6$tag";
-        Tag::$colors[Tag::GRAY] = "§7$tag";
-        Tag::$colors[Tag::DARK_GRAY] = "§8$tag";
-        Tag::$colors[Tag::BLUE] = "§9$tag";
-        Tag::$colors[Tag::LIGHT_GREEN] = "§a$tag";
-        Tag::$colors[Tag::AQUA] = "§b$tag";
-        Tag::$colors[Tag::RED] = "§c$tag";
-        Tag::$colors[Tag::PINK] = "§d$tag";
-        Tag::$colors[Tag::YELLOW] = "§e$tag";
-        Tag::$colors[Tag::WHITE] = "§f$tag";
-        Tag::$colors[Tag::NO_COLLOR] = "$tag";
+    public static function registerColors()
+    {
+        Tag::$colors[Tag::BLACK] = "§0";
+        Tag::$colors[Tag::DARK_BLUE] = "§1";
+        Tag::$colors[Tag::DARK_GREEN] = "§2";
+        Tag::$colors[Tag::DARK_AQUA] = "§3";
+        Tag::$colors[Tag::DARK_RED] = "§4";
+        Tag::$colors[Tag::PURPLE] = "§5";
+        Tag::$colors[Tag::GOLD] = "§6";
+        Tag::$colors[Tag::GRAY] = "§7";
+        Tag::$colors[Tag::DARK_GRAY] = "§8";
+        Tag::$colors[Tag::BLUE] = "§9";
+        Tag::$colors[Tag::LIGHT_GREEN] = "§a";
+        Tag::$colors[Tag::AQUA] = "§b";
+        Tag::$colors[Tag::RED] = "§c";
+        Tag::$colors[Tag::PINK] = "§d";
+        Tag::$colors[Tag::YELLOW] = "§e";
+        Tag::$colors[Tag::WHITE] = "§f";
+        Tag::$colors[Tag::NO_COLLOR] = "§r";
+    }
+
+    protected $level;
+    protected $rank;
+
+    public function __construct(Main $plugin)
+    {
+        $this->rank = new Rank($plugin);
+        $this->level = new Level($plugin);
     }
 
     /**
@@ -75,21 +84,26 @@ class Tag
     {
         $datafile = new DataFile($player->getName());
         $data = $datafile->get('USERDATA');
-        if (mb_strlen($tag) >= 9){
+        if (mb_strlen($tag) >= 9) {
             $player->sendMessage("§7[§c失敗§7] §cタグは8文字以内にして下さい");
             return;
         }
 
-        if ((0 <= $colorid) && ($colorid <= 16)){
-            $data['tag'] = Tag::$colors[$colorid];
+        if ((0 <= $colorid) && ($colorid <= 16)) {
+            $data['tag'] = Tag::$colors[$colorid].$tag."§r";
+            $usertag = $data['tag'];
             $message = "§7[§a成功§7] §7あなたのタグを【 $usertag §7】に設定しました。";
         } else {
-            $data['tag'] = "$tag";
-            $message = "§7[§cエラー§7] 指定したカラーIDが見つからなかった為デフォルトの色にしました。";
+            $data['tag'] = "§r$tag";
+            $message = "§7[§cエラー§7] §c指定したカラーIDが見つからなかった為デフォルトの色にしました。";
         }
-
         $datafile->write('USERDATA', $data);
-        $usertag = $data['tag'];
+        $name = $player->getName();
+        $level = $this->level->getLevel($player->getName());
+        $playerrank = $this->rank->getRank($player->getName());
+        $tag = $this->getTag($player);
+        $player->setNameTag("§7[§r $playerrank §7] §r$name");
+        $player->setDisplayName("§7[§r $playerrank §7][ §rLv.$level §7][§r $tag §7] §r$name");
         $player->sendMessage($message);
     }
 }

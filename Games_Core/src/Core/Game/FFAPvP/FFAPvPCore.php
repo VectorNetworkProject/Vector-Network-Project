@@ -10,17 +10,22 @@ namespace Core\Game\FFAPvP;
 
 use Core\DataFile;
 use Core\Main;
+use Core\Player\Level;
 use Core\Player\Money;
+use Core\Task\LevelCheckingTask;
 use pocketmine\Player;
 
 class FFAPvPCore
 {
     protected $money;
+    protected $level;
+    protected $plugin;
     public $worldname = "ffapvp";
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $this->money = new Money();
+        $this->level = new Level($this->plugin);
     }
     public function AddDeathCount(Player $player)
     {
@@ -42,6 +47,8 @@ class FFAPvPCore
             $rand = mt_rand(1, 50);
             $this->money->addMoney($player->getName(), $rand);
             $player->sendMessage("§a+$rand §6V§bN§eCoin");
+            $this->level->LevelSystem($player);
+            $this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
         }
     }
 }

@@ -5,10 +5,6 @@ version: 1.6.0
 author: "VectorNetworkDevelopmentTeam"
 authors: ['InkoHX', 'MazaiCrafty']
 commands:
-  gamehelp:
-    usage: "/gamehelp"
-    permission: vector.network.player
-    description: "Vector Network で使えるコマンド一覧を表示します。"
   ping:
     usage: "/ping"
     permission: vector.network.player
@@ -29,6 +25,14 @@ commands:
     usage: "/settag"
     permission: vector.network.player
     description: "§6V§bN§eCoin§rを使ってタグを設定します。"
+  sg:
+    usage: "/sg"
+    permission: vector.network.player
+    description: "遊びたいゲームを選択できます。"
+  debug:
+    usage: "/debug"
+    permission: vector.network.admin
+    description: "Admin Command"
 permissions:
   vector.network.player:
     default: true

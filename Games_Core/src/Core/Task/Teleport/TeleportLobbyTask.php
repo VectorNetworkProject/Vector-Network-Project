@@ -25,6 +25,10 @@ class TeleportLobbyTask extends PluginTask
     {
         $level = $this->owner->getServer()->getLevelByName("lobby");
         $this->player->teleport(new Position(257, 8, 257, $level));
+        $this->player->setHealth(20);
+        $this->player->setMaxHealth(20);
+        $this->player->setFood(20);
+        $this->player->getInventory()->clearAll(true);
         $this->player->sendMessage("§aテレポートしました。");
     }
 }

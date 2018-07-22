@@ -13,7 +13,6 @@ use Core\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat;
 
 class debug extends PluginCommand
@@ -43,7 +42,8 @@ class debug extends PluginCommand
         $z = $sender->getFloorZ();
         $levelname = $sender->getLevel()->getName();
         $itemid = $sender->getInventory()->getItemInHand()->getId();
-        $sender->sendMessage("X: $x\nY: $y\nZ: $z\nLevelName: $levelname\nBlockID: $itemid");
+        $meta = $sender->getInventory()->getItemInHand()->getDamage();
+        $sender->sendMessage("X: $x\nY: $y\nZ: $z\nLevelName: $levelname\nBlockID: $itemid:$meta");
         return true;
     }
 }

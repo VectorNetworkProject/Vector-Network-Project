@@ -139,6 +139,7 @@ class DataPacketReceive
                         } else {
                             if ($player->getLevel()->getName() === "lobby") {
                                 $player->teleport(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
+                                $player->setSpawn(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
                                 $player->sendMessage("§aテレポートしました。");
                             } else {
                                 $player->sendMessage("§e10秒後テレポートします。");

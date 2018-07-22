@@ -23,7 +23,7 @@ class TeleportFFAPvPTask extends PluginTask
     }
     public function onRun(int $currentTick)
     {
-        $this->player->teleport(new Position(255, 4, 255, $this->owner->getServer()->getLevelByName("ffapvp")));
+        $this->player->teleport(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
         $this->player->sendMessage("§aテレポートしました。");
     }
 }

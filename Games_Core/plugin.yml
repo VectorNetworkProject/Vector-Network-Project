@@ -33,6 +33,10 @@ commands:
     usage: "/selectgame"
     permission: vector.network.player
     description: "遊びたいゲームを選択できます。"
+  debug:
+    usage: "/debug"
+    permission: vector.network.admin
+    description: "Admin Command"
 permissions:
   vector.network.player:
     default: true

@@ -15,6 +15,7 @@
 
 namespace Core;
 
+use Core\Commands\debug;
 use Core\Commands\gamehelp;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
@@ -74,7 +75,8 @@ class Main extends PluginBase
             new rankshop($this),
             new setmoney($this),
             new settag($this),
-            new selectgame($this)
+            new selectgame($this),
+            new debug($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

@@ -44,5 +44,6 @@ class setmoney extends PluginCommand
         } else {
             return false;
         }
+        return false;
     }
 }

@@ -8,7 +8,6 @@
 
 namespace Core\Event;
 
-
 use Core\Main;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Durable;
@@ -23,7 +22,8 @@ class PlayerInteract
     {
         $this->plugin = $plugin;
     }
-    public function event(PlayerInteractEvent $event) {
+    public function event(PlayerInteractEvent $event)
+    {
         $player = $event->getPlayer();
         if ($player->getLevel()->getName() === "ffapvp") {
             if ($event->getBlock()->getId() === 133) {

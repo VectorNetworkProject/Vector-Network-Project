@@ -104,7 +104,8 @@ class EventListener implements Listener
     {
         $this->blockplaceevent->event($event);
     }
-    public function onInteract(PlayerInteractEvent $event) {
+    public function onInteract(PlayerInteractEvent $event)
+    {
         $this->playerinteractevent->event($event);
     }
 }

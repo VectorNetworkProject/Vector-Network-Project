@@ -8,7 +8,6 @@
 
 namespace Core\Commands;
 
-
 use Core\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;

@@ -30,7 +30,7 @@ class PlayerDeath
         $player = $event->getPlayer();
         $cause = $player->getLastDamageCause();
         if ($player->getLevel()->getName() === "ffapvp") {
-            $event->setDrops([Item::get(0,0,0)]);
+            $event->setDrops([Item::get(0, 0, 0)]);
             $player->setMaxHealth(20);
             $this->ffapvp->AddDeathCount($player);
             if ($cause instanceof EntityDamageByEntityEvent) {

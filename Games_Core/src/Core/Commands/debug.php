@@ -42,7 +42,8 @@ class debug extends PluginCommand
         $y = $sender->getFloorY();
         $z = $sender->getFloorZ();
         $levelname = $sender->getLevel()->getName();
-        $sender->sendMessage("X: $x\nY: $y\nZ: $z\nLevelName: $levelname");
+        $itemid = $sender->getInventory()->getItemInHand()->getId();
+        $sender->sendMessage("X: $x\nY: $y\nZ: $z\nLevelName: $levelname\nBlockID: $itemid");
         return true;
     }
 }

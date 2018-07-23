@@ -8,11 +8,14 @@
 
 namespace AntiCheat;
 
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\LoginPacket;
+use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase implements Listener
@@ -57,5 +60,20 @@ class Main extends PluginBase implements Listener
             }
         }
         $this->spamplayers[$player->getName()]["cooldown"] = $cooldown;
+    }
+    public function onDamage(EntityDamageEvent $event)
+    {
+        $entity = $event->getEntity();
+        if ($event instanceof EntityDamageByEntityEvent and $entity instanceof EntityDamageByEntityEvent) {
+            $damager = $event->getDamager();
+            if ($damager instanceof Player) {
+                if ($damager->getGamemode() === Player::CREATIVE or $damager->getGamemode() === Player::SPECTATOR) {
+                    return;
+                }
+                if ($damager->distance($entity) > 3.9) {
+                    $event->setCancelled(true);
+                }
+            }
+        }
     }
 }

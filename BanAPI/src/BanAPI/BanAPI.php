@@ -22,10 +22,11 @@ class BanAPI extends PluginBase
      * @param Player $player
      * @param string $reason
      * @param string $by
+     * @param bool $isAdmin
      */
-    public function addBan(Player $player, string $reason, string $by)
+    public function addBan(Player $player, string $reason, string $by, bool $isAdmin = true)
     {
-        $player->kick($reason, true);
+        $player->kick($reason, $isAdmin);
         $this->getServer()->getIPBans()->addBan($player->getAddress(), $reason, null, $player->getName());
         $this->getServer()->getNameBans()->addBan($player, $reason, null, $player->getName());
         $this->getLogger()->info($player->getName()."をBANしました。");

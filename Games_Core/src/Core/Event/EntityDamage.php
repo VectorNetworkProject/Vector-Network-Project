@@ -21,8 +21,8 @@ class EntityDamage
     public function event(EntityDamageEvent $event)
     {
         if ($event->getEntity()->getLevel()->getName() === "ffapvp") {
-            if ($event->getCause() == EntityDamageEvent::CAUSE_VOID or $event->getCause() == EntityDamageEvent::CAUSE_FALL) {
-                $event->setCancelled();
+            if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+                $event->setCancelled(true);
             }
         }
     }

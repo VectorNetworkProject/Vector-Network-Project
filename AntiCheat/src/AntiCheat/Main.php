@@ -67,7 +67,7 @@ class Main extends PluginBase implements Listener
         if ($event instanceof EntityDamageByEntityEvent and $entity instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($damager instanceof Player) {
-                if ($damager->getGamemode() === Player::CREATIVE or $damager->getGamemode() === Player::SPECTATOR) {
+                if ($damager->getGamemode() === Player::CREATIVE) {
                     return;
                 }
                 if ($damager->distance($entity) > 3.9) {

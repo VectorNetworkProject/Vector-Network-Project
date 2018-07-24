@@ -42,6 +42,9 @@ class KillSound
         $datafile = new DataFile($player->getName());
         $data = $datafile->get('USERDATA');
         switch ($soundid) {
+            case 0:
+                $data['killsound'] = 0;
+                break;
             case 1:
                 $data['killsound'] = 1;
                 break;
@@ -63,6 +66,9 @@ class KillSound
         $datafile = new DataFile($player->getName());
         $data = $datafile->get('USERDATA');
         switch ($data['killsound']) {
+            case 0:
+                return;
+                break;
             case 1:
                 $this->plugin->getServer()->getLevelByName($level)->broadcastLevelSoundEvent(new Vector3($player->getFloorX(), $player->getY(), $player->getZ()), LevelSoundEventPacket::SOUND_RANDOM_ANVIL_USE);
                 break;

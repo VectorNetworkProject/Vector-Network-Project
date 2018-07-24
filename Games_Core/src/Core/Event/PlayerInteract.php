@@ -6,10 +6,12 @@
  * Time: 13:59
  */
 namespace Core\Event;
+
 use Core\Main;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
+
 class PlayerInteract
 {
     protected $plugin;

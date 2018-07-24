@@ -8,8 +8,6 @@
 
 namespace Core\Game\Athletic;
 
-
 class AthleticCore
 {
-
 }

@@ -33,6 +33,8 @@ class PlayerLogin
                 "maxexp" => 50,
                 "rank" => "§rNoRank",
                 "tag" => "§rNoTag",
+                "mazaipoint" => 0,
+                "killsound" => 0,
                 "firstlogin" => date("Y年m月d日 H時i分s秒"),
                 "lastlogin" => date("Y年m月d日 H時i分s秒")
             ];

@@ -42,7 +42,7 @@ class PlayerDeath
                     $this->ffapvp->AddKillCount($damager);
                     $damager->setMaxHealth($damager->getMaxHealth() + 1);
                     $damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
-                    $this->killsound->PlaySound($player);
+                    $this->killsound->PlaySound($damager);
                 }
             }
         }

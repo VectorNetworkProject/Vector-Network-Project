@@ -67,7 +67,7 @@ class KillSound
                 return;
                 break;
             case 1:
-                $this->PlaySoundPacket($player, "music.honegaoreru", $player->getX(), $player->getY(), $player->getZ());
+                $this->PlaySoundPacket($player, "music.tin", $player->getX(), $player->getY(), $player->getZ());
                 break;
         }
     }

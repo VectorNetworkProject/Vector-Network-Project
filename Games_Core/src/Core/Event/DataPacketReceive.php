@@ -161,7 +161,7 @@ class DataPacketReceive
                         break;
                     case 1:
                         $this->killsound->setKillSound($player, 1);
-                        $player->sendMessage("§7[§a成功§7] §aキルサウンドを【骨が折れる音】に設定しました。");
+                        $player->sendMessage("§7[§a成功§7] §aキルサウンドを【チーン】に設定しました。");
                         break;
                 }
             }

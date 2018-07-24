@@ -44,7 +44,7 @@ class killsound extends PluginCommand
                 [
                     "type" => "dropdown",
                     "text" => "敵を倒した時に出るサウンドを設定します。",
-                    "options" => ["サウンド無し", "骨が折れる音"]
+                    "options" => ["サウンド無し", "チーン"]
                 ]
             ]
         ];

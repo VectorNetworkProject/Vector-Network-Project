@@ -32,18 +32,15 @@ class setmoney extends PluginCommand
         if (!$this->plugin->isEnabled()) {
             return false;
         }
+        
         if (!$this->testPermission($sender)) {
             return false;
         }
-        if (isset($args[0])) {
-            if (isset($args[1])) {
-                $this->money->setMoney($args[0], $args[1]);
-            } else {
-                return false;
-            }
-        } else {
+        
+        if (!isset($args[0]) && !isset($args[0])) {
             return false;
         }
-        return false;
+        $this->money->setMoney($args[0], $args[1]);
+        return true;
     }
 }

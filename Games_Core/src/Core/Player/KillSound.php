@@ -8,11 +8,9 @@
 
 namespace Core\Player;
 
-
-use AntiCheat\Main;
 use Core\DataFile;
-use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use Core\Main;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 
 class KillSound
@@ -27,7 +25,8 @@ class KillSound
      * @param string $name
      * @return int
      */
-    public function getKillSound(string $name) : int {
+    public function getKillSound(string $name) : int
+    {
         $datafile = new DataFile($name);
         $data = $datafile->get('USERDATA');
         $killsoundId = $data['killsound'];
@@ -38,7 +37,8 @@ class KillSound
      * @param Player $player
      * @param int $soundid
      */
-    public function setKillSound(Player $player, int $soundid) {
+    public function setKillSound(Player $player, int $soundid)
+    {
         $datafile = new DataFile($player->getName());
         $data = $datafile->get('USERDATA');
         switch ($soundid) {
@@ -47,9 +47,6 @@ class KillSound
                 break;
             case 1:
                 $data['killsound'] = 1;
-                break;
-            case 2:
-                $data['killsound'] = 2;
                 break;
             default:
                 $this->plugin->getLogger()->error("指定されたSoundIDが見つかりませんでした。");
@@ -60,9 +57,9 @@ class KillSound
 
     /**
      * @param Player $player
-     * @param string $level
      */
-    public function PlaySound(Player $player, string $level) {
+    public function PlaySound(Player $player)
+    {
         $datafile = new DataFile($player->getName());
         $data = $datafile->get('USERDATA');
         switch ($data['killsound']) {
@@ -70,11 +67,29 @@ class KillSound
                 return;
                 break;
             case 1:
-                $this->plugin->getServer()->getLevelByName($level)->broadcastLevelSoundEvent(new Vector3($player->getFloorX(), $player->getY(), $player->getZ()), LevelSoundEventPacket::SOUND_RANDOM_ANVIL_USE);
-                break;
-            case 2:
-                $this->plugin->getServer()->getLevelByName($level)->broadcastLevelSoundEvent(new Vector3($player->getFloorX(), $player->getY(), $player->getZ()), LevelSoundEventPacket::SOUND_FIRE);
+                $this->PlaySoundPacket($player, "music.honegaoreru", $player->getX(), $player->getY(), $player->getZ());
                 break;
         }
+    }
+
+    /**
+     * @param Player $player
+     * @param string $soundname
+     * @param int $x
+     * @param int $y
+     * @param int $z
+     * @param int $volume
+     * @param int $pitch
+     */
+    public function PlaySoundPacket(Player $player, string $soundname, int $x, int $y, int $z, int $volume = 20, int $pitch = 1)
+    {
+        $sound = new PlaySoundPacket();
+        $sound->soundName = $soundname;
+        $sound->volume = $volume;
+        $sound->pitch = $pitch;
+        $sound->x = $x;
+        $sound->y = $y;
+        $sound->z = $z;
+        $player->dataPacket($sound);
     }
 }

@@ -10,6 +10,7 @@ namespace Core\Event;
 
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Main;
+use Core\Player\KillSound;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\item\Item;
@@ -19,10 +20,12 @@ class PlayerDeath
 {
     protected $plugin;
     protected $ffapvp;
+    protected $killsound;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $this->ffapvp = new FFAPvPCore($this->plugin);
+        $this->killsound = new KillSound($this->plugin);
     }
     public function event(PlayerDeathEvent $event)
     {
@@ -39,6 +42,7 @@ class PlayerDeath
                     $this->ffapvp->AddKillCount($damager);
                     $damager->setMaxHealth($damager->getMaxHealth() + 1);
                     $damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
+                    $this->killsound->PlaySound($player);
                 }
             }
         }

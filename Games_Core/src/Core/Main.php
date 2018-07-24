@@ -8,7 +8,7 @@
  *     \/ \___|\___|\__\___/|_|  |_| \_|\___|\__| \_/\_/ \___/|_|  |_|\_\_|   |_|  \___/| |\___|\___|\__|
  *                                                                                     _/ |
  *                                                                                    |__/
- * Dev: InkoHX
+ * Developers: InkoHX & MazaiCrafty
  * ServerSoftware: PocketMine-MP
  * LICENSE: MIT
  */
@@ -16,6 +16,7 @@
 namespace Core;
 
 use Core\Commands\debug;
+use Core\Commands\killsound;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
 use Core\Commands\selectgame;
@@ -74,7 +75,8 @@ class Main extends PluginBase
             new setmoney($this),
             new settag($this),
             new selectgame($this),
-            new debug($this)
+            new debug($this),
+            new killsound($this)
        ];
         $this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
     }

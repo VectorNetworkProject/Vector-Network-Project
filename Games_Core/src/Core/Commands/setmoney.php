@@ -37,7 +37,7 @@ class setmoney extends PluginCommand
             return false;
         }
         
-        if (!isset($args[0]) && !isset($args[0])) {
+        if (!isset($args[0]) || !isset($args[0])) {
             return false;
         }
         $this->money->setMoney($args[0], $args[1]);

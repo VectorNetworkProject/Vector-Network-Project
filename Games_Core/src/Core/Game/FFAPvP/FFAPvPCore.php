@@ -13,6 +13,9 @@ use Core\Main;
 use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\LevelCheckingTask;
+use pocketmine\block\Block;
+use pocketmine\item\Durable;
+use pocketmine\item\Item;
 use pocketmine\Player;
 
 class FFAPvPCore
@@ -49,6 +52,36 @@ class FFAPvPCore
             $player->sendMessage("§a+$rand §6V§bN§eCoin");
             $this->level->LevelSystem($player);
             $this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+        }
+    }
+    public function FFAPvPKit(Player $player, Block $block) {
+        if ($player->getLevel()->getName() === "ffapvp") {
+            if ($block->getId() === 133) {
+                $player->getInventory()->clearAll(true);
+                $player->setMaxHealth(20);
+                $player->setHealth(20);
+                $player->setFood(20);
+                $items = [
+                    "leather_cap" => Item::get(Item::LEATHER_CAP, 0, 1),
+                    "leather_tunic" => Item::get(Item::LEATHER_TUNIC, 0, 1),
+                    "leather_pants" => Item::get(Item::LEATHER_PANTS, 0, 1),
+                    "leather_boots" => Item::get(Item::LEATHER_BOOTS, 0, 1),
+                    "wooden_sword" => Item::get(Item::WOODEN_SWORD, 0, 1)
+                ];
+                foreach ($items as $item) {
+                    if ($item instanceof Durable) {
+                        $item->setUnbreakable(true);
+                    }
+                }
+                $armor = $player->getArmorInventory();
+                $armor->setHelmet($items["leather_cap"]);
+                $armor->setChestplate($items["leather_tunic"]);
+                $armor->setLeggings($items["leather_pants"]);
+                $armor->setBoots($items["leather_boots"]);
+                $player->getInventory()->addItem($items["wooden_sword"]);
+                $player->getInventory()->addItem(Item::get(Item::STEAK, 0, 64));
+                $player->sendMessage("§a初期装備を与えました。テスト公開ですがお楽しみください");
+            }
         }
     }
 }

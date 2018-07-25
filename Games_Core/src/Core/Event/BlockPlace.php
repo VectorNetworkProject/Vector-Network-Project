@@ -13,17 +13,18 @@ use pocketmine\event\block\BlockPlaceEvent;
 
 class BlockPlace
 {
-    public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
-    }
-    public function event(BlockPlaceEvent $event)
-    {
-        /*
+	public function __construct(Main $plugin)
+	{
+		$this->plugin = $plugin;
+	}
+
+	public function event(BlockPlaceEvent $event)
+	{
+		/*
         $player = $event->getPlayer();
         if (!$player->isOp()) {
             $event->setCancelled(true);
         }
         */
-    }
+	}
 }

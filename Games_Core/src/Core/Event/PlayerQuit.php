@@ -15,20 +15,21 @@ use pocketmine\event\player\PlayerQuitEvent;
 
 class PlayerQuit
 {
-    protected $plugin;
-    public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
-    }
+	protected $plugin;
 
-    public function event(PlayerQuitEvent $event)
-    {
-        $player = $event->getPlayer();
-        $name = $player->getName();
-        $event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
-        $data = new DataFile($player->getName());
-        $user = $data->get("USERDATA");
-        $user["lastlogin"] = date("Y年m月d日 H時i分s秒");
-        $data->write("USERDATA", $user);
-    }
+	public function __construct(Main $plugin)
+	{
+		$this->plugin = $plugin;
+	}
+
+	public function event(PlayerQuitEvent $event)
+	{
+		$player = $event->getPlayer();
+		$name = $player->getName();
+		$event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
+		$data = new DataFile($player->getName());
+		$user = $data->get("USERDATA");
+		$user["lastlogin"] = date("Y年m月d日 H時i分s秒");
+		$data->write("USERDATA", $user);
+	}
 }

@@ -37,17 +37,17 @@ class selectgame extends PluginCommand
             $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
             return true;
         }
-        $gamesmenu = [
-            "type" => "custom_form",
-            "title" => "ゲーム選択",
-            "content" => [
-                [
-                    "type" => "dropdown",
-                    "text" => "まだ開発中の為一つしかゲームがありません。",
-                    "options" => ["ロビー", "FFAPvP"]
-                ]
-            ]
-        ];
+		$gamesmenu = [
+			"type" => "custom_form",
+			"title" => "ゲーム選択",
+			"content" => [
+				[
+					"type" => "dropdown",
+					"text" => "まだ開発中の為一つしかゲームがありません。",
+					"options" => ["ロビー", "FFAPvP"]
+				]
+			]
+		];
         $modal = new ModalFormRequestPacket();
         $modal->formId = 45786154;
         $modal->formData = json_encode($gamesmenu);

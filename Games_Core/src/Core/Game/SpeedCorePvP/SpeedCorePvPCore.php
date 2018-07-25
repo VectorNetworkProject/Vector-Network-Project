@@ -15,16 +15,19 @@ use pocketmine\utils\Color;
 
 class SpeedCorePvPCore
 {
-    protected $plugin;
-    protected $bluecolor;
-    protected $redcolor;
-    public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
-        $this->bluecolor = new Color(0, 0, 255);
-        $this->redcolor = new Color(255, 0, 0);
-    }
-    public function GameJoin(Player $player) {
+	protected $plugin;
+	protected $bluecolor;
+	protected $redcolor;
 
-    }
+	public function __construct(Main $plugin)
+	{
+		$this->plugin = $plugin;
+		$this->bluecolor = new Color(0, 0, 255);
+		$this->redcolor = new Color(255, 0, 0);
+	}
+
+	public function GameJoin(Player $player)
+	{
+
+	}
 }

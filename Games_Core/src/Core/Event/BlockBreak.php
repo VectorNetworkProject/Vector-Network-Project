@@ -13,19 +13,20 @@ use pocketmine\event\block\BlockBreakEvent;
 
 class BlockBreak
 {
-    protected $plugin;
-    public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
-    }
+	protected $plugin;
 
-    public function event(BlockBreakEvent $event)
-    {
-        /*
+	public function __construct(Main $plugin)
+	{
+		$this->plugin = $plugin;
+	}
+
+	public function event(BlockBreakEvent $event)
+	{
+		/*
         $player = $event->getPlayer();
         if (!$player->isOp()) {
             $event->setCancelled(true);
         }
         */
-    }
+	}
 }

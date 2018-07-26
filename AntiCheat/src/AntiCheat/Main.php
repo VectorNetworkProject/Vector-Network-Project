@@ -57,7 +57,7 @@ class Main extends PluginBase implements Listener
 		$player = $event->getPlayer();
 		$cooldown = microtime(true);
 		if (isset($this->splayers[$player->getName()])) {
-			if (($cooldown - $this->spamplayers[$player->getName()]['cooldown']) < 3) {
+			if (($cooldown - $this->spamplayers[$player->getName()]['cooldown']) < 5) {
 				$player->sendMessage("§7クールダウン中です。");
 				$event->setCancelled(true);
 			}

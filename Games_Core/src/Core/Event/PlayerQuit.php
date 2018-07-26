@@ -9,6 +9,7 @@
 namespace Core\Event;
 
 use Core\DataFile;
+use Core\Entity\Bossbar;
 use Core\EventListener;
 use Core\Main;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -27,6 +28,8 @@ class PlayerQuit
 		$player = $event->getPlayer();
 		$name = $player->getName();
 		$event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
+		$bossbar = new Bossbar();
+		$bossbar->RemoveBar($player);
 		$data = new DataFile($player->getName());
 		$user = $data->get("USERDATA");
 		$user["lastlogin"] = date("Y年m月d日 H時i分s秒");

@@ -12,6 +12,7 @@ use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\DataPacketReceive;
 use Core\Event\EntityDamage;
+use Core\Event\PlayerCommandPreprocess;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerInteract;
 use Core\Event\PlayerJoin;
@@ -24,6 +25,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -48,6 +50,7 @@ class EventListener implements Listener
 	protected $blockbreakevent;
 	protected $blockplaceevent;
 	protected $playerinteractevent;
+	protected $playercommandpreprocessevent;
 
 	public function __construct(Main $plugin)
 	{
@@ -64,6 +67,7 @@ class EventListener implements Listener
 		$this->blockbreakevent = new BlockBreak($this->plugin);
 		$this->blockplaceevent = new BlockPlace($this->plugin);
 		$this->playerinteractevent = new PlayerInteract($this->plugin);
+		$this->playercommandpreprocessevent = new PlayerCommandPreprocess($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -119,5 +123,10 @@ class EventListener implements Listener
 	public function onInteract(PlayerInteractEvent $event)
 	{
 		$this->playerinteractevent->event($event);
+	}
+
+	public function onPlayerCommandPreprocess(PlayerCommandPreprocessEvent $event)
+	{
+		$this->playercommandpreprocessevent->event($event);
 	}
 }

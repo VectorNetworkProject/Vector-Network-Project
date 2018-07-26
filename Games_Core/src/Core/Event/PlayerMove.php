@@ -42,8 +42,8 @@ class PlayerMove
 		$maxexp = $this->level->getMaxExp($player->getName());
 		$playerrank = $this->rank->getRank($player->getName());
 		$tag = $this->tag->getTag($player);
-		$player->sendPopup("\n\n\n\n\n                                 §a---===< §eSTATUS §a>===---\n                                 §bLevel: $level\n                                 §aEXP: $exp / $maxexp\n                                 §6V§bN§eCoin§r: §6$money §eCoin\n                                 §dRank: §r$playerrank\n                                 §2Tag: §r$tag");
-		$player->setNameTag("§7[§r $playerrank §7] §r$name");
-		$player->setDisplayName("§7[§r $playerrank §7][ §rLv.$level §7][§r $tag §7] §r$name");
+		//$player->sendPopup("\n\n\n\n\n                                 §a---===< §eSTATUS §a>===---\n                                 §bLevel: $level\n                                 §aEXP: $exp / $maxexp\n                                 §6V§bN§eCoin§r: §6$money §eCoin\n                                 §dRank: §r$playerrank\n                                 §2Tag: §r$tag");
+		//$player->setNameTag("§7[§r $playerrank §7] §r$name");
+		//$player->setDisplayName("§7[§r $playerrank §7][ §rLv.$level §7][§r $tag §7] §r$name");
 	}
 }

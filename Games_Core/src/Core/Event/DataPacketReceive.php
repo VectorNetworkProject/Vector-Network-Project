@@ -165,6 +165,34 @@ class DataPacketReceive
 						$this->killsound->setKillSound($player, 1);
 						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【チーン】に設定しました。");
 						break;
+					case 2:
+						$this->killsound->setKillSound($player, 2);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【1UP】に設定しました。");
+						break;
+					case 3:
+						$this->killsound->setKillSound($player, 3);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【骨が折れる音】に設定しました。");
+						break;
+					case 4:
+						$this->killsound->setKillSound($player, 4);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【デデドン】に設定しました。");
+						break;
+					case 5:
+						$this->killsound->setKillSound($player, 5);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【ピチューン】に設定しました。");
+						break;
+					case 6:
+						$this->killsound->setKillSound($player, 6);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【ブスッ】に設定しました。");
+						break;
+					case 7:
+						$this->killsound->setKillSound($player, 7);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【許してくれたまえ】に設定しました。");
+						break;
+					case 8:
+						$this->killsound->setKillSound($player, 8);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【さっさと逃げればいいものを】に設定しました。");
+						break;
 				}
 			}
 		}

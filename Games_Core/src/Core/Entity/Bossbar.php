@@ -8,6 +8,7 @@ use pocketmine\entity\EntityIds;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
+use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\SetEntityDataPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 use pocketmine\Player;
@@ -26,7 +27,7 @@ class Bossbar extends Vector3
 	 * @param float $hp
 	 * @param float $maxHp
 	 */
-	public function __construct(string $title, float $hp = 1, float $maxHp = 1)
+	public function __construct(string $title = "  §l§6Vector §bNetwork §eProject\n\n    §r§7Welcome to Games Server", float $hp = 100, float $maxHp = 100)
 	{
 		parent::__construct(0, 0, 0);
 		$flags = (
@@ -58,6 +59,23 @@ class Bossbar extends Vector3
 		}
 		if ($update) {
 			$this->BossbarUpdateAll();
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function RemoveBar(Player $player)
+	{
+		$pk = new BossEventPacket();
+		$pk->bossEid = $this->entityId;
+		$pk->eventType = BossEventPacket::TYPE_HIDE;
+		$player->dataPacket($pk);
+		$pk2 = new RemoveEntityPacket();
+		$pk2->entityUniqueId = $this->entityId;
+		$player->dataPacket($pk2);
+		if (isset($this->viewers[$player->getLoaderId()])) {
+			unset($this->viewers[$player->getLoaderId()]);
 		}
 	}
 

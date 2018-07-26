@@ -39,7 +39,7 @@ class PlayerJoin
 		$rank = $this->rank->getRank($name);
 		$tag = $this->tag->getTag($player);
 		$event->setJoinMessage("§b[§a参加§b] §7$name が参加しました。");
-		$bossbar = new Bossbar("  §l§6Vector §bNetwork §eProject\n\n    §r§7Welcome to Games Server", 100, 100);
+		$bossbar = new Bossbar();
 		$bossbar->sendBar($player);
 		$player->setNameTag("§7[§r $rank §7] §r$name");
 		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");

@@ -60,7 +60,6 @@ class Main extends PluginBase
 		$lobby->stopTime();
 		$ffapvp->stopTime();
 		$this->getLogger()->info(self::STARTMESSAGE);
-
 		Tag::registerColors();
 	}
 

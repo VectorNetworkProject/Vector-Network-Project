@@ -15,20 +15,22 @@ use pocketmine\Player;
 
 class TeleportFFAPvPTask extends PluginTask
 {
-    protected $player;
-    public function __construct(Main $plugin, Player $player)
-    {
-        parent::__construct($plugin);
-        $this->player = $player;
-    }
-    public function onRun(int $currentTick)
-    {
-        $this->player->teleport(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
-        $this->player->setSpawn(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
-        $this->player->setHealth(20);
-        $this->player->setMaxHealth(20);
-        $this->player->setFood(20);
-        $this->player->getInventory()->clearAll(true);
-        $this->player->sendMessage("§aテレポートしました。");
-    }
+	protected $player;
+
+	public function __construct(Main $plugin, Player $player)
+	{
+		parent::__construct($plugin);
+		$this->player = $player;
+	}
+
+	public function onRun(int $currentTick)
+	{
+		$this->player->teleport(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
+		$this->player->setSpawn(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
+		$this->player->setHealth(20);
+		$this->player->setMaxHealth(20);
+		$this->player->setFood(20);
+		$this->player->getInventory()->clearAll(true);
+		$this->player->sendMessage("§aテレポートしました。");
+	}
 }

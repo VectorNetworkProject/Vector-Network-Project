@@ -50,5 +50,16 @@ class PlayerLogin
 			];
 			$data->write('FFAPVP', $ffapvp);
 		}
+		if (($corepvp = $data->get("COREPVP")) === null) {
+			$corepvp = [
+				"name" => $name,
+				"kill" => 0,
+				"death" => 0,
+				"breakcore" => 0,
+				"win" => 0,
+				"lose" => 0
+			];
+			$data->write('COREPVP', $corepvp);
+		}
 	}
 }

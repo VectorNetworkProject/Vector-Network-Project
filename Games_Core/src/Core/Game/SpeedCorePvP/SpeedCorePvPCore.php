@@ -149,8 +149,17 @@ class SpeedCorePvPCore
 
 	public function Damage(EntityDamageEvent $event)
 	{
-		//思考中
-		//味方同士の攻撃を無効化したい
+		$entity = $event->getEntity();
+		if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
+			if ($this->team[$entity->getName()] !== false) {
+				$damager = $event->getDamager();
+				if ($damager instanceof Player) {
+					if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
+						$event->setCancelled(true);
+					}
+				}
+			}
+		}
 	}
 
 	/**

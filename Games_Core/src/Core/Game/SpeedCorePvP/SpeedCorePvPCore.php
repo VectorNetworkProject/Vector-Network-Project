@@ -14,6 +14,7 @@ use Core\Main;
 use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\LevelCheckingTask;
+use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -28,8 +29,8 @@ class SpeedCorePvPCore
 	protected $plugin;
 	protected $bluecolor;
 	protected $redcolor;
-	protected $bluehp = 50;
-	protected $redhp = 50;
+	protected $bluehp = 75;
+	protected $redhp = 75;
 	protected $bluecount = 0;
 	protected $redcount = 0;
 	protected $team = [];
@@ -37,6 +38,28 @@ class SpeedCorePvPCore
 	protected $money;
 	protected $level;
 	protected $fieldname = "corepvp";
+	protected $point = [
+		"blue.core" => [
+			"x" => 0,
+			"y" => 0,
+			"z" => 0
+		],
+		"blue.spawn" => [
+			"x" => 0,
+			"y" => 0,
+			"z" => 0
+		],
+		"red.core" => [
+			"x" => 0,
+			"y" => 0,
+			"z" => 0
+		],
+		"red.spawn" => [
+			"x" => 0,
+			"y" => 0,
+			"z" => 0
+		]
+	];
 
 	public function __construct(Main $plugin)
 	{
@@ -162,23 +185,52 @@ class SpeedCorePvPCore
 		}
 	}
 
+	public function BreakCore(Player $player, Block $block)
+	{
+		if ($this->CheckGame()) {
+			$red = $this->point["red.core"];
+			$blue = $this->point["blue.core"];
+			if ($player->getLevel()->getName() === $this->fieldname) {
+				if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
+					if ($this->team[$player->getName()] === "Blue") {
+						$this->redhp--;
+						$this->money->addMoney($player->getName(), 10);
+						$player->sendMessage("§a+10 §6V§bN§eCoin");
+						$this->level->LevelSystem($player);
+						$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+					}
+				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
+					if ($this->team[$player->getName()] === "Red") {
+						$this->bluehp--;
+						$this->money->addMoney($player->getName(), 10);
+						$player->sendMessage("§a+10 §6V§bN§eCoin");
+						$this->level->LevelSystem($player);
+						$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * @param string $team
 	 */
 	public function EndGame(string $team)
 	{
 		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-			if ($this->team[$player->getName()] === $team) {
-				$this->money->addMoney($player->getName(), 3000);
-				$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
-			} else {
-				$this->money->addMoney($player->getName(), 500);
-				$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
+			if ($player->getLevel()->getName() === $this->fieldname) {
+				if ($this->team[$player->getName()] === $team) {
+					$this->money->addMoney($player->getName(), 3000);
+					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
+				} else {
+					$this->money->addMoney($player->getName(), 500);
+					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
+				}
 			}
 		}
 		unset($this->team);
-		$this->setHP(1, 50);
-		$this->setHP(2, 50);
+		$this->setHP(1, 75);
+		$this->setHP(2, 75);
 		$this->bluecount = 0;
 		$this->redcount = 0;
 	}

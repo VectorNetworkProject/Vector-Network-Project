@@ -8,10 +8,14 @@
 
 namespace AntiCheat;
 
+use pocketmine\entity\Effect;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\LoginPacket;
@@ -21,6 +25,7 @@ use pocketmine\plugin\PluginBase;
 class Main extends PluginBase implements Listener
 {
 	private $banapi;
+	protected $breakcooldown = [];
 	protected $spamplayers = [];
 
 	public function onEnable(): void
@@ -34,11 +39,54 @@ class Main extends PluginBase implements Listener
 		$player = $event->getPlayer();
 		if (!$player->isOp()) {
 			if ($event->isFlying()) {
-				$this->banapi->addBan($player, "Flying", "AntiCheat", true);
+				$this->banapi->addBan($player, "Flying(飛行)", "AntiCheat", true);
 			} else {
-				$this->banapi->addBan($player, "Flying", "AntiCheat", true);
+				$this->banapi->addBan($player, "Flying(飛行)", "AntiCheat", true);
 			}
 		}
+	}
+
+	public function onInteract(PlayerInteractEvent $event)
+	{
+		if ($event->getAction() === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
+			$this->breakcooldown[$event->getPlayer()->getRawUniqueId()] = floor(microtime(true) * 20);
+		}
+	}
+
+	public function onBreak(BlockBreakEvent $event)
+	{
+		if (!$event->getInstaBreak()) {
+			do {
+				$player = $event->getPlayer();
+				if (!isset($this->breakTimes[$uuid = $player->getRawUniqueId()])) {
+					$player->kick("FastBreak(高速破壊)", true);
+					$this->getServer()->broadcastMessage($player->getName() . " は AntiCheat によってKickされました。\n理由: FastBreak(高速破壊)");
+					$event->setCancelled();
+					break;
+				}
+				$expectedTime = ceil($event->getBlock()->getBreakTime($event->getItem()) * 20);
+				if ($player->hasEffect(Effect::HASTE)) {
+					$expectedTime *= 1 - (0.2 * $player->getEffect(Effect::HASTE)->getEffectLevel());
+				}
+				if ($player->hasEffect(Effect::MINING_FATIGUE)) {
+					$expectedTime *= 1 + (0.3 * $player->getEffect(Effect::MINING_FATIGUE)->getEffectLevel());
+				}
+				$expectedTime -= 1;
+				$actualTime = ceil(microtime(true) * 20) - $this->breakcooldown[$uuid = $player->getRawUniqueId()];
+				if ($actualTime < $expectedTime) {
+					$player->kick("FastBreak(高速破壊)", true);
+					$this->getServer()->broadcastMessage($player->getName() . " は AntiCheat によってKickされました。\n理由: FastBreak(高速破壊)");
+					$event->setCancelled();
+					break;
+				}
+				unset($this->breakcooldown[$uuid]);
+			} while (false);
+		}
+	}
+
+	public function onPlayerQuit(PlayerQuitEvent $event)
+	{
+		unset($this->breakcooldown[$event->getPlayer()->getRawUniqueId()]);
 	}
 
 	public function onReceive(DataPacketReceiveEvent $event)
@@ -47,7 +95,7 @@ class Main extends PluginBase implements Listener
 		if ($packet instanceof LoginPacket) {
 			if ($packet->clientId === 0) {
 				$player = $event->getPlayer();
-				$this->banapi->addBan($player, "Toolbox", "AntiCheat", true);
+				$this->banapi->addBan($player, "Toolbox(ツール)", "AntiCheat", true);
 			}
 		}
 	}

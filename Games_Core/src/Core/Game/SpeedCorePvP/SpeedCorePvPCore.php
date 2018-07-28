@@ -39,24 +39,24 @@ class SpeedCorePvPCore
 	protected $fieldname = "corepvp";
 	protected $point = [
 		"blue.core" => [
-			"x" => 0,
-			"y" => 0,
-			"z" => 0
+			"x" => 52,
+			"y" => 61,
+			"z" => -100
 		],
 		"blue.spawn" => [
-			"x" => 0,
-			"y" => 0,
-			"z" => 0
+			"x" => 52,
+			"y" => 66,
+			"z" => -100
 		],
 		"red.core" => [
-			"x" => 0,
-			"y" => 0,
-			"z" => 0
+			"x" => 235,
+			"y" => 61,
+			"z" => 11
 		],
 		"red.spawn" => [
-			"x" => 0,
-			"y" => 0,
-			"z" => 0
+			"x" => 235,
+			"y" => 66,
+			"z" => 11
 		]
 	];
 

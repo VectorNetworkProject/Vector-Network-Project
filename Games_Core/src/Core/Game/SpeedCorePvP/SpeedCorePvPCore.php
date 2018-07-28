@@ -15,7 +15,6 @@ use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\LevelCheckingTask;
 use pocketmine\block\Block;
-use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Armor;
@@ -145,6 +144,9 @@ class SpeedCorePvPCore
 		$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 	}
 
+	/**
+	 * @param Player $player
+	 */
 	public function AddDeathCount(Player $player)
 	{
 		if ($player->getLevel()->getName() === $this->fieldname) {
@@ -155,6 +157,9 @@ class SpeedCorePvPCore
 		}
 	}
 
+	/**
+	 * @param Player $player
+	 */
 	public function AddKillCount(Player $player)
 	{
 		if ($player->getLevel()->getName() === $this->fieldname) {
@@ -170,21 +175,43 @@ class SpeedCorePvPCore
 		}
 	}
 
+	/**
+	 * @param Player $player
+	 */
+	public function AddBreakCoreCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('COREPVP');
+			$data['breakcore'] += 1;
+			$datafile->write('COREPVP', $data);
+		}
+	}
+
+	/**
+	 * @param EntityDamageEvent $event
+	 */
 	public function Damage(EntityDamageEvent $event)
 	{
 		$entity = $event->getEntity();
-		if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
-			if ($this->team[$entity->getName()] !== false) {
-				$damager = $event->getDamager();
-				if ($damager instanceof Player) {
-					if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
-						$event->setCancelled(true);
+		if ($entity->getLevel()->getName() === $this->fieldname) {
+			if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
+				if ($this->team[$entity->getName()] !== false) {
+					$damager = $event->getDamager();
+					if ($damager instanceof Player) {
+						if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
+							$event->setCancelled(true);
+						}
 					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * @param Player $player
+	 * @param Block $block
+	 */
 	public function BreakCore(Player $player, Block $block)
 	{
 		if ($this->CheckGame()) {
@@ -195,16 +222,20 @@ class SpeedCorePvPCore
 					if ($this->team[$player->getName()] === "Blue") {
 						$this->redhp--;
 						$this->money->addMoney($player->getName(), 10);
+						$this->AddBreakCoreCount($player);
 						$player->sendMessage("§a+10 §6V§bN§eCoin");
 						$this->level->LevelSystem($player);
+						$this->plugin->getServer()->broadcastPopup("§cRed §6のコアが削られています。");
 						$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					}
 				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 					if ($this->team[$player->getName()] === "Red") {
 						$this->bluehp--;
 						$this->money->addMoney($player->getName(), 10);
+						$this->AddBreakCoreCount($player);
 						$player->sendMessage("§a+10 §6V§bN§eCoin");
 						$this->level->LevelSystem($player);
+						$this->plugin->getServer()->broadcastPopup("§9Blue §6のコアが削られています。");
 						$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					}
 				}

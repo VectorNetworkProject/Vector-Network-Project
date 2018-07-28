@@ -53,12 +53,16 @@ class Main extends PluginBase
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getServer()->loadLevel("ffapvp");
+		$this->getServer()->loadLevel("corepvp");
 		$lobby = $this->getServer()->getLevelByName("lobby");
 		$ffapvp = $this->getServer()->getLevelByName("ffapvp");
+		$speedcorepvp = $this->getServer()->getLevelByName("corepvp");
 		$ffapvp->setTime(Level::TIME_FULL);
 		$lobby->setTime(Level::TIME_FULL);
+		$speedcorepvp->setTime(Level::TIME_FULL);
 		$lobby->stopTime();
 		$ffapvp->stopTime();
+		$speedcorepvp->stopTime();
 		$this->getLogger()->info(self::STARTMESSAGE);
 		Tag::registerColors();
 	}

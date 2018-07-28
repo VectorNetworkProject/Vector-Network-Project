@@ -15,6 +15,7 @@ use Core\Player\Rank;
 use Core\Player\Tag;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
+use Core\Task\Teleport\TeleportSpeedCorePvPTask;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
@@ -149,6 +150,27 @@ class DataPacketReceive
 							} else {
 								$player->sendMessage("§e10秒後テレポートします。");
 								$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportFFAPvPTask($this->plugin, $player), 10 * 20);
+							}
+						}
+						break;
+					case 2:
+						if ($player->getLevel()->getName() === "corepvp") {
+							$player->sendMessage("§c既にCorePvPに居ます");
+						} else {
+							if ($player->getLevel()->getName() === "lobby") {
+								if ($player->isOp()) {
+									$player->teleport(new Position(255, 8, 257, $this->plugin->getServer()->getLevelByName("corepvp")));
+									$player->sendMessage("§aテレポートしました。");
+								} else {
+									$player->sendMessage("このゲームは現在開発中の為ADMIN以外テレポートする事が出来ません。");
+								}
+							} else {
+								if ($player->isOp()) {
+									$player->sendMessage("§e10秒後テレポートします。");
+									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSpeedCorePvPTask($this->plugin, $player), 10 * 20);
+								} else {
+									$player->sendMessage("このゲームは現在開発中の為ADMIN以外テレポートする事が出来ません。");
+								}
 							}
 						}
 						break;

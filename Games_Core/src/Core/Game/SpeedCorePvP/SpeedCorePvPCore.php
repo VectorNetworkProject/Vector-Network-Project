@@ -116,7 +116,7 @@ class SpeedCorePvPCore
 	 * @param int $teamid
 	 * @return int
 	 */
-	public function getHP(int $teamid)
+	public function getHP(int $teamid): int
 	{
 		switch ($teamid) {
 			case 1:

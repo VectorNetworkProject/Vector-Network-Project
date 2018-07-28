@@ -19,7 +19,7 @@ class Tip extends PluginTask
 
 	public function onRun(int $currentTick)
 	{
-		$rand = mt_rand(1, 7);
+		$rand = mt_rand(1, 10);
 		switch ($rand) {
 			case 1:
 				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7このゲームはまだ未完成です。");
@@ -41,6 +41,15 @@ class Tip extends PluginTask
 				break;
 			case 7:
 				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7まだ開発中でありまだまだ機能追加を予定しています！！");
+				break;
+			case 8:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7運営チームのなりすましにご注意ください。");
+				break;
+			case 9:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7Hackerなどの報告はDiscordからお願いします。");
+				break;
+			case 10:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7/selectgameでゲームを選択できます。");
 				break;
 		}
 	}

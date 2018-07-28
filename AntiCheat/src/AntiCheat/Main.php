@@ -4,6 +4,8 @@
  * User: InkoHX
  * Date: 2018/06/13
  * Time: 13:39
+ *
+ * 参考にしたプラグイン: https://github.com/pmmp/AntiInstaBreak
  */
 
 namespace AntiCheat;

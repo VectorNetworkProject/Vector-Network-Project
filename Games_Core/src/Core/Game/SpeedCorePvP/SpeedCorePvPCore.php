@@ -72,12 +72,24 @@ class SpeedCorePvPCore
 	/**
 	 * @return bool
 	 */
-	public function CheckGame(): bool
+	public function getGameMode(): bool
 	{
 		if ($this->gamemode) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * @param bool $bool
+	 */
+	public function setGameMode(bool $bool)
+	{
+		if ($bool) {
+			$this->gamemode = true;
+		} else {
+			$this->gamemode = false;
 		}
 	}
 
@@ -101,9 +113,83 @@ class SpeedCorePvPCore
 	}
 
 	/**
+	 * @param int $teamid
+	 * @return int
+	 */
+	public function getHP(int $teamid)
+	{
+		switch ($teamid) {
+			case 1:
+				return $this->redhp;
+				break;
+			case 2:
+				return $this->bluehp;
+				break;
+			default:
+				return 0;
+				break;
+		}
+	}
+
+	/**
+	 * @param int $teamid
+	 * @param int $count
+	 */
+	public function setPlayerCount(int $teamid, int $count)
+	{
+		switch ($teamid) {
+			case 1:
+				$this->redcount = $count;
+				break;
+			case 2:
+				$this->bluecount = $count;
+				break;
+			default:
+				return;
+				break;
+		}
+	}
+
+	/**
+	 * @param int $teamid
+	 */
+	public function AddPlayerCount(int $teamid)
+	{
+		switch ($teamid) {
+			case 1:
+				$this->redcount++;
+				break;
+			case 2:
+				$this->bluecount++;
+				break;
+			default:
+				return;
+				break;
+		}
+	}
+
+	/**
+	 * @param int $teamid
+	 */
+	public function ReducePlayerCount(int $teamid)
+	{
+		switch ($teamid) {
+			case 1:
+				$this->redcount--;
+				break;
+			case 2:
+				$this->bluecount--;
+				break;
+			default:
+				return;
+				break;
+		}
+	}
+
+	/**
 	 * @param Player $player
 	 */
-	public function SCRespawn(Player $player)
+	public function Kit(Player $player)
 	{
 		$armors = [
 			"leather_cap" => Item::get(Item::LEATHER_CAP, 0, 1),
@@ -140,8 +226,17 @@ class SpeedCorePvPCore
 		$player->getInventory()->addItem($weapons['gold_pickaxe']);
 		$player->getInventory()->addItem(Item::get(Item::BREAD, 0, 64));
 		$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 64));
-		$this->AddDeathCount($player);
-		$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function Respawn(Player $player)
+	{
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			$this->Kit($player);
+			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
+		}
 	}
 
 	/**
@@ -214,29 +309,37 @@ class SpeedCorePvPCore
 	 */
 	public function BreakCore(Player $player, Block $block)
 	{
-		if ($this->CheckGame()) {
+		if ($this->getGameMode()) {
 			$red = $this->point["red.core"];
 			$blue = $this->point["blue.core"];
 			if ($player->getLevel()->getName() === $this->fieldname) {
 				if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
 					if ($this->team[$player->getName()] === "Blue") {
-						$this->redhp--;
-						$this->money->addMoney($player->getName(), 10);
-						$this->AddBreakCoreCount($player);
-						$player->sendMessage("§a+10 §6V§bN§eCoin");
-						$this->level->LevelSystem($player);
-						$this->plugin->getServer()->broadcastPopup("§cRed §6のコアが削られています。");
-						$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+						if ($this->redcount >= 3 && $this->bluecount >= 3) {
+							$this->redhp--;
+							$this->money->addMoney($player->getName(), 10);
+							$this->AddBreakCoreCount($player);
+							$player->sendMessage("§a+10 §6V§bN§eCoin");
+							$this->level->LevelSystem($player);
+							$this->plugin->getServer()->broadcastPopup("§cRed §6のコアが削られています。");
+							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+						} else {
+							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
+						}
 					}
 				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 					if ($this->team[$player->getName()] === "Red") {
-						$this->bluehp--;
-						$this->money->addMoney($player->getName(), 10);
-						$this->AddBreakCoreCount($player);
-						$player->sendMessage("§a+10 §6V§bN§eCoin");
-						$this->level->LevelSystem($player);
-						$this->plugin->getServer()->broadcastPopup("§9Blue §6のコアが削られています。");
-						$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+						if ($this->bluecount >= 3 && $this->redcount >= 3) {
+							$this->bluehp--;
+							$this->money->addMoney($player->getName(), 10);
+							$this->AddBreakCoreCount($player);
+							$player->sendMessage("§a+10 §6V§bN§eCoin");
+							$this->level->LevelSystem($player);
+							$this->plugin->getServer()->broadcastPopup("§9Blue §6のコアが削られています。");
+							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+						} else {
+							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
+						}
 					}
 				}
 			}
@@ -262,7 +365,8 @@ class SpeedCorePvPCore
 		unset($this->team);
 		$this->setHP(1, 75);
 		$this->setHP(2, 75);
-		$this->bluecount = 0;
-		$this->redcount = 0;
+		$this->SetPlayerCount(1, 0);
+		$this->SetPlayerCount(2, 0);
+		$this->setGameMode(false);
 	}
 }

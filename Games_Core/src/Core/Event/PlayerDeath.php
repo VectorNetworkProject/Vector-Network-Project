@@ -9,6 +9,7 @@
 namespace Core\Event;
 
 use Core\Game\FFAPvP\FFAPvPCore;
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use Core\Player\KillSound;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -21,11 +22,13 @@ class PlayerDeath
 	protected $plugin;
 	protected $ffapvp;
 	protected $killsound;
+	protected $speedcorepvp;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
+		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 		$this->killsound = new KillSound($this->plugin);
 	}
 
@@ -45,6 +48,17 @@ class PlayerDeath
 					if (!$damager->getMaxHealth() >= 40) {
 						$damager->setMaxHealth($damager->getMaxHealth() + 1);
 					}
+					$damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
+					$this->killsound->PlaySound($damager);
+				}
+			}
+		} elseif ($player->getLevel()->getName() === "corepvp") {
+			$event->setDrops([Item::get(Item::AIR, 0, 0)]);
+			$this->speedcorepvp->AddDeathCount($player);
+			if ($cause instanceof EntityDamageByEntityEvent) {
+				$damager = $cause->getDamager();
+				if ($damager instanceof Player) {
+					$this->speedcorepvp->AddKillCount($damager);
 					$damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
 					$this->killsound->PlaySound($damager);
 				}

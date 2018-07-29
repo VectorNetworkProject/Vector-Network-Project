@@ -229,7 +229,7 @@ class SpeedCorePvPCore
 					$player->sendMessage("§cあなたは既にチームに所属しています。");
 					return;
 				}
-				
+
 				if ($this->redcount < $this->bluecount) {
 					$this->team[$player->getName()] = "Red";
 					$this->AddPlayerCount(1);
@@ -445,12 +445,10 @@ class SpeedCorePvPCore
 		$entity = $event->getEntity();
 		if ($entity->getLevel()->getName() === $this->fieldname) {
 			if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
-				if ($this->team[$entity->getName()] !== false) {
-					$damager = $event->getDamager();
-					if ($damager instanceof Player) {
-						if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
-							$event->setCancelled(true);
-						}
+				$damager = $event->getDamager();
+				if ($damager instanceof Player) {
+					if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
+						$event->setCancelled(true);
 					}
 				}
 			}

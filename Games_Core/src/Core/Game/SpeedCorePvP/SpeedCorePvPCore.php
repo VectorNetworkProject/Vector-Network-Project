@@ -275,16 +275,25 @@ class SpeedCorePvPCore
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		if ($player->getLevel()->getName() === $this->fieldname) {
-			if ($block->getId() === Block::IRON_ORE) {
-				$event->setDrops([Item::get(Item::IRON_INGOT, 0, 1)]);
-			} elseif ($block->getId() === Block::GOLD_ORE) {
-				$event->setDrops([Item::get(Item::GOLD_INGOT, 0, 1)]);
-			} elseif ($block->getId() === Block::MELON_BLOCK) {
-				$event->setDrops([Item::get(Item::MELON, 0, 16)]);
-			} elseif ($block->getId() === Block::LOG) {
-				$event->setDrops([Item::get(Item::LOG, 0, 1)]);
-			} elseif ($block->getId() === Block::COAL_ORE) {
-				$event->setDrops([Item::get(Item::COAL, 0, 1)]);
+			switch ($block->getId()) {
+				case Block::IRON_ORE:
+					$event->setDrops([Item::get(Item::IRON_INGOT, 0, 1)]);
+					break;
+				case Block::GOLD_ORE:
+					$event->setDrops([Item::get(Item::GOLD_INGOT, 0, 1)]);
+					break;
+				case Block::COAL_ORE:
+					$event->setDrops([Item::get(Item::COAL, 0, 1)]);
+					break;
+				case Block::DIAMOND_ORE:
+					$event->setDrops([Item::get(Item::DIAMOND, 0, 1)]);
+					break;
+				case Block::MELON_BLOCK:
+					$event->setDrops([Item::get(Item::MELON, 0, 16)]);
+					break;
+				case Block::LOG:
+					$event->setDrops([Item::get(Item::LOG, 0, 1)]);
+					break;
 			}
 			if (isset(self::$blockids[$block->getId()])) {
 				if (isset($event->getDrops()[0])) {

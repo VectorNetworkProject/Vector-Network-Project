@@ -13,13 +13,16 @@ use Core\DataFile;
 use Core\Main;
 use Core\Player\Level;
 use Core\Player\Money;
+use Core\Task\AutosetBlockTask;
 use Core\Task\LevelCheckingTask;
 use pocketmine\block\Block;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
+use pocketmine\level\Position;
 use pocketmine\Player;
 use pocketmine\utils\Color;
 
@@ -68,6 +71,15 @@ class SpeedCorePvPCore
 		$this->money = new Money();
 		$this->level = new Level();
 	}
+
+	public static $blockids = [
+		Block::IRON_ORE => 20,
+		Block::GOLD_ORE => 20,
+		Block::COAL_ORE => 15,
+		Block::DIAMOND_ORE => 60,
+		Block::LOG => 10,
+		Block::MELON_BLOCK => 10
+	];
 
 	/**
 	 * @return bool
@@ -165,6 +177,135 @@ class SpeedCorePvPCore
 			default:
 				return;
 				break;
+		}
+	}
+
+	/**
+	 * @param int $teamid
+	 * @return int
+	 */
+	public function getPlayerCount(int $teamid): int
+	{
+		switch ($teamid) {
+			case 1:
+				return $this->redcount;
+				break;
+			case 2:
+				return $this->bluecount;
+				break;
+			default:
+				return 0;
+				break;
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function setSpawn(Player $player)
+	{
+		$level = $this->plugin->getServer()->getLevelByName($this->fieldname);
+		$red = $this->point["red.spawn"];
+		$blue = $this->point["blue.spawn"];
+		if ($this->team[$player->getName()] === "Red") {
+			$player->setSpawn(new Position($red["x"], $red["y"], $red["z"], $level));
+			$player->teleport(new Position($red["x"], $red["y"], $red["z"], $level));
+		} else {
+			$player->setSpawn(new Position($blue["x"], $blue["y"], $blue["z"], $level));
+			$player->teleport(new Position($blue["x"], $blue["y"], $blue["z"], $level));
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 * @param Block $block
+	 */
+	public function GameJoin(Player $player, Block $block)
+	{
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			if ($block->getId() === Block::EMERALD_BLOCK) {
+				$this->setGameMode(true);
+				if (!isset($this->team[$player->getName()])) {
+					if (empty($this->team[$player->getName()])) {
+						if ($this->redcount < $this->bluecount) {
+							$this->team[$player->getName()] = "Red";
+							$this->AddPlayerCount(1);
+							$this->setSpawn($player);
+							$this->Kit($player);
+							$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
+						} elseif ($this->bluecount > $this->redcount) {
+							$this->team[$player->getName()] = "Blue";
+							$this->AddPlayerCount(2);
+							$this->setSpawn($player);
+							$this->Kit($player);
+							$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
+						}
+					} else {
+						if (mt_rand(0, 1) === 0) {
+							$this->team[$player->getName()] = "Red";
+							$this->AddPlayerCount(1);
+							$this->setSpawn($player);
+							$this->Kit($player);
+							$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
+						} else {
+							$this->team[$player->getName()] = "Blue";
+							$this->AddPlayerCount(2);
+							$this->setSpawn($player);
+							$this->Kit($player);
+							$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
+						}
+					}
+				} else {
+					$player->sendMessage("§cあなたは既にチームに所属しています。");
+				}
+			}
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function GameQuit(Player $player)
+	{
+		if (isset($this->team[$player->getName()])) {
+			if ($this->team[$player->getName()] === "Red") {
+				unset($this->team[$player->getName()]);
+				$this->ReducePlayerCount(1);
+				$player->sendMessage("§cRed §aTeamから退出しました。");
+			} elseif ($this->team[$player->getName()] === "Blue") {
+				unset($this->team[$player->getName()]);
+				$this->ReducePlayerCount(2);
+				$player->sendMessage("§9Blue §aTeamから退出しました。");
+			}
+		}
+	}
+
+	/**
+	 * @param BlockBreakEvent $event
+	 */
+	public function DropItem(BlockBreakEvent $event)
+	{
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			if ($block->getId() === Block::IRON_ORE) {
+				$event->setDrops([Item::get(Item::IRON_INGOT, 0, 1)]);
+			} elseif ($block->getId() === Block::GOLD_ORE) {
+				$event->setDrops([Item::get(Item::GOLD_INGOT, 0, 1)]);
+			} elseif ($block->getId() === Block::MELON_BLOCK) {
+				$event->setDrops([Item::get(Item::MELON, 0, 16)]);
+			} elseif ($block->getId() === Block::LOG) {
+				$event->setDrops([Item::get(Item::LOG, 0, 1)]);
+			} elseif ($block->getId() === Block::COAL_ORE) {
+				$event->setDrops([Item::get(Item::COAL, 0, 1)]);
+			}
+			if (isset(self::$blockids[$block->getId()])) {
+				if (isset($event->getDrops()[0])) {
+					$player->getInventory()->addItem($event->getDrops()[0]);
+					$event->setDrops([Item::get(Item::AIR, 0, 0)]);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new AutosetBlockTask($this->plugin, $block), self::$blockids[$block->getId()] * 20);
+				}
+			}
 		}
 	}
 
@@ -273,6 +414,32 @@ class SpeedCorePvPCore
 	/**
 	 * @param Player $player
 	 */
+	public function AddWinCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('COREPVP');
+			$data['win'] += 1;
+			$datafile->write('COREPVP', $data);
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function AddLoseCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('COREPVP');
+			$data['lose'] += 1;
+			$datafile->write('COREPVP', $data);
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
 	public function AddBreakCoreCount(Player $player)
 	{
 		if ($player->getLevel()->getName() === $this->fieldname) {
@@ -304,11 +471,12 @@ class SpeedCorePvPCore
 	}
 
 	/**
-	 * @param Player $player
-	 * @param Block $block
+	 * @param BlockBreakEvent $event
 	 */
-	public function BreakCore(Player $player, Block $block)
+	public function BreakCore(BlockBreakEvent $event)
 	{
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
 		if ($this->getGameMode()) {
 			$red = $this->point["red.core"];
 			$blue = $this->point["blue.core"];
@@ -316,6 +484,7 @@ class SpeedCorePvPCore
 				if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
 					if ($this->team[$player->getName()] === "Blue") {
 						if ($this->redcount >= 3 && $this->bluecount >= 3) {
+							$event->setCancelled(true);
 							$this->redhp--;
 							$this->money->addMoney($player->getName(), 10);
 							$this->AddBreakCoreCount($player);
@@ -323,13 +492,18 @@ class SpeedCorePvPCore
 							$this->level->LevelSystem($player);
 							$this->plugin->getServer()->broadcastPopup("§cRed §6のコアが削られています。");
 							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+							if ($this->redhp <= 0) {
+								$this->EndGame("Blue");
+							}
 						} else {
+							$event->setCancelled(true);
 							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 						}
 					}
 				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 					if ($this->team[$player->getName()] === "Red") {
 						if ($this->bluecount >= 3 && $this->redcount >= 3) {
+							$event->setCancelled(true);
 							$this->bluehp--;
 							$this->money->addMoney($player->getName(), 10);
 							$this->AddBreakCoreCount($player);
@@ -337,7 +511,11 @@ class SpeedCorePvPCore
 							$this->level->LevelSystem($player);
 							$this->plugin->getServer()->broadcastPopup("§9Blue §6のコアが削られています。");
 							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+							if ($this->bluehp <= 0) {
+								$this->EndGame("Red");
+							}
 						} else {
+							$event->setCancelled(true);
 							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 						}
 					}
@@ -355,9 +533,11 @@ class SpeedCorePvPCore
 			if ($player->getLevel()->getName() === $this->fieldname) {
 				if ($this->team[$player->getName()] === $team) {
 					$this->money->addMoney($player->getName(), 3000);
+					$this->AddWinCount($player);
 					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
 				} else {
 					$this->money->addMoney($player->getName(), 500);
+					$this->AddLoseCount($player);
 					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
 				}
 			}

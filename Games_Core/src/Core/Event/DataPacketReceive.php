@@ -8,6 +8,7 @@
 
 namespace Core\Event;
 
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use Core\Player\KillSound;
 use Core\Player\Money;
@@ -29,6 +30,7 @@ class DataPacketReceive
 	protected $rank;
 	protected $tag;
 	protected $killsound;
+	protected $speedcorepvp;
 
 	public function __construct(Main $plugin)
 	{
@@ -37,6 +39,7 @@ class DataPacketReceive
 		$this->rank = new Rank($this->plugin);
 		$this->tag = new Tag();
 		$this->killsound = new KillSound($this->plugin);
+		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 		$this->ok = "§7[§a成功§7] §a購入に成功しました。";
 		$this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
 	}
@@ -158,19 +161,12 @@ class DataPacketReceive
 							$player->sendMessage("§c既にCorePvPに居ます");
 						} else {
 							if ($player->getLevel()->getName() === "lobby") {
-								if ($player->isOp()) {
-									$player->teleport(new Position(255, 8, 257, $this->plugin->getServer()->getLevelByName("corepvp")));
-									$player->sendMessage("§aテレポートしました。");
-								} else {
-									$player->sendMessage("このゲームは現在開発中の為ADMIN以外テレポートする事が出来ません。");
-								}
+								$player->teleport(new Position(255, 8, 257, $this->plugin->getServer()->getLevelByName("corepvp")));
+								$player->sendMessage("§aテレポートしました。");
 							} else {
-								if ($player->isOp()) {
-									$player->sendMessage("§e10秒後テレポートします。");
-									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSpeedCorePvPTask($this->plugin, $player), 10 * 20);
-								} else {
-									$player->sendMessage("このゲームは現在開発中の為ADMIN以外テレポートする事が出来ません。");
-								}
+
+								$player->sendMessage("§e10秒後テレポートします。");
+								$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSpeedCorePvPTask($this->plugin, $player), 10 * 20);
 							}
 						}
 						break;

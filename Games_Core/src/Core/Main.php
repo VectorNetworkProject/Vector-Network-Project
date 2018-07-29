@@ -23,6 +23,7 @@ use Core\Commands\selectgame;
 use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
+use Core\Task\AutoSavingTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
@@ -52,6 +53,7 @@ class Main extends PluginBase
 		self::$datafolder = $this->getDataFolder();
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 30 * 20);
 		$this->getServer()->loadLevel("ffapvp");
 		$this->getServer()->loadLevel("corepvp");
 		$lobby = $this->getServer()->getLevelByName("lobby");

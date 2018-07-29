@@ -20,6 +20,7 @@ use Core\Event\PlayerLogin;
 use Core\Event\PlayerMove;
 use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
+use Core\Event\PlayerRespawn;
 use Core\Game\FFAPvP\FFAPvPCore;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -33,6 +34,7 @@ use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 
 class EventListener implements Listener
@@ -51,6 +53,7 @@ class EventListener implements Listener
 	protected $blockplaceevent;
 	protected $playerinteractevent;
 	protected $playercommandpreprocessevent;
+	protected $playerrespawnevent;
 
 	public function __construct(Main $plugin)
 	{
@@ -68,6 +71,7 @@ class EventListener implements Listener
 		$this->blockplaceevent = new BlockPlace($this->plugin);
 		$this->playerinteractevent = new PlayerInteract($this->plugin);
 		$this->playercommandpreprocessevent = new PlayerCommandPreprocess($this->plugin);
+		$this->playerrespawnevent = new PlayerRespawn($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -128,5 +132,10 @@ class EventListener implements Listener
 	public function onPlayerCommandPreprocess(PlayerCommandPreprocessEvent $event)
 	{
 		$this->playercommandpreprocessevent->event($event);
+	}
+
+	public function onRespawn(PlayerRespawnEvent $event)
+	{
+		$this->playerrespawnevent->event($event);
 	}
 }

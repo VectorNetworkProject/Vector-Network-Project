@@ -19,9 +19,7 @@ class AutoSavingTask extends PluginTask
 	}
 	public function onRun(int $currentTick)
 	{
-		$this->owner->getLogger()->info("§aオートセーブを開始します。");
 		$this->owner->getServer()->getLevelByName("ffapvp")->save(true);
 		$this->owner->getServer()->getLevelByName("lobby")->save(true);
-		$this->owner->getLogger()->info("§aオートセーブが完了しました。");
 	}
 }

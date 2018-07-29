@@ -53,13 +53,11 @@ class PlayerDeath
 				}
 			}
 		} elseif ($player->getLevel()->getName() === "corepvp") {
-			$event->setDrops([Item::get(Item::AIR, 0, 0)]);
 			$this->speedcorepvp->AddDeathCount($player);
 			if ($cause instanceof EntityDamageByEntityEvent) {
 				$damager = $cause->getDamager();
 				if ($damager instanceof Player) {
 					$this->speedcorepvp->AddKillCount($damager);
-					$damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
 					$this->killsound->PlaySound($damager);
 				}
 			}

@@ -8,6 +8,7 @@
 
 namespace Core\Task\Teleport;
 
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use Core\Task\PluginTask;
 use pocketmine\level\Position;
@@ -15,12 +16,14 @@ use pocketmine\Player;
 
 class TeleportFFAPvPTask extends PluginTask
 {
-	protected $player;
+	protected $player, $plugin, $speedcorepvp;
 
 	public function __construct(Main $plugin, Player $player)
 	{
 		parent::__construct($plugin);
+		$this->plugin = $plugin;
 		$this->player = $player;
+		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 	}
 
 	public function onRun(int $currentTick)
@@ -31,6 +34,7 @@ class TeleportFFAPvPTask extends PluginTask
 		$this->player->setMaxHealth(20);
 		$this->player->setFood(20);
 		$this->player->getInventory()->clearAll(true);
+		$this->speedcorepvp->GameQuit($this->player);
 		$this->player->sendMessage("§aテレポートしました。");
 	}
 }

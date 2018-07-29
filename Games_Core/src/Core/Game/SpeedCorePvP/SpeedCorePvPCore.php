@@ -225,38 +225,41 @@ class SpeedCorePvPCore
 		if ($player->getLevel()->getName() === $this->fieldname) {
 			if ($block->getId() === Block::EMERALD_BLOCK) {
 				$this->setGameMode(true);
-				if (!isset($this->team[$player->getName()])) {
-					if (empty($this->team[$player->getName()])) {
-						if ($this->redcount < $this->bluecount) {
-							$this->team[$player->getName()] = "Red";
-							$this->AddPlayerCount(1);
-							$this->setSpawn($player);
-							$this->Kit($player);
-							$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
-						} elseif ($this->bluecount > $this->redcount) {
-							$this->team[$player->getName()] = "Blue";
-							$this->AddPlayerCount(2);
-							$this->setSpawn($player);
-							$this->Kit($player);
-							$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
-						}
-					} else {
-						if (mt_rand(0, 1) === 0) {
-							$this->team[$player->getName()] = "Red";
-							$this->AddPlayerCount(1);
-							$this->setSpawn($player);
-							$this->Kit($player);
-							$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
-						} else {
-							$this->team[$player->getName()] = "Blue";
-							$this->AddPlayerCount(2);
-							$this->setSpawn($player);
-							$this->Kit($player);
-							$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
-						}
-					}
-				} else {
+				if (isset($this->team[$player->getName()])) {
 					$player->sendMessage("§cあなたは既にチームに所属しています。");
+					return;
+				}
+				
+				if (mt_rand(0, 1) === 0) {
+					$this->team[$player->getName()] = "Red";
+					$this->AddPlayerCount(1);
+					$this->setSpawn($player);
+					$this->Kit($player);
+					$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
+					return;
+				} else {
+					$this->team[$player->getName()] = "Blue";
+		     		$this->AddPlayerCount(2);
+					$this->setSpawn($player);
+					$this->Kit($player);
+					$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
+					return;
+				}
+				
+				if ($this->redcount < $this->bluecount) {
+					$this->team[$player->getName()] = "Red";
+					$this->AddPlayerCount(1);
+					$this->setSpawn($player);
+					$this->Kit($player);
+					$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
+					return;
+				} else {
+					$this->team[$player->getName()] = "Blue";
+					$this->AddPlayerCount(2);
+					$this->setSpawn($player);
+					$this->Kit($player);
+					$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
+					return;
 				}
 			}
 		}

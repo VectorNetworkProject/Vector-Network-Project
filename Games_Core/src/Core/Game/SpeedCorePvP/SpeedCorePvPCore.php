@@ -230,22 +230,6 @@ class SpeedCorePvPCore
 					return;
 				}
 				
-				if (mt_rand(0, 1) === 0) {
-					$this->team[$player->getName()] = "Red";
-					$this->AddPlayerCount(1);
-					$this->setSpawn($player);
-					$this->Kit($player);
-					$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
-					return;
-				} else {
-					$this->team[$player->getName()] = "Blue";
-		     		$this->AddPlayerCount(2);
-					$this->setSpawn($player);
-					$this->Kit($player);
-					$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
-					return;
-				}
-				
 				if ($this->redcount < $this->bluecount) {
 					$this->team[$player->getName()] = "Red";
 					$this->AddPlayerCount(1);

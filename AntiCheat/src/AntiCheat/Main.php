@@ -55,7 +55,7 @@ class Main extends PluginBase implements Listener
 		}
 	}
 
-	public function onBreak(BlockBreakEvent $event)
+	/* public function onBreak(BlockBreakEvent $event)
 	{
 		if (!$event->getInstaBreak()) {
 			do {
@@ -80,7 +80,7 @@ class Main extends PluginBase implements Listener
 				unset($this->breakcooldown[$uuid]);
 			} while (false);
 		}
-	}
+	} */
 
 	public function onPlayerQuit(PlayerQuitEvent $event)
 	{

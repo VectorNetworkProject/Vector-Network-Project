@@ -61,9 +61,7 @@ class Main extends PluginBase implements Listener
 			do {
 				$player = $event->getPlayer();
 				if (!isset($this->breakTimes[$uuid = $player->getRawUniqueId()])) {
-					$player->kick("FastBreak(高速破壊)", true);
-					$this->getServer()->broadcastMessage($player->getName() . " は AntiCheat によってKickされました。\n理由: FastBreak(高速破壊)");
-					$event->setCancelled();
+					$event->setCancelled(true);
 					break;
 				}
 				$expectedTime = ceil($event->getBlock()->getBreakTime($event->getItem()) * 20);
@@ -76,9 +74,7 @@ class Main extends PluginBase implements Listener
 				$expectedTime -= 1;
 				$actualTime = ceil(microtime(true) * 20) - $this->breakcooldown[$uuid = $player->getRawUniqueId()];
 				if ($actualTime < $expectedTime) {
-					$player->kick("FastBreak(高速破壊)", true);
-					$this->getServer()->broadcastMessage($player->getName() . " は AntiCheat によってKickされました。\n理由: FastBreak(高速破壊)");
-					$event->setCancelled();
+					$event->setCancelled(true);
 					break;
 				}
 				unset($this->breakcooldown[$uuid]);

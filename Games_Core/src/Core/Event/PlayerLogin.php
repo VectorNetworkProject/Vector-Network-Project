@@ -41,6 +41,7 @@ class PlayerLogin
 				"lastlogin" => date("Y年m月d日 H時i分s秒")
 			];
 			$data->write("USERDATA", $user);
+			$this->plugin->getServer()->broadcastMessage("§7[§b情報§7] $name は初参加です。");
 		}
 		if (($ffapvp = $data->get("FFAPVP")) === null) {
 			$ffapvp = [

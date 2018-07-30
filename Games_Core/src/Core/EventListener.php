@@ -13,6 +13,7 @@ use Core\Event\BlockPlace;
 use Core\Event\DataPacketReceive;
 use Core\Event\EntityDamage;
 use Core\Event\EntityInventoryChange;
+use Core\Event\EntityShootBow;
 use Core\Event\PlayerCommandPreprocess;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerInteract;
@@ -27,6 +28,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -57,6 +59,7 @@ class EventListener implements Listener
 	protected $playercommandpreprocessevent;
 	protected $playerrespawnevent;
 	protected $entityinventorychange;
+	protected $entityshootbowevent;
 
 	public function __construct(Main $plugin)
 	{
@@ -76,6 +79,7 @@ class EventListener implements Listener
 		$this->playercommandpreprocessevent = new PlayerCommandPreprocess($this->plugin);
 		$this->playerrespawnevent = new PlayerRespawn($this->plugin);
 		$this->entityinventorychange = new EntityInventoryChange($this->plugin);
+		$this->entityshootbowevent = new EntityShootBow($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -146,5 +150,10 @@ class EventListener implements Listener
 	public function onEntityInventoryChange(EntityInventoryChangeEvent $event)
 	{
 		$this->entityinventorychange->event($event);
+	}
+
+	public function onEntityShootBow(EntityShootBowEvent $event)
+	{
+		$this->entityshootbowevent->event($event);
 	}
 }

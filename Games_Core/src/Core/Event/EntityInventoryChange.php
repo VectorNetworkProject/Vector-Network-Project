@@ -21,7 +21,9 @@ class EntityInventoryChange
 	{
 		$this->plugin = $plugin;
 	}
-	public function event(EntityInventoryChangeEvent $event) {
+
+	public function event(EntityInventoryChangeEvent $event)
+	{
 		if ($event->getEntity()->getLevel()->getName() === "corepvp") {
 			if ($event->getSlot() === 0) {
 				if ($event->getOldItem()->getId() === Item::LEATHER_HELMET) {

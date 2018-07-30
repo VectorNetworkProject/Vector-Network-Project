@@ -335,7 +335,7 @@ class SpeedCorePvPCore
 			"bow" => Item::get(Item::BOW, 0, 1),
 			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1)
 		];
-		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $this->bluecolor;
+		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $teamColor = $this->bluecolor;
 		foreach ($armors as $armor){
 			if ($armor instanceof Durable and $armor instanceof Armor){
 				$armor->setUnbreakable(true);

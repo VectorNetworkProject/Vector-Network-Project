@@ -10,18 +10,16 @@ namespace Core\Event;
 
 use Core\DataFile;
 use Core\Entity\Bossbar;
-use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use pocketmine\event\player\PlayerQuitEvent;
 
 class PlayerQuit
 {
-	protected $plugin, $speedcorepvp;
+	protected $plugin;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
-		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 	}
 
 	public function event(PlayerQuitEvent $event)
@@ -29,7 +27,6 @@ class PlayerQuit
 		$player = $event->getPlayer();
 		$name = $player->getName();
 		$event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
-		$this->speedcorepvp->GameQuit($player);
 		$bossbar = new Bossbar();
 		$bossbar->RemoveBar($player);
 		$data = new DataFile($player->getName());

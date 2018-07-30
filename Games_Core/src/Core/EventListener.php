@@ -24,6 +24,7 @@ use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
 use Core\Game\FFAPvP\FFAPvPCore;
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -45,6 +46,7 @@ class EventListener implements Listener
 {
 	private $plugin = null;
 	protected $ffapvp;
+	protected $speedcorepvp;
 	protected $playerjoinevent;
 	protected $playerquitevent;
 	protected $playerloginevent;
@@ -65,6 +67,7 @@ class EventListener implements Listener
 	{
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
+		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 		$this->playerjoinevent = new PlayerJoin($this->plugin);
 		$this->playerquitevent = new PlayerQuit($this->plugin);
 		$this->playerloginevent = new PlayerLogin($this->plugin);
@@ -90,6 +93,7 @@ class EventListener implements Listener
 	public function onQuit(PlayerQuitEvent $event)
 	{
 		$this->playerquitevent->event($event);
+		$this->speedcorepvp->GameQuit($event->getPlayer());
 	}
 
 	public function onLogin(PlayerLoginEvent $event)
@@ -120,11 +124,14 @@ class EventListener implements Listener
 	public function onEntityDamage(EntityDamageEvent $event)
 	{
 		$this->entitydamage->event($event);
+		$this->speedcorepvp->Damage($event);
 	}
 
 	public function onBreak(BlockBreakEvent $event)
 	{
 		$this->blockbreakevent->event($event);
+		$this->speedcorepvp->BreakCore($event);
+		$this->speedcorepvp->DropItem($event);
 	}
 
 	public function onPlace(BlockPlaceEvent $event)
@@ -135,6 +142,7 @@ class EventListener implements Listener
 	public function onInteract(PlayerInteractEvent $event)
 	{
 		$this->playerinteractevent->event($event);
+		$this->speedcorepvp->GameJoin($event->getPlayer(), $event->getBlock());
 	}
 
 	public function onPlayerCommandPreprocess(PlayerCommandPreprocessEvent $event)
@@ -145,6 +153,7 @@ class EventListener implements Listener
 	public function onRespawn(PlayerRespawnEvent $event)
 	{
 		$this->playerrespawnevent->event($event);
+		$this->speedcorepvp->Respawn($event->getPlayer());
 	}
 
 	public function onEntityInventoryChange(EntityInventoryChangeEvent $event)

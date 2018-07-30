@@ -8,7 +8,6 @@
 
 namespace Core\Event;
 
-use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use pocketmine\event\block\BlockBreakEvent;
 
@@ -19,7 +18,6 @@ class BlockBreak
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
-		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 	}
 
 	public function event(BlockBreakEvent $event)
@@ -30,7 +28,5 @@ class BlockBreak
             $event->setCancelled(true);
         }
         */
-		$this->speedcorepvp->DropItem($event);
-		$this->speedcorepvp->BreakCore($event);
 	}
 }

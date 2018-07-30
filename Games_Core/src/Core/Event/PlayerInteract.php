@@ -9,9 +9,7 @@
 namespace Core\Event;
 
 use Core\Game\FFAPvP\FFAPvPCore;
-use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
-use pocketmine\block\Block;
 use pocketmine\event\player\PlayerInteractEvent;
 
 class PlayerInteract
@@ -22,7 +20,6 @@ class PlayerInteract
 	{
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
-		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 	}
 
 	public function event(PlayerInteractEvent $event)
@@ -30,6 +27,5 @@ class PlayerInteract
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$this->ffapvp->FFAPvPKit($player, $block);
-		$this->speedcorepvp->GameJoin($player, $block);
 	}
 }

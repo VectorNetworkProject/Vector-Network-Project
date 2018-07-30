@@ -487,6 +487,9 @@ class SpeedCorePvPCore
 							$event->setCancelled(true);
 							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 						}
+					} else {
+						$event->setCancelled(true);
+						$player->sendMessage("痛い痛い！！ちょっとこれ味方のコアだよ！！");
 					}
 				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 					if ($this->team[$player->getName()] === "Red") {
@@ -506,9 +509,15 @@ class SpeedCorePvPCore
 							$event->setCancelled(true);
 							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 						}
+					} else {
+						$event->setCancelled(true);
+						$player->sendMessage("痛い痛い！！ちょっとこれ味方のコアだよ！！");
 					}
 				}
 			}
+		} else {
+			$player->sendMessage("§cゲームモードがfalseだよ");
+			$event->setCancelled(true);
 		}
 	}
 

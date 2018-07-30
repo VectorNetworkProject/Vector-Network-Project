@@ -9,18 +9,20 @@
 namespace Core\Event;
 
 
-
 use Core\Main;
 use pocketmine\event\entity\EntityShootBowEvent;
 
 class EntityShootBow
 {
 	protected $plugin;
+
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 	}
-	public function event(EntityShootBowEvent $event) {
+
+	public function event(EntityShootBowEvent $event)
+	{
 		$event->setForce(1.0);
 	}
 }

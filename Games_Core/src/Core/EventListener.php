@@ -12,6 +12,7 @@ use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\DataPacketReceive;
 use Core\Event\EntityDamage;
+use Core\Event\EntityInventoryChange;
 use Core\Event\PlayerCommandPreprocess;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerInteract;
@@ -25,6 +26,7 @@ use Core\Game\FFAPvP\FFAPvPCore;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -54,6 +56,7 @@ class EventListener implements Listener
 	protected $playerinteractevent;
 	protected $playercommandpreprocessevent;
 	protected $playerrespawnevent;
+	protected $entityinventorychange;
 
 	public function __construct(Main $plugin)
 	{
@@ -72,6 +75,7 @@ class EventListener implements Listener
 		$this->playerinteractevent = new PlayerInteract($this->plugin);
 		$this->playercommandpreprocessevent = new PlayerCommandPreprocess($this->plugin);
 		$this->playerrespawnevent = new PlayerRespawn($this->plugin);
+		$this->entityinventorychange = new EntityInventoryChange($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -137,5 +141,10 @@ class EventListener implements Listener
 	public function onRespawn(PlayerRespawnEvent $event)
 	{
 		$this->playerrespawnevent->event($event);
+	}
+
+	public function onEntityInventoryChange(EntityInventoryChangeEvent $event)
+	{
+		$this->entityinventorychange->event($event);
 	}
 }

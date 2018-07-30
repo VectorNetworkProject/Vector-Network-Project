@@ -86,13 +86,9 @@ class SpeedCorePvPCore
 	 */
 	public function getGameMode(): bool
 	{
-		if ($this->gamemode) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->gamemode ? true : false;
 	}
-
+	
 	/**
 	 * @param bool $bool
 	 */
@@ -339,19 +335,17 @@ class SpeedCorePvPCore
 			"bow" => Item::get(Item::BOW, 0, 1),
 			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1)
 		];
-		if ($this->team[$player->getName()] === "Red") {
-			if ($armors instanceof Durable and $armors instanceof Armor) {
-				$armors->setUnbreakable(true);
-				$armors->setCustomColor($this->redcolor);
-			}
-		} else {
-			if ($armors instanceof Durable and $armors instanceof Armor) {
-				$armors->setUnbreakable(true);
-				$armors->setCustomColor($this->bluecolor);
+		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $this->bluecolor;
+		foreach ($armors as $armor){
+			if ($armor instanceof Durable and $armor instanceof Armor){
+				$armor->setUnbreakable(true);
+				$armor->setCustomColor($teamColor);
 			}
 		}
-		if ($weapons instanceof Durable) {
-			$weapons->setUnbreakable(true);
+		foreach ($weapons as $weapon){
+			if ($weapon instanceof Durable) {
+				$weapon->setUnbreakable(true);
+			}
 		}
 		$armor = $player->getArmorInventory();
 		$armor->setHelmet($armors['leather_cap']);

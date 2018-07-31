@@ -90,7 +90,7 @@ class AthleticCore
             if ($event->getTo()->getFloorY() < 4) {
                 if (isset($this->player_data[$player->getName()])) {
                     $pos = $this->player_data[$player->getName()];
-                    new Position($pos["X"], $pos["Y"], $pos["Z"], $player->getLevel()->getName());
+                    $player->teleport(new Position($pos["X"], $pos["Y"], $pos["Z"], $player->getLevel()->getName()));
                     $player->sendMessage("失敗");
                     unset($this->player_data[$player->getName()]);
                 }

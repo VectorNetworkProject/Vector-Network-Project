@@ -2,11 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/07/14
- * Time: 9:15
+ * Date: 2018/07/25
+ * Time: 20:23
  */
 
-namespace Core;
+namespace BanAPI;
+
 
 class DataFile
 {
@@ -15,7 +16,7 @@ class DataFile
 
 	public function __construct($name)
 	{
-		$this->dir = Main::$datafolder . $this->folderName . "/" . strtoupper(substr($name, 0, 1)) . "/" . strtolower($name) . "/";
+		$this->dir = BanAPI::$datafolder . $this->folderName . "/" . strtoupper(substr($name, 0, 1)) . "/" . strtolower($name) . "/";
 		if (!file_exists($this->dir)) {
 			mkdir($this->dir, 0755, true);
 		}

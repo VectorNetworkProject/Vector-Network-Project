@@ -2,16 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/07/19
- * Time: 17:12
+ * Date: 2018/07/28
+ * Time: 20:51
  */
 
 namespace Core\Event;
 
-use Core\Main;
-use pocketmine\event\player\PlayerMoveEvent;
 
-class PlayerMove
+use Core\Main;
+use pocketmine\event\player\PlayerRespawnEvent;
+
+class PlayerRespawn
 {
 	protected $plugin;
 
@@ -20,7 +21,7 @@ class PlayerMove
 		$this->plugin = $plugin;
 	}
 
-	public function event(PlayerMoveEvent $event)
+	public function event(PlayerRespawnEvent $event)
 	{
 	}
 }

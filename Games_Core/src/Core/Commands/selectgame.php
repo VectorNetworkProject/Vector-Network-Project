@@ -20,7 +20,7 @@ class selectgame extends PluginCommand
     protected $plugin;
     public function __construct(Main $plugin)
     {
-        parent::__construct("sg", $plugin);
+        parent::__construct("selectgame", $plugin);
         $this->setPermission("vector.network.player");
         $this->setDescription("遊びたいゲームを選択できます。");
         $this->plugin = $plugin;
@@ -37,17 +37,17 @@ class selectgame extends PluginCommand
             $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
             return true;
         }
-        $gamesmenu = [
-            "type" => "custom_form",
-            "title" => "ゲーム選択",
-            "content" => [
-                [
-                    "type" => "dropdown",
-                    "text" => "まだ開発中の為一つしかゲームがありません。",
-                    "options" => ["ロビー", "FFAPvP"]
-                ]
-            ]
-        ];
+		$gamesmenu = [
+			"type" => "custom_form",
+			"title" => "ゲーム選択",
+			"content" => [
+				[
+					"type" => "dropdown",
+					"text" => "遊びたいゲームを選択しましょう！",
+					"options" => ["ロビー", "FFAPvP", "SpeedCorePvP"]
+				]
+			]
+		];
         $modal = new ModalFormRequestPacket();
         $modal->formId = 45786154;
         $modal->formData = json_encode($gamesmenu);

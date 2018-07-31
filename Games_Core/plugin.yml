@@ -1,7 +1,7 @@
 name: Games_Core
 main: Core\Main
 api: 4.0.0
-version: 1.6.0
+version: 2.2.0
 author: "VectorNetworkDevelopmentTeam"
 authors: ['InkoHX', 'MazaiCrafty']
 commands:
@@ -25,14 +25,18 @@ commands:
     usage: "/settag"
     permission: vector.network.player
     description: "§6V§bN§eCoin§rを使ってタグを設定します。"
-  sg:
-    usage: "/sg"
+  selectgame:
+    usage: "/selectgame"
     permission: vector.network.player
     description: "遊びたいゲームを選択できます。"
   debug:
     usage: "/debug"
     permission: vector.network.admin
     description: "Admin Command"
+  killsound:
+    usage: "/killsound"
+    permission: vector.network.player
+    description: "敵を倒した時のサウンドを設定します。"
 permissions:
   vector.network.player:
     default: true

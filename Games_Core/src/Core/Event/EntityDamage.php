@@ -13,17 +13,19 @@ use pocketmine\event\entity\EntityDamageEvent;
 
 class EntityDamage
 {
-    protected $plugin;
-    public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
-    }
-    public function event(EntityDamageEvent $event)
-    {
-        if ($event->getEntity()->getLevel()->getName() === "ffapvp") {
-            if ($event->getCause() == EntityDamageEvent::CAUSE_VOID or $event->getCause() == EntityDamageEvent::CAUSE_FALL) {
-                $event->setCancelled();
-            }
-        }
-    }
+	protected $plugin;
+
+	public function __construct(Main $plugin)
+	{
+		$this->plugin = $plugin;
+	}
+
+	public function event(EntityDamageEvent $event)
+	{
+		if ($event->getEntity()->getLevel()->getName() === "ffapvp" or $event->getEntity()->getLevel()->getName() === "corepvp") {
+			if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+				$event->setCancelled(true);
+			}
+		}
+	}
 }

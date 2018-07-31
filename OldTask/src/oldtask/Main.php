@@ -12,8 +12,8 @@ use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase
 {
-    public function onEnable()
-    {
-        $this->getLogger()->info("OldTaskを読み込みました。");
-    }
+	public function onEnable()
+	{
+		$this->getLogger()->info("OldTaskを読み込みました。");
+	}
 }

@@ -2,16 +2,17 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/07/19
- * Time: 17:12
+ * Date: 2018/07/30
+ * Time: 10:06
  */
 
 namespace Core\Event;
 
-use Core\Main;
-use pocketmine\event\player\PlayerMoveEvent;
 
-class PlayerMove
+use Core\Main;
+use pocketmine\event\entity\EntityShootBowEvent;
+
+class EntityShootBow
 {
 	protected $plugin;
 
@@ -20,7 +21,8 @@ class PlayerMove
 		$this->plugin = $plugin;
 	}
 
-	public function event(PlayerMoveEvent $event)
+	public function event(EntityShootBowEvent $event)
 	{
+		$event->setForce(1.0);
 	}
 }

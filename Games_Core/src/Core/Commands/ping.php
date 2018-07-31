@@ -20,8 +20,8 @@ class ping extends PluginCommand
     public function __construct(Main $plugin)
     {
         parent::__construct("ping", $plugin);
-        $this->setPermission("vector.network.player");
-        $this->setDescription("応答速度を計測します。");
+		$this->setPermission("vector.network.player");
+		$this->setDescription("応答速度を計測します。");
         $this->plugin = $plugin;
     }
     public function execute(CommandSender $sender, string $commandLabel, array $args)

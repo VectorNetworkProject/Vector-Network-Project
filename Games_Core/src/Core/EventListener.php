@@ -29,6 +29,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
@@ -41,6 +42,7 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\Player;
 
 class EventListener implements Listener
 {
@@ -164,5 +166,10 @@ class EventListener implements Listener
 	public function onEntityShootBow(EntityShootBowEvent $event)
 	{
 		$this->entityshootbowevent->event($event);
+	}
+
+	public function EntityLevelChange(EntityLevelChangeEvent $event)
+	{
+		$this->speedcorepvp->LevelChange($event);
 	}
 }

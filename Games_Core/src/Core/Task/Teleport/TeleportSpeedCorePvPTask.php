@@ -17,11 +17,13 @@ use pocketmine\Player;
 class TeleportSpeedCorePvPTask extends PluginTask
 {
 	protected $player;
+
 	public function __construct(Main $plugin, Player $player)
 	{
 		parent::__construct($plugin);
 		$this->player = $player;
 	}
+
 	public function onRun(int $currentTick)
 	{
 		$level = $this->owner->getServer()->getLevelByName("corepvp");
@@ -29,6 +31,7 @@ class TeleportSpeedCorePvPTask extends PluginTask
 		$this->player->setHealth(20);
 		$this->player->setMaxHealth(20);
 		$this->player->setFood(20);
+		$this->player->removeAllEffects();
 		$this->player->getInventory()->clearAll(true);
 		$this->player->sendMessage("§aテレポートしました。");
 	}

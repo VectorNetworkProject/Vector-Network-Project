@@ -19,10 +19,12 @@ use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\utils\Color;
 
@@ -88,7 +90,7 @@ class SpeedCorePvPCore
 	{
 		return $this->gamemode ? true : false;
 	}
-	
+
 	/**
 	 * @param bool $bool
 	 */
@@ -231,14 +233,14 @@ class SpeedCorePvPCore
 					$this->AddPlayerCount(1);
 					$this->setSpawn($player);
 					$this->Kit($player);
-					$player->sendMessage("§aあなたは §cRed §aTeamになりました。");
+					$player->sendMessage("§7あなたは §cRed §7Teamになりました。");
 					return;
 				} else {
 					$this->team[$player->getName()] = "Blue";
 					$this->AddPlayerCount(2);
 					$this->setSpawn($player);
 					$this->Kit($player);
-					$player->sendMessage("§aあなたは §9Blue §aTeamになりました。");
+					$player->sendMessage("§7あなたは §9Blue §7Teamになりました。");
 					return;
 				}
 			}
@@ -254,11 +256,11 @@ class SpeedCorePvPCore
 			if ($this->team[$player->getName()] === "Red") {
 				unset($this->team[$player->getName()]);
 				$this->ReducePlayerCount(1);
-				$player->sendMessage("§cRed §aTeamから退出しました。");
+				$player->sendMessage("§cRed §7Teamから退出しました。");
 			} elseif ($this->team[$player->getName()] === "Blue") {
 				unset($this->team[$player->getName()]);
 				$this->ReducePlayerCount(2);
-				$player->sendMessage("§9Blue §aTeamから退出しました。");
+				$player->sendMessage("§9Blue §7Teamから退出しました。");
 			}
 		}
 	}
@@ -319,6 +321,16 @@ class SpeedCorePvPCore
 		}
 	}
 
+	public function LevelChange(EntityLevelChangeEvent $event)
+	{
+		$entity = $event->getEntity();
+		if ($event->getOrigin()->getName() === $this->fieldname) {
+			if ($entity instanceof Player) {
+				$this->GameQuit($entity->getPlayer());
+			}
+		}
+	}
+
 	/**
 	 * @param Player $player
 	 */
@@ -336,13 +348,13 @@ class SpeedCorePvPCore
 			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1)
 		];
 		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $teamColor = $this->bluecolor;
-		foreach ($armors as $armor){
-			if ($armor instanceof Durable and $armor instanceof Armor){
+		foreach ($armors as $armor) {
+			if ($armor instanceof Durable and $armor instanceof Armor) {
 				$armor->setUnbreakable(true);
 				$armor->setCustomColor($teamColor);
 			}
 		}
-		foreach ($weapons as $weapon){
+		foreach ($weapons as $weapon) {
 			if ($weapon instanceof Durable) {
 				$weapon->setUnbreakable(true);
 			}
@@ -458,6 +470,32 @@ class SpeedCorePvPCore
 		}
 	}
 
+	public function SendAttackMessage(string $team, string $name)
+	{
+		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+			if (isset($this->team[$player->getName()])) {
+				$soundpacket = new PlaySoundPacket();
+				$soundpacket->soundName = 'music.breakcore';
+				$soundpacket->volume = 20;
+				$soundpacket->pitch = 1;
+				$soundpacket->x = $player->getX();
+				$soundpacket->y = $player->getY();
+				$soundpacket->z = $player->getZ();
+				$this->plugin->getServer()->broadcastPacket($this->plugin->getServer()->getLevelByName($this->fieldname)->getPlayers(), $soundpacket);
+				switch ($team) {
+					case 'Red':
+						$player->addActionBarMessage("§cRed§eの§aコア§eが§c攻撃§eされています。");
+						$player->sendTip("§c攻撃者: §9$name\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a75");
+						break;
+					case 'Blue':
+						$player->addActionBarMessage("§9Blue§eの§aコア§eが§c攻撃§eされています。");
+						$player->sendTip("§c攻撃者: §c$name\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a75");
+						break;
+				}
+			}
+		}
+	}
+
 	/**
 	 * @param BlockBreakEvent $event
 	 */
@@ -478,7 +516,7 @@ class SpeedCorePvPCore
 							$this->AddBreakCoreCount($player);
 							$player->sendMessage("§a+10 §6V§bN§eCoin");
 							$this->level->LevelSystem($player);
-							$this->plugin->getServer()->broadcastPopup("§cRed §6のコアが削られています。");
+							$this->SendAttackMessage("Red", $player->getName());
 							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 							if ($this->redhp <= 0) {
 								$this->EndGame("Blue");
@@ -500,7 +538,7 @@ class SpeedCorePvPCore
 							$this->AddBreakCoreCount($player);
 							$player->sendMessage("§a+10 §6V§bN§eCoin");
 							$this->level->LevelSystem($player);
-							$this->plugin->getServer()->broadcastPopup("§9Blue §6のコアが削られています。");
+							$this->SendAttackMessage("Blue", $player->getName());
 							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 							if ($this->bluehp <= 0) {
 								$this->EndGame("Red");

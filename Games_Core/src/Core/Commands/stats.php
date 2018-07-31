@@ -59,7 +59,7 @@ class stats extends PluginCommand
 			$exp = $this->level->getExp($name);
 			$firstlogin = $userdata['firstlogin'];
 			$lastlogin = $userdata['lastlogin'];
-			$maxexp = $userdata['maxexp'];
+			$maxexp = $userdata['maxexp'] - $exp;
 			$ffapvp_kill = $ffapvp['kill'];
 			$ffapvp_death = $ffapvp['death'];
 			$ffapvp_kd = $this->kd->FFAKD($name);

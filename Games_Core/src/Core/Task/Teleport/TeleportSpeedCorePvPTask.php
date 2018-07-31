@@ -31,6 +31,7 @@ class TeleportSpeedCorePvPTask extends PluginTask
 		$this->player->setHealth(20);
 		$this->player->setMaxHealth(20);
 		$this->player->setFood(20);
+		$this->player->getArmorInventory()->clearAll(true);
 		$this->player->removeAllEffects();
 		$this->player->getInventory()->clearAll(true);
 		$this->player->sendMessage("§aテレポートしました。");

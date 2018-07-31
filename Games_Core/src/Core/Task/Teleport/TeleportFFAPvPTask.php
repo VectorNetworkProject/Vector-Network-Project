@@ -29,6 +29,7 @@ class TeleportFFAPvPTask extends PluginTask
 		$this->player->teleport(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
 		$this->player->setSpawn(new Position(254, 107, 254, $this->owner->getServer()->getLevelByName("ffapvp")));
 		$this->player->setHealth(20);
+		$this->player->getArmorInventory()->clearAll(true);
 		$this->player->setMaxHealth(20);
 		$this->player->setFood(20);
 		$this->player->removeAllEffects();

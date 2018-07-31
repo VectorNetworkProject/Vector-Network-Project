@@ -15,6 +15,7 @@ use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\AutosetBlockTask;
 use Core\Task\LevelCheckingTask;
+use Core\Task\RemoveArmorTask;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -328,6 +329,7 @@ class SpeedCorePvPCore
 		if ($event->getOrigin()->getName() === $this->fieldname) {
 			if ($entity instanceof Player) {
 				$this->GameQuit($entity->getPlayer());
+				$entity->getArmorInventory()->clearAll(true);
 			}
 		}
 	}
@@ -382,19 +384,10 @@ class SpeedCorePvPCore
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
 	}
-	public function TeamChat(PlayerChatEvent $event) {
-		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
-			if (isset($this->team[$event->getPlayer()->getName()])) {
-				if (strpos($event->getMessage(), "@")) {
-					$event->setCancelled(true);
-					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-						if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
-							$player->sendMessage($event->getPlayer()->getName()."§a TEAMCHAT> §7".$event->getMessage());
-						}
-					}
-				}
-			}
-		}
+
+	public function TeamChat(PlayerChatEvent $event)
+	{
+
 	}
 
 	/**
@@ -501,11 +494,11 @@ class SpeedCorePvPCore
 				$this->plugin->getServer()->broadcastPacket($this->plugin->getServer()->getLevelByName($this->fieldname)->getPlayers(), $soundpacket);
 				switch ($team) {
 					case 'Red':
-						$player->addSubTitle("§cRed§eの§aコア§eが§c攻撃§eされています。");
+						$player->addTitle("", "§cRed§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
 						$player->sendTip("§c攻撃者: §9$name\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a75");
 						break;
 					case 'Blue':
-						$player->addSubTitle("§9Blue§eの§aコア§eが§c攻撃§eされています。");
+						$player->addTitle("", "§9Blue§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
 						$player->sendTip("§c攻撃者: §c$name\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a75");
 						break;
 				}
@@ -593,6 +586,7 @@ class SpeedCorePvPCore
 					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
 				}
 			}
+			$player->getArmorInventory()->clearAll(true);
 			$player->getInventory()->clearAll(true);
 			$player->removeAllEffects();
 			$player->setMaxHealth(20);
@@ -600,6 +594,7 @@ class SpeedCorePvPCore
 			$player->setFood(20);
 			$player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
 			$player->teleport(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
+			$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $player), 20);
 		}
 		unset($this->team);
 		$this->setHP(1, 75);

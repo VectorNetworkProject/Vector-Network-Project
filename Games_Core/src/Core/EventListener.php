@@ -32,6 +32,7 @@ use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -171,5 +172,9 @@ class EventListener implements Listener
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
 		$this->speedcorepvp->LevelChange($event);
+	}
+
+	public function onChat(PlayerChatEvent $event) {
+
 	}
 }

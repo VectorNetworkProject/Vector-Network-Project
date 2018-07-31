@@ -20,6 +20,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
@@ -381,6 +382,16 @@ class SpeedCorePvPCore
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
 	}
+	public function TeamChat(PlayerChatEvent $event) {
+		if (strpos($event->getMessage(), "!")) {
+			$event->setCancelled(true);
+			foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+				if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
+					$player->sendMessage($event->getPlayer()->getName()."> §7".$event->getMessage());
+				}
+			}
+		}
+	}
 
 	/**
 	 * @param Player $player
@@ -462,8 +473,10 @@ class SpeedCorePvPCore
 			if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
 				$damager = $event->getDamager();
 				if ($damager instanceof Player) {
-					if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
-						$event->setCancelled(true);
+					if (isset($this->team[$damager->getName()])) {
+						if ($this->team[$damager->getName()] === $this->team[$entity->getName()]) {
+							$event->setCancelled(true);
+						}
 					}
 				}
 			}
@@ -509,7 +522,7 @@ class SpeedCorePvPCore
 			if ($this->getGameMode()) {
 				if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
 					if ($this->team[$player->getName()] === "Blue") {
-						if ($this->redcount >= 3 && $this->bluecount >= 3) {
+						if ($this->redcount >= 2 && $this->bluecount >= 2) {
 							$event->setCancelled(true);
 							$this->redhp--;
 							$this->money->addMoney($player->getName(), 10);
@@ -531,7 +544,7 @@ class SpeedCorePvPCore
 					}
 				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 					if ($this->team[$player->getName()] === "Red") {
-						if ($this->bluecount >= 3 && $this->redcount >= 3) {
+						if ($this->bluecount >= 2 && $this->redcount >= 2) {
 							$event->setCancelled(true);
 							$this->bluehp--;
 							$this->money->addMoney($player->getName(), 10);
@@ -576,6 +589,13 @@ class SpeedCorePvPCore
 					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
 				}
 			}
+			$player->getInventory()->clearAll(true);
+			$player->removeAllEffects();
+			$player->setMaxHealth(20);
+			$player->setHealth(20);
+			$player->setFood(20);
+			$player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
+			$player->teleport(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
 		}
 		unset($this->team);
 		$this->setHP(1, 75);

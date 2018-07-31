@@ -67,6 +67,8 @@ class Main extends PluginBase
 		$lobby->stopTime();
 		$ffapvp->stopTime();
 		$speedcorepvp->stopTime();
+		@mkdir(Main::getDataFolder(), 0755);
+		$this->saveResource('athletic_position.json');
 		$this->getLogger()->info(self::STARTMESSAGE);
 		Tag::registerColors();
 	}

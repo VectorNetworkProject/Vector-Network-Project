@@ -503,10 +503,10 @@ class SpeedCorePvPCore
 	{
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
-		if ($this->getGameMode()) {
-			$red = $this->point["red.core"];
-			$blue = $this->point["blue.core"];
-			if ($player->getLevel()->getName() === $this->fieldname) {
+		$red = $this->point["red.core"];
+		$blue = $this->point["blue.core"];
+		if ($player->getLevel()->getName() === $this->fieldname) {
+			if ($this->getGameMode()) {
 				if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
 					if ($this->team[$player->getName()] === "Blue") {
 						if ($this->redcount >= 3 && $this->bluecount >= 3) {
@@ -552,10 +552,10 @@ class SpeedCorePvPCore
 						$player->sendMessage("痛い痛い！！ちょっとこれ味方のコアだよ！！");
 					}
 				}
+			} else {
+				$player->sendMessage("§cゲームモードがfalseだよ");
+				$event->setCancelled(true);
 			}
-		} else {
-			$player->sendMessage("§cゲームモードがfalseだよ");
-			$event->setCancelled(true);
 		}
 	}
 

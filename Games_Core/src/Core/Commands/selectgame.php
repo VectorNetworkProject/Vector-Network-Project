@@ -43,7 +43,7 @@ class selectgame extends PluginCommand
 			"content" => [
 				[
 					"type" => "dropdown",
-					"text" => "まだ開発中の為一つしかゲームがありません。",
+					"text" => "遊びたいゲームを選択しましょう！",
 					"options" => ["ロビー", "FFAPvP", "SpeedCorePvP"]
 				]
 			]

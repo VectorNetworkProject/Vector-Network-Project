@@ -383,11 +383,15 @@ class SpeedCorePvPCore
 		}
 	}
 	public function TeamChat(PlayerChatEvent $event) {
-		if (strpos($event->getMessage(), "!")) {
-			$event->setCancelled(true);
-			foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-				if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
-					$player->sendMessage($event->getPlayer()->getName()."> §7".$event->getMessage());
+		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
+			if (isset($this->team[$event->getPlayer()->getName()])) {
+				if (strpos($event->getMessage(), "@")) {
+					$event->setCancelled(true);
+					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+						if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
+							$player->sendMessage($event->getPlayer()->getName()."§a TEAMCHAT> §7".$event->getMessage());
+						}
+					}
 				}
 			}
 		}
@@ -497,11 +501,11 @@ class SpeedCorePvPCore
 				$this->plugin->getServer()->broadcastPacket($this->plugin->getServer()->getLevelByName($this->fieldname)->getPlayers(), $soundpacket);
 				switch ($team) {
 					case 'Red':
-						$player->addActionBarMessage("§cRed§eの§aコア§eが§c攻撃§eされています。");
+						$player->addSubTitle("§cRed§eの§aコア§eが§c攻撃§eされています。");
 						$player->sendTip("§c攻撃者: §9$name\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a75");
 						break;
 					case 'Blue':
-						$player->addActionBarMessage("§9Blue§eの§aコア§eが§c攻撃§eされています。");
+						$player->addSubTitle("§9Blue§eの§aコア§eが§c攻撃§eされています。");
 						$player->sendTip("§c攻撃者: §c$name\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a75");
 						break;
 				}
@@ -540,7 +544,7 @@ class SpeedCorePvPCore
 						}
 					} else {
 						$event->setCancelled(true);
-						$player->sendMessage("痛い痛い！！ちょっとこれ味方のコアだよ！！");
+						$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
 					}
 				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 					if ($this->team[$player->getName()] === "Red") {
@@ -562,7 +566,7 @@ class SpeedCorePvPCore
 						}
 					} else {
 						$event->setCancelled(true);
-						$player->sendMessage("痛い痛い！！ちょっとこれ味方のコアだよ！！");
+						$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
 					}
 				}
 			} else {

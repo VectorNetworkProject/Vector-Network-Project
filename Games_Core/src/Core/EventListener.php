@@ -175,6 +175,6 @@ class EventListener implements Listener
 	}
 
 	public function onChat(PlayerChatEvent $event) {
-
+		$this->speedcorepvp->TeamChat($event);
 	}
 }

@@ -1,34 +1,33 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: InkoHX
- * Date: 2018/07/21
- * Time: 21:02
+ * User: PCink
+ * Date: 2018/07/28
+ * Time: 14:27
  */
 
 namespace Core\Task\Teleport;
+
 
 use Core\Main;
 use Core\Task\PluginTask;
 use pocketmine\level\Position;
 use pocketmine\Player;
 
-class TeleportLobbyTask extends PluginTask
+class TeleportSpeedCorePvPTask extends PluginTask
 {
-	protected $player, $plugin;
+	protected $player;
 
 	public function __construct(Main $plugin, Player $player)
 	{
 		parent::__construct($plugin);
-		$this->plugin = $plugin;
 		$this->player = $player;
 	}
 
 	public function onRun(int $currentTick)
 	{
-		$level = $this->owner->getServer()->getLevelByName("lobby");
-		$this->player->teleport(new Position(257, 8, 257, $level));
-		$this->player->setSpawn(new Position(257, 8, 257, $level));
+		$level = $this->owner->getServer()->getLevelByName("corepvp");
+		$this->player->teleport(new Position(255, 8, 257, $level));
 		$this->player->setHealth(20);
 		$this->player->setMaxHealth(20);
 		$this->player->setFood(20);

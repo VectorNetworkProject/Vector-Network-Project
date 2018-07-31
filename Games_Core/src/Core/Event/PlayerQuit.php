@@ -10,7 +10,6 @@ namespace Core\Event;
 
 use Core\DataFile;
 use Core\Entity\Bossbar;
-use Core\EventListener;
 use Core\Main;
 use pocketmine\event\player\PlayerQuitEvent;
 

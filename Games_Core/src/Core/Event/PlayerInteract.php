@@ -14,7 +14,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 
 class PlayerInteract
 {
-	protected $plugin, $ffapvp;
+	protected $plugin, $ffapvp, $speedcorepvp;
 
 	public function __construct(Main $plugin)
 	{

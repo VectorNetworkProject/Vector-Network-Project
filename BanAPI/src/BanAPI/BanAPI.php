@@ -13,9 +13,11 @@ use pocketmine\plugin\PluginBase;
 
 class BanAPI extends PluginBase
 {
+	public static $datafolder;
 	public function onEnable(): void
 	{
 		$this->getLogger()->info('BanAPIを読み込みました。');
+		self::$datafolder = $this->getDataFolder();
 	}
 
 	/**

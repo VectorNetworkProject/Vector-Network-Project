@@ -14,16 +14,18 @@ use pocketmine\plugin\Plugin;
 
 class LevelCheckingTask extends PluginTask
 {
-    protected $level;
-    protected $player;
-    public function __construct(Plugin $plugin, Player $player)
-    {
-        parent::__construct($plugin);
-        $this->level = new Level();
-        $this->player = $player;
-    }
-    public function onRun(int $currentTick)
-    {
-        $this->level->Checking($this->player);
-    }
+	protected $level;
+	protected $player;
+
+	public function __construct(Plugin $plugin, Player $player)
+	{
+		parent::__construct($plugin);
+		$this->level = new Level();
+		$this->player = $player;
+	}
+
+	public function onRun(int $currentTick)
+	{
+		$this->level->Checking($this->player);
+	}
 }

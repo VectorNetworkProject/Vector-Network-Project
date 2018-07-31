@@ -13,7 +13,7 @@ use pocketmine\event\block\BlockBreakEvent;
 
 class BlockBreak
 {
-	protected $plugin;
+	protected $plugin, $speedcorepvp;
 
 	public function __construct(Main $plugin)
 	{

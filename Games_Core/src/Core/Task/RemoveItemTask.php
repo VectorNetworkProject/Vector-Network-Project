@@ -9,6 +9,7 @@
 namespace Core\Task;
 
 
+use pocketmine\entity\Creature;
 use pocketmine\item\Item;
 use pocketmine\plugin\Plugin;
 
@@ -22,8 +23,8 @@ class RemoveItemTask extends PluginTask
 	public function onRun(int $currentTick)
 	{
 		foreach ($this->owner->getServer()->getLevelByName("corepvp")->getEntities() as $entity) {
-			if ($entity instanceof Item) {
-				$entity->kill();
+			if ($entity instanceof Creature) {
+				$entity->close();
 			}
 		}
 	}

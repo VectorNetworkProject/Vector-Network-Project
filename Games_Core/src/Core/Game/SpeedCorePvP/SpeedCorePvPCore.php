@@ -576,14 +576,16 @@ class SpeedCorePvPCore
 	{
 		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
 			if ($player->getLevel()->getName() === $this->fieldname) {
-				if ($this->team[$player->getName()] === $team) {
-					$this->money->addMoney($player->getName(), 3000);
-					$this->AddWinCount($player);
-					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
-				} else {
-					$this->money->addMoney($player->getName(), 500);
-					$this->AddLoseCount($player);
-					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
+				if (isset($this->team[$player->getName()])) {
+					if ($this->team[$player->getName()] === $team) {
+						$this->money->addMoney($player->getName(), 3000);
+						$this->AddWinCount($player);
+						$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
+					} else {
+						$this->money->addMoney($player->getName(), 500);
+						$this->AddLoseCount($player);
+						$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
+					}
 				}
 			}
 			$player->getArmorInventory()->clearAll(true);

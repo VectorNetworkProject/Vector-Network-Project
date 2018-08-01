@@ -387,7 +387,21 @@ class SpeedCorePvPCore
 
 	public function TeamChat(PlayerChatEvent $event)
 	{
-
+		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
+			if ($this->team[$event->getPlayer()->getName()]) {
+				if (strpos($event->getMessage(), '!') !== false or strpos($event->getMessage(), '！') !== false) {
+					$event->setCancelled(true);
+					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+						if (isset($this->team[$player->getName()])) {
+							if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
+								$message = str_replace(['!', '！'], '', $event->getMessage());
+								$player->sendMessage("§7(team) ".$event->getPlayer()->getName()." >>> ".$message);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**

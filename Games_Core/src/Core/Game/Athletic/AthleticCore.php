@@ -33,9 +33,7 @@ class AthleticCore
 	{
 		$player = $event->getPlayer();
 		if ($player->getLevel()->getName() === "athletic") {
-
 			if ($event->getBlock() === 133) {
-
 				$array_data = self::$json->get($this->getAthleticData($event));
 				$this->player_data[$player->getName()] = [
 					"Athletic" => $this->getAthleticData($event),
@@ -62,7 +60,6 @@ class AthleticCore
 	public function isAthleticFinish(PlayerInteractEvent $event, Player $player): bool
 	{
 		if (!isset($this->player_data)) return false;
-
 		if ($event->getTouchVector() == $this->getAthleticFinishPos($player)) {
 			return true;
 		}
@@ -113,5 +110,4 @@ class AthleticCore
 			unset($this->player_data[$player->getName()]);
 		}
 	}
-
 }

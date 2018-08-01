@@ -395,7 +395,7 @@ class SpeedCorePvPCore
 						if (isset($this->team[$player->getName()])) {
 							if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
 								$message = str_replace(['!', '！'], '', $event->getMessage());
-								$player->sendMessage("§7(TEAM) ".$event->getPlayer()->getName()." >>> ".$message);
+								$player->sendMessage("§7(TEAM) " . $event->getPlayer()->getName() . " >>> " . $message);
 							}
 						}
 					}

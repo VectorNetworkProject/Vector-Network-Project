@@ -388,7 +388,7 @@ class SpeedCorePvPCore
 	public function TeamChat(PlayerChatEvent $event)
 	{
 		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
-			if ($this->team[$event->getPlayer()->getName()]) {
+			if (isset($this->team[$event->getPlayer()->getName()])) {
 				if (strpos($event->getMessage(), '!') !== false or strpos($event->getMessage(), '！') !== false) {
 					$event->setCancelled(true);
 					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
@@ -620,6 +620,6 @@ class SpeedCorePvPCore
 		$this->setGameMode(false);
 		$level = $this->plugin->getServer()->getLevelByName($this->fieldname);
 		$this->plugin->getServer()->unloadLevel($level);
-		$this->plugin->getServer()->loadLevel($level);
+		$this->plugin->getServer()->loadLevel($this->fieldname);
 	}
 }

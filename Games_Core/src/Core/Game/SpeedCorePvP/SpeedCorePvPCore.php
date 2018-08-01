@@ -618,5 +618,8 @@ class SpeedCorePvPCore
 		$this->SetPlayerCount(1, 0);
 		$this->SetPlayerCount(2, 0);
 		$this->setGameMode(false);
+		$level = $this->plugin->getServer()->getLevelByName($this->fieldname);
+		$this->plugin->getServer()->unloadLevel($level);
+		$this->plugin->getServer()->loadLevel($level);
 	}
 }

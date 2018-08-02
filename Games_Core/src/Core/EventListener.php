@@ -33,6 +33,7 @@ use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerAchievementAwardedEvent;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -184,5 +185,9 @@ class EventListener implements Listener
 
 	public function onChat(PlayerChatEvent $event) {
 		$this->speedcorepvp->TeamChat($event);
+	}
+
+	public function onPlayerAchievementAwarded(PlayerAchievementAwardedEvent $event) {
+		$event->setCancelled(true);
 	}
 }

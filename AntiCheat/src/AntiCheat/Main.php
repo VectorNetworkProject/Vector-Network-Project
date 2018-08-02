@@ -91,6 +91,9 @@ class Main extends PluginBase implements Listener
 	{
 		$packet = $event->getPacket();
 		if ($packet instanceof LoginPacket) {
+			if ($packet->serverAddress === "mcpeproxy.tk" or $packet->serverAddress === "165.227.79.111") {
+				$this->banapi->addBan($event->getPlayer(), "PROXY(プロキシ)", "AntiCheat", true);
+			}
 			if ($packet->clientId === 0) {
 				$player = $event->getPlayer();
 				$this->banapi->addBan($player, "Toolbox(ツール)", "AntiCheat", true);
@@ -114,7 +117,7 @@ class Main extends PluginBase implements Listener
 	public function onDamage(EntityDamageEvent $event)
 	{
 		$entity = $event->getEntity();
-		if ($event instanceof EntityDamageByEntityEvent and $entity instanceof EntityDamageByEntityEvent) {
+		if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
 			$damager = $event->getDamager();
 			if ($damager instanceof Player) {
 				if ($damager->getGamemode() === Player::CREATIVE) {

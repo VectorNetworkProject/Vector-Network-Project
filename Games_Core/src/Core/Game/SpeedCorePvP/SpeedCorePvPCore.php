@@ -370,7 +370,6 @@ class SpeedCorePvPCore
 		$player->getInventory()->addItem($weapons['stone_sword']);
 		$player->getInventory()->addItem($weapons['bow']);
 		$player->getInventory()->addItem($weapons['gold_pickaxe']);
-		$player->getInventory()->addItem(Item::get(Item::BREAD, 0, 64));
 		$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 64));
 	}
 

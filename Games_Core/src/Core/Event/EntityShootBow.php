@@ -23,6 +23,6 @@ class EntityShootBow
 
 	public function event(EntityShootBowEvent $event)
 	{
-		$event->setForce(1.0);
+		$event->setForce($event->getForce() + 0.5);
 	}
 }

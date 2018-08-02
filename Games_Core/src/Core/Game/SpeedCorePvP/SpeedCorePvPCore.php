@@ -370,7 +370,6 @@ class SpeedCorePvPCore
 		$player->getInventory()->addItem($weapons['stone_sword']);
 		$player->getInventory()->addItem($weapons['bow']);
 		$player->getInventory()->addItem($weapons['gold_pickaxe']);
-		$player->getInventory()->addItem(Item::get(Item::BREAD, 0, 64));
 		$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 64));
 	}
 
@@ -387,7 +386,21 @@ class SpeedCorePvPCore
 
 	public function TeamChat(PlayerChatEvent $event)
 	{
-
+		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
+			if (isset($this->team[$event->getPlayer()->getName()])) {
+				if (strpos($event->getMessage(), '!') !== false or strpos($event->getMessage(), '！') !== false) {
+					$event->setCancelled(true);
+					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+						if (isset($this->team[$player->getName()])) {
+							if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
+								$message = str_replace(['!', '！'], '', $event->getMessage());
+								$player->sendMessage("§7(TEAM) " . $event->getPlayer()->getName() . " >>> " . $message);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -576,14 +589,16 @@ class SpeedCorePvPCore
 	{
 		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
 			if ($player->getLevel()->getName() === $this->fieldname) {
-				if ($this->team[$player->getName()] === $team) {
-					$this->money->addMoney($player->getName(), 3000);
-					$this->AddWinCount($player);
-					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
-				} else {
-					$this->money->addMoney($player->getName(), 500);
-					$this->AddLoseCount($player);
-					$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
+				if (isset($this->team[$player->getName()])) {
+					if ($this->team[$player->getName()] === $team) {
+						$this->money->addMoney($player->getName(), 3000);
+						$this->AddWinCount($player);
+						$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] おめでとうございます。あなたのチームが勝利しました。\n§7[§bSpeed§aCore§cPvP§7] §63000§6V§bN§eCoin増えました。");
+					} else {
+						$this->money->addMoney($player->getName(), 500);
+						$this->AddLoseCount($player);
+						$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
+					}
 				}
 			}
 			$player->getArmorInventory()->clearAll(true);
@@ -602,5 +617,8 @@ class SpeedCorePvPCore
 		$this->SetPlayerCount(1, 0);
 		$this->SetPlayerCount(2, 0);
 		$this->setGameMode(false);
+		$level = $this->plugin->getServer()->getLevelByName($this->fieldname);
+		$this->plugin->getServer()->unloadLevel($level);
+		$this->plugin->getServer()->loadLevel($this->fieldname);
 	}
 }

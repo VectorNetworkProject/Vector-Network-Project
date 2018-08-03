@@ -58,15 +58,21 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
 		$this->getServer()->loadLevel("ffapvp");
 		$this->getServer()->loadLevel("corepvp");
+		$this->getServer()->loadLevel("athletic");
 		$lobby = $this->getServer()->getLevelByName("lobby");
 		$ffapvp = $this->getServer()->getLevelByName("ffapvp");
 		$speedcorepvp = $this->getServer()->getLevelByName("corepvp");
+		$athletic = $this->getServer()->getLevelByName("athletic");
 		$ffapvp->setTime(Level::TIME_FULL);
 		$lobby->setTime(Level::TIME_FULL);
 		$speedcorepvp->setTime(Level::TIME_FULL);
+		$athletic->setTime(Level::TIME_FULL);
 		$lobby->stopTime();
 		$ffapvp->stopTime();
 		$speedcorepvp->stopTime();
+		$athletic->stopTime();
+		@mkdir(Main::getDataFolder(), 0755);
+		$this->saveDefaultConfig();
 		$this->getLogger()->info(self::STARTMESSAGE);
 		Tag::registerColors();
 	}

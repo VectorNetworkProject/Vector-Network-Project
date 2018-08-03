@@ -14,6 +14,7 @@ use Core\Player\KillSound;
 use Core\Player\Money;
 use Core\Player\Rank;
 use Core\Player\Tag;
+use Core\Task\Teleport\TeleportAthleticTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
 use Core\Task\Teleport\TeleportSpeedCorePvPTask;
@@ -164,10 +165,26 @@ class DataPacketReceive
 								$player->teleport(new Position(255, 8, 257, $this->plugin->getServer()->getLevelByName("corepvp")));
 								$player->sendMessage("§aテレポートしました。");
 							} else {
-
 								$player->sendMessage("§e10秒後テレポートします。");
 								$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSpeedCorePvPTask($this->plugin, $player), 10 * 20);
 							}
+						}
+						break;
+					case 3:
+						if ($player->isOp()) {
+							if ($player->getLevel()->getName() === "athletic") {
+								$player->sendMessage("§c既にAthleticに居ます");
+							} else {
+								if ($player->getLevel()->getName() === "lobby") {
+									$player->teleport(new Position(254, 4, 254, $this->plugin->getServer()->getLevelByName("athletic")));
+									$player->sendMessage("§aテレポートしました。");
+								} else {
+									$player->sendMessage("§e10秒後テレポートします。");
+									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportAthleticTask($this->plugin, $player), 10 * 20);
+								}
+							}
+						} else {
+							$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
 						}
 						break;
 				}

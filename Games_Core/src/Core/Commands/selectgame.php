@@ -44,7 +44,7 @@ class selectgame extends PluginCommand
 				[
 					"type" => "dropdown",
 					"text" => "遊びたいゲームを選択しましょう！",
-					"options" => ["ロビー", "FFAPvP", "SpeedCorePvP"]
+					"options" => ["ロビー", "FFAPvP", "SpeedCorePvP", "Athletic"]
 				]
 			]
 		];

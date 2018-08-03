@@ -8,6 +8,7 @@
 
 namespace Core;
 
+use Core\Entity\Mazai;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\DataPacketReceive;
@@ -23,6 +24,7 @@ use Core\Event\PlayerMove;
 use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
+use Core\Game\Athletic\AthleticCore;
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use pocketmine\event\block\BlockBreakEvent;
@@ -44,13 +46,16 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\Player;
+use pocketmine\item\Item;
+use pocketmine\math\Vector3;
 
 class EventListener implements Listener
 {
 	private $plugin = null;
 	protected $ffapvp;
 	protected $speedcorepvp;
+	protected $athletic;
+	protected $mazainpc;
 	protected $playerjoinevent;
 	protected $playerquitevent;
 	protected $playerloginevent;
@@ -72,6 +77,8 @@ class EventListener implements Listener
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
 		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
+		$this->athletic = new AthleticCore();
+		$this->mazainpc = new Mazai();
 		$this->playerjoinevent = new PlayerJoin($this->plugin);
 		$this->playerquitevent = new PlayerQuit($this->plugin);
 		$this->playerloginevent = new PlayerLogin($this->plugin);
@@ -92,12 +99,15 @@ class EventListener implements Listener
 	public function onJoin(PlayerJoinEvent $event)
 	{
 		$this->playerjoinevent->event($event);
+		$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260,4,265), Item::get(Item::SPLASH_POTION, 25, 1));
 	}
 
 	public function onQuit(PlayerQuitEvent $event)
 	{
 		$this->playerquitevent->event($event);
 		$this->speedcorepvp->GameQuit($event->getPlayer());
+		$this->mazainpc->Remove($event->getPlayer());
+		//$this->athletic->onQuit($event);
 	}
 
 	public function onLogin(PlayerLoginEvent $event)
@@ -123,6 +133,7 @@ class EventListener implements Listener
 	public function onMove(PlayerMoveEvent $event)
 	{
 		$this->playermoveevent->event($event);
+		$this->athletic->loop($event);
 	}
 
 	public function onEntityDamage(EntityDamageEvent $event)
@@ -147,6 +158,9 @@ class EventListener implements Listener
 	{
 		$this->playerinteractevent->event($event);
 		$this->speedcorepvp->GameJoin($event->getPlayer(), $event->getBlock());
+		//$this->athletic->isAthleticFinish($event, $event->getPlayer());
+		//$this->athletic->touch($event);
+		//$this->athletic->getAthleticData($event);
 	}
 
 	public function onPlayerCommandPreprocess(PlayerCommandPreprocessEvent $event)
@@ -173,6 +187,7 @@ class EventListener implements Listener
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
 		$this->speedcorepvp->LevelChange($event);
+		$this->mazainpc->Check($event);
 	}
 
 	public function onChat(PlayerChatEvent $event) {

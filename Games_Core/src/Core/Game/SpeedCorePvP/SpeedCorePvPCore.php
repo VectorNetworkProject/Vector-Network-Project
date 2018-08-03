@@ -350,7 +350,7 @@ class SpeedCorePvPCore
 			"bow" => Item::get(Item::BOW, 0, 1),
 			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1),
 			"stone_axe" => Item::get(Item::STONE_AXE, 0, 1),
-			"stone_shovel" => Item::get(Item::STONE_SWORD, 0, 1)
+			"stone_shovel" => Item::get(Item::STONE_SHOVEL, 0, 1)
 		];
 		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $teamColor = $this->bluecolor;
 		foreach ($armors as $armor) {

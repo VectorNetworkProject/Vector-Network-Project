@@ -12,9 +12,11 @@ namespace Core\Entity;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
 use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
+use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
@@ -97,6 +99,19 @@ class Mazai
 				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::SPLASH_POTION, 25, 1));
 			} else {
 				$this->Remove($entity);
+			}
+		}
+	}
+
+	public function ClickEntity(DataPacketReceiveEvent $event)
+	{
+		$packet = $event->getPacket();
+		$player = $event->getPlayer();
+		if ($packet instanceof InventoryTransactionPacket) {
+			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
+				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
+					$player->sendMessage("§7[§a魔剤さん§7] §r今ならなんと魔剤一つ5000兆円！！っていうのは嘘でまだ準備中なんだごめんね。(´・ω・`)");
+				}
 			}
 		}
 	}

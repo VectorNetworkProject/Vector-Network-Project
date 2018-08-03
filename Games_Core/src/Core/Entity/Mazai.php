@@ -33,7 +33,7 @@ class Mazai
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
+	public function Create(Player $player, string $username = "§a魔剤§e売りの§a魔剤§eさん", Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
 	{
 		$addplayerpacket = new AddPlayerPacket();
 		$addplayerpacket->uuid = ($uuid = UUID::fromRandom());
@@ -67,11 +67,13 @@ class Mazai
 	 */
 	public function Remove(Player $player)
 	{
-		$eid = self::$players[$player->getName()];
-		$removeentitypacket = new RemoveEntityPacket();
-		$removeentitypacket->entityUniqueId = $eid;
-		$player->dataPacket($removeentitypacket);
-		unset(self::$players[$player->getName()]);
+		if (isset(self::$players[$player->getName()])) {
+			$eid = self::$players[$player->getName()];
+			$removeentitypacket = new RemoveEntityPacket();
+			$removeentitypacket->entityUniqueId = $eid;
+			$player->dataPacket($removeentitypacket);
+			unset(self::$players[$player->getName()]);
+		}
 	}
 
 
@@ -79,7 +81,7 @@ class Mazai
 	 * @param Player $player
 	 * @return int
 	 */
-	public function getEid(Player $player): int
+	public static function getEid(Player $player): int
 	{
 		return self::$players[$player->getName()];
 	}
@@ -90,13 +92,13 @@ class Mazai
 	public function Check(EntityLevelChangeEvent $event)
 	{
 		$entity = $event->getEntity();
-		if ($event->getTarget()->getName() === 'lobby') {
-			if ($entity instanceof Player) {
-				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::SPLASH_POTION, 25, 1));
-			}
-		} else {
-			if ($entity instanceof Player) {
-				$this->Remove($entity);
+		if ($entity instanceof Player) {
+			if (isset(self::$players[$entity->getName()])) {
+				if ($event->getTarget()->getName() === 'lobby') {
+					$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::SPLASH_POTION, 25, 1));
+				} else {
+					$this->Remove($entity);
+				}
 			}
 		}
 	}

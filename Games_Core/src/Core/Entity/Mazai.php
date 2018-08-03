@@ -11,6 +11,7 @@ namespace Core\Entity;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
@@ -22,8 +23,16 @@ use pocketmine\utils\UUID;
 
 class Mazai
 {
-	protected $eid;
+	protected static $players = [];
 
+	/**
+	 * @param Player $player
+	 * @param string $username
+	 * @param Vector3 $pos
+	 * @param Item $item
+	 * @param int $yaw
+	 * @param int $headyaw
+	 */
 	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
 	{
 		$addplayerpacket = new AddPlayerPacket();
@@ -43,25 +52,52 @@ class Mazai
 			Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, $flags],
 			Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $username]
 		];
-		$this->eid = $eid;
 		$player->dataPacket($addplayerpacket);
 		for ($type = 0; $type <= 1; $type++) {
 			$playerlistpacket = new PlayerListPacket();
-			$playerlistpacket->entries[] = PlayerListEntry::createAdditionEntry($uuid, $eid, "", "", 0, new Skin("Standard_Custom", hex2bin(file_get_contents("plugins/Games_Core/resources/skins/thinking"))));
+			$playerlistpacket->entries[] = PlayerListEntry::createAdditionEntry($uuid, $eid, "", "", 0, new Skin("Standard_Custom", base64_decode(file_get_contents("plugins/Games_Core/resources/skins/thinking"))));
 			$playerlistpacket->type = $type;
 			$player->dataPacket($playerlistpacket);
 		}
+		self::$players[$player->getName()] = $eid;
 	}
 
+	/**
+	 * @param Player $player
+	 */
 	public function Remove(Player $player)
 	{
+		$eid = self::$players[$player->getName()];
 		$removeentitypacket = new RemoveEntityPacket();
-		$removeentitypacket->entityUniqueId = $this->eid;
+		$removeentitypacket->entityUniqueId = $eid;
 		$player->dataPacket($removeentitypacket);
+		unset(self::$players[$player->getName()]);
 	}
 
-	public function getEid(): int
+
+	/**
+	 * @param Player $player
+	 * @return int
+	 */
+	public function getEid(Player $player): int
 	{
-		return $this->eid;
+		return self::$players[$player->getName()];
+	}
+
+	/**
+	 * @param EntityLevelChangeEvent $event
+	 */
+	public function Check(EntityLevelChangeEvent $event)
+	{
+		$entity = $event->getEntity();
+		if ($event->getTarget()->getName() === 'lobby') {
+			if ($entity instanceof Player) {
+				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::SPLASH_POTION, 25, 1));
+			}
+		} else {
+			if ($entity instanceof Player) {
+				$this->Remove($entity);
+			}
+		}
 	}
 }

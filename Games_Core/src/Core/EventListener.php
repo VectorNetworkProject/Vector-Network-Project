@@ -188,15 +188,7 @@ class EventListener implements Listener
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
 		$this->speedcorepvp->LevelChange($event);
-		if ($event->getTarget() === "lobby") {
-			if ($event instanceof Player) {
-				$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260,4,265), Item::get(Item::SPLASH_POTION, 25, 1));
-			}
-		} else {
-			if ($event instanceof Player) {
-				$this->mazainpc->Remove($event->getPlayer());
-			}
-		}
+		$this->mazainpc->Check($event);
 	}
 
 	public function onChat(PlayerChatEvent $event) {

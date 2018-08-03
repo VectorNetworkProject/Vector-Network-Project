@@ -35,8 +35,8 @@ class SpeedCorePvPCore
 	protected $plugin;
 	protected $bluecolor;
 	protected $redcolor;
-	protected $bluehp = 75;
-	protected $redhp = 75;
+	protected $bluehp = 100;
+	protected $redhp = 100;
 	protected $bluecount = 0;
 	protected $redcount = 0;
 	protected $team = [];
@@ -348,7 +348,9 @@ class SpeedCorePvPCore
 		$weapons = [
 			"stone_sword" => Item::get(Item::STONE_SWORD, 0, 1),
 			"bow" => Item::get(Item::BOW, 0, 1),
-			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1)
+			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1),
+			"stone_axe" => Item::get(Item::STONE_AXE, 0, 1),
+			"stone_shovel" => Item::get(Item::STONE_SWORD, 0, 1)
 		];
 		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $teamColor = $this->bluecolor;
 		foreach ($armors as $armor) {
@@ -370,6 +372,8 @@ class SpeedCorePvPCore
 		$player->getInventory()->addItem($weapons['stone_sword']);
 		$player->getInventory()->addItem($weapons['bow']);
 		$player->getInventory()->addItem($weapons['gold_pickaxe']);
+		$player->getInventory()->addItem($weapons['stone_axe']);
+		$player->getInventory()->addItem($weapons['stone_shovel']);
 		$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 64));
 	}
 
@@ -508,11 +512,11 @@ class SpeedCorePvPCore
 				switch ($team) {
 					case 'Red':
 						$player->addTitle("", "§cRed§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §9$name\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a75");
+						$player->sendTip("§c攻撃者: §9$name\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a100");
 						break;
 					case 'Blue':
 						$player->addTitle("", "§9Blue§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §c$name\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a75");
+						$player->sendTip("§c攻撃者: §c$name\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a100");
 						break;
 				}
 			}
@@ -612,8 +616,8 @@ class SpeedCorePvPCore
 			$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $player), 20);
 		}
 		unset($this->team);
-		$this->setHP(1, 75);
-		$this->setHP(2, 75);
+		$this->setHP(1, 100);
+		$this->setHP(2, 100);
 		$this->SetPlayerCount(1, 0);
 		$this->SetPlayerCount(2, 0);
 		$this->setGameMode(false);

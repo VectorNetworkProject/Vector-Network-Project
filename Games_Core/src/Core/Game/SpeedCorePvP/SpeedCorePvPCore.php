@@ -503,8 +503,8 @@ class SpeedCorePvPCore
 			if (isset($this->team[$player->getName()])) {
 				$soundpacket = new PlaySoundPacket();
 				$soundpacket->soundName = 'music.breakcore';
-				$soundpacket->volume = 20;
-				$soundpacket->pitch = 1;
+				$soundpacket->volume = 1;
+				$soundpacket->pitch = 0.5;
 				$soundpacket->x = $player->getX();
 				$soundpacket->y = $player->getY();
 				$soundpacket->z = $player->getZ();

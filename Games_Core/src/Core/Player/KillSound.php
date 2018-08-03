@@ -113,7 +113,7 @@ class KillSound
 				break;
 		}
 	}
-	
+
 	/**
 	 * @param Player $player
 	 * @param string $soundname

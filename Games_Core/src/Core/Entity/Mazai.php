@@ -93,12 +93,10 @@ class Mazai
 	{
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
-			if (isset(self::$players[$entity->getName()])) {
-				if ($event->getTarget()->getName() === 'lobby') {
-					$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::SPLASH_POTION, 25, 1));
-				} else {
-					$this->Remove($entity);
-				}
+			if ($event->getTarget()->getName() === 'lobby') {
+				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::SPLASH_POTION, 25, 1));
+			} else {
+				$this->Remove($entity);
 			}
 		}
 	}

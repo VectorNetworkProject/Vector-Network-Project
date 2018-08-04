@@ -123,7 +123,7 @@ class EventListener implements Listener
 	public function onReceive(DataPacketReceiveEvent $event)
 	{
 		$this->datapacketreceiveevent->event($event);
-		//$this->mazainpc->ClickEntity($event);
+		$this->mazainpc->ClickEntity($event);
 	}
 
 	public function pnPreLogin(PlayerPreLoginEvent $event)

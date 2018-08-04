@@ -20,6 +20,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleFlightEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -120,7 +121,7 @@ class Main extends PluginBase implements Listener
 		if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
 			$damager = $event->getDamager();
 			if ($damager instanceof Player) {
-				if ($damager->getGamemode() === Player::CREATIVE) {
+				if ($damager->getGamemode() === Player::CREATIVE or $damager->getInventory()->getItemInHand() === Item::BOW) {
 					return;
 				}
 				if ($damager->distance($entity) > 3.9) {

@@ -392,12 +392,12 @@ class SpeedCorePvPCore
 	{
 		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
 			if (isset($this->team[$event->getPlayer()->getName()])) {
-				if (strpos($event->getMessage(), '!') !== false or strpos($event->getMessage(), '！') !== false) {
+				if (strpos($event->getMessage(), '@') !== false or strpos($event->getMessage(), '＠') !== false) {
 					$event->setCancelled(true);
 					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
 						if (isset($this->team[$player->getName()])) {
 							if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
-								$message = str_replace(['!', '！'], '', $event->getMessage());
+								$message = str_replace(['＠', '@'], '', $event->getMessage());
 								$player->sendMessage("§7(TEAM) " . $event->getPlayer()->getName() . " >>> " . $message);
 							}
 						}
@@ -504,7 +504,7 @@ class SpeedCorePvPCore
 				$soundpacket = new PlaySoundPacket();
 				$soundpacket->soundName = 'music.breakcore';
 				$soundpacket->volume = 1;
-				$soundpacket->pitch = 0.5;
+				$soundpacket->pitch = mt_rand(1, 3);
 				$soundpacket->x = $player->getX();
 				$soundpacket->y = $player->getY();
 				$soundpacket->z = $player->getZ();

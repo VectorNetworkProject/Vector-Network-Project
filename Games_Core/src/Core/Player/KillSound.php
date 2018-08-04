@@ -123,7 +123,7 @@ class KillSound
 	 * @param int $volume
 	 * @param float $pitch
 	 */
-	public function PlaySoundPacket(Player $player, string $soundname, int $x, int $y, int $z, int $volume = 1, float $pitch = 0.5)
+	public function PlaySoundPacket(Player $player, string $soundname, int $x, int $y, int $z, int $volume = 1, float $pitch = 1)
 	{
 		$sound = new PlaySoundPacket();
 		$sound->soundName = $soundname;

@@ -85,7 +85,12 @@ class Mazai
 	 */
 	public static function getEid(Player $player): int
 	{
-		return self::$players[$player->getName()];
+		if (isset(self::$players[$player->getName()])) {
+			$eid = self::$players[$player->getName()];
+			return $eid;
+		} else {
+			return 0;
+		}
 	}
 
 	/**

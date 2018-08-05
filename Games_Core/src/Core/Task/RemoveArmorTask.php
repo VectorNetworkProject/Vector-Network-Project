@@ -25,5 +25,6 @@ class RemoveArmorTask extends PluginTask
 	public function onRun(int $currentTick)
 	{
 		$this->player->getArmorInventory()->clearAll(true);
+		$this->player->getInventory()->clearAll(true);
 	}
 }

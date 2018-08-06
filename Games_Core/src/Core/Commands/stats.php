@@ -12,6 +12,7 @@ use Core\DataFile;
 use Core\Main;
 use Core\Player\KD;
 use Core\Player\Level;
+use Core\Player\MazaiPoint;
 use Core\Player\Money;
 use Core\Player\Rank;
 use pocketmine\command\CommandSender;
@@ -27,6 +28,7 @@ class stats extends PluginCommand
 	protected $money;
 	protected $rank;
 	protected $kd;
+	protected $mazai;
 
 	public function __construct(Main $plugin)
 	{
@@ -38,6 +40,7 @@ class stats extends PluginCommand
 		$this->money = new Money();
 		$this->rank = new Rank($this->plugin);
 		$this->kd = new KD();
+		$this->mazai = new MazaiPoint();
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args)
@@ -60,6 +63,7 @@ class stats extends PluginCommand
 			$firstlogin = $userdata['firstlogin'];
 			$lastlogin = $userdata['lastlogin'];
 			$maxexp = $userdata['maxexp'] - $exp;
+			$mazai = $this->mazai->getMazai($sender->getName());
 			$ffapvp_kill = $ffapvp['kill'];
 			$ffapvp_death = $ffapvp['death'];
 			$ffapvp_kd = $this->kd->FFAKD($name);
@@ -78,7 +82,7 @@ class stats extends PluginCommand
 				"content" => [
 					[
 						"type" => "label",
-						"text" => "現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
+						"text" => "現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
 					],
 					[
 						"type" => "label",

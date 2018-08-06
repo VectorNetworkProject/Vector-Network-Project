@@ -8,9 +8,9 @@
 
 namespace Core\Event;
 
-use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use Core\Player\KillSound;
+use Core\Player\MazaiPoint;
 use Core\Player\Money;
 use Core\Player\Rank;
 use Core\Player\Tag;
@@ -32,6 +32,7 @@ class DataPacketReceive
 	protected $tag;
 	protected $killsound;
 	protected $speedcorepvp;
+	protected $mazai;
 
 	public function __construct(Main $plugin)
 	{
@@ -40,7 +41,7 @@ class DataPacketReceive
 		$this->rank = new Rank($this->plugin);
 		$this->tag = new Tag();
 		$this->killsound = new KillSound($this->plugin);
-		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
+		$this->mazai = new MazaiPoint();
 		$this->ok = "§7[§a成功§7] §a購入に成功しました。";
 		$this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
 	}
@@ -51,7 +52,9 @@ class DataPacketReceive
 		$player = $event->getPlayer();
 		if ($packet instanceof ModalFormResponsePacket) {
 			if ($packet->formId === 45661984) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				switch ($data[0]) {
 					case 0:
 						if ($this->money->reduceMoney($player->getName(), 1500000)) {
@@ -115,7 +118,9 @@ class DataPacketReceive
 				}
 			}
 			if ($packet->formId === 8489612) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				if (empty($data)) {
 					$player->sendMessage("§7[§c失敗§7] §cタグ名を記入して下さい。");
 				} else {
@@ -133,7 +138,9 @@ class DataPacketReceive
 				}
 			}
 			if ($packet->formId === 45786154) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				switch ($data[0]) {
 					case 0:
 						if ($player->getLevel()->getName() === "lobby") {
@@ -190,7 +197,9 @@ class DataPacketReceive
 				}
 			}
 			if ($packet->formId === 94572154) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				switch ($data[0]) {
 					case 0:
 						$this->killsound->setKillSound($player, 0);
@@ -227,6 +236,21 @@ class DataPacketReceive
 					case 8:
 						$this->killsound->setKillSound($player, 8);
 						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【さっさと逃げればいいものを】に設定しました。");
+						break;
+				}
+			}
+			if ($packet->formId === 75498654) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				switch ($data) {
+					case 0:
+						if ($this->money->reduceMoney($player->getName(), 10000)) {
+							$player->sendMessage($this->ok);
+							$this->mazai->addMazai($player->getName(), 1);
+						} else {
+							$player->sendMessage($this->error);
+						}
 						break;
 				}
 			}

@@ -62,5 +62,11 @@ class PlayerLogin
 			];
 			$data->write('COREPVP', $corepvp);
 		}
+		if (($inventory = $data->get('SURVIVAL_INVENTORY')) === null) {
+			$inventory = [
+				"items" => []
+			];
+			$data->write('SURVIVAL_INVENTORY', $inventory);
+		}
 	}
 }

@@ -1,0 +1,13 @@
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/VectorNetworkProject/Vector-Network-Project
+branches:
+- master
+projects:
+  AntiCheat:
+    path: AntiCheat/
+  BanAPI:
+    path: BanAPI/
+  Games_Core:
+    path: Games_Core/
+  OldTask:
+    path: OldTask/
+...

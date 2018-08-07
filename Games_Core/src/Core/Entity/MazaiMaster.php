@@ -17,6 +17,7 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
@@ -115,7 +116,23 @@ class MazaiMaster
 		if ($packet instanceof InventoryTransactionPacket) {
 			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
 				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
-					$player->sendMessage("§7[§a魔剤さん§7] §r準備中(`･ω･´)b");
+					$shop = [
+						"type" => "form",
+						"title" => "§aMAZAI§e変換所",
+						"content" => "§aMAZAI§rを色んなものに変換します。",
+						"buttons" => [
+							[
+								"text" => "§e300§aXP\n§e1§aMAZAI"
+							],
+							[
+								"text" => "§e10000§6V§bN§eCoin\n§e1§aMAZAI"
+							]
+						]
+					];
+					$modal = new ModalFormRequestPacket();
+					$modal->formData = json_encode($shop);
+					$modal->formId = 8168764;
+					$player->dataPacket($modal);
 				}
 			}
 		}

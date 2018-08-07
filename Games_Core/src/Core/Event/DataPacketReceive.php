@@ -10,10 +10,12 @@ namespace Core\Event;
 
 use Core\Main;
 use Core\Player\KillSound;
+use Core\Player\Level;
 use Core\Player\MazaiPoint;
 use Core\Player\Money;
 use Core\Player\Rank;
 use Core\Player\Tag;
+use Core\Task\LevelCheckingTask;
 use Core\Task\Teleport\TeleportAthleticTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
@@ -24,12 +26,17 @@ use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
 {
+
+	const BUY_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
+	const BUY_ERROR = "§7[§c失敗§7] §r§6V§bN§eCoin§cがたりません。";
+	const MAZAI_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
+	const MAZAI_ERROR = "§7[§c失敗§7] §r§aMAZAI§cが足りません";
+
 	protected $plugin;
 	protected $money;
-	protected $ok;
-	protected $error;
 	protected $rank;
 	protected $tag;
+	protected $level;
 	protected $killsound;
 	protected $speedcorepvp;
 	protected $mazai;
@@ -40,10 +47,9 @@ class DataPacketReceive
 		$this->money = new Money();
 		$this->rank = new Rank($this->plugin);
 		$this->tag = new Tag();
+		$this->level = new Level();
 		$this->killsound = new KillSound($this->plugin);
 		$this->mazai = new MazaiPoint();
-		$this->ok = "§7[§a成功§7] §a購入に成功しました。";
-		$this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
 	}
 
 	public function event(DataPacketReceiveEvent $event)
@@ -58,58 +64,58 @@ class DataPacketReceive
 				switch ($data[0]) {
 					case 0:
 						if ($this->money->reduceMoney($player->getName(), 1500000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 1);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 1:
 						if ($this->money->reduceMoney($player->getName(), 1000000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 2);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 2:
 						if ($this->money->reduceMoney($player->getName(), 700000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 3);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 3:
 						if ($this->money->reduceMoney($player->getName(), 500000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 4);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 4:
 						if ($this->money->reduceMoney($player->getName(), 300000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 5);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 5:
 						if ($this->money->reduceMoney($player->getName(), 100000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 6);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 6:
 						if ($this->money->reduceMoney($player->getName(), 50000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 7);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					default:
@@ -133,7 +139,7 @@ class DataPacketReceive
 						$player->sendMessage("§7[§b情報§7] §6V§bN§eCoin§7を§61000§7消費しました。");
 						$this->tag->setTag($player, $tag, $data[1]);
 					} else {
-						$player->sendMessage($this->error);
+						$player->sendMessage(self::BUY_ERROR);
 					}
 				}
 			}
@@ -246,10 +252,34 @@ class DataPacketReceive
 				switch ($data) {
 					case 0:
 						if ($this->money->reduceMoney($player->getName(), 10000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->mazai->addMazai($player->getName(), 1);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
+						}
+						break;
+				}
+			}
+			if ($packet->formId === 8168764) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				switch ($data) {
+					case 0:
+						if ($this->mazai->reduceMazai($player->getName(), 1)) {
+							$player->sendMessage(self::MAZAI_SUCCESS);
+							$this->level->addExp($player->getName(), 300);
+							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+						} else {
+							$player->sendMessage(self::MAZAI_ERROR);
+						}
+						break;
+					case 1:
+						if ($this->mazai->reduceMazai($player->getName(), 1)) {
+							$player->sendMessage(self::MAZAI_SUCCESS);
+							$this->money->addMoney($player->getName(), 10000);
+						} else {
+							$player->sendMessage(self::MAZAI_ERROR);
 						}
 						break;
 				}

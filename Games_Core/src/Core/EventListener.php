@@ -10,6 +10,7 @@ namespace Core;
 
 use Core\Entity\GameMaster;
 use Core\Entity\Mazai;
+use Core\Entity\MazaiMaster;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\DataPacketReceive;
@@ -58,6 +59,7 @@ class EventListener implements Listener
 	protected $athletic;
 	protected $mazainpc;
 	protected $gamemasternpc;
+	protected $mazaimasternpc;
 	protected $playerjoinevent;
 	protected $playerquitevent;
 	protected $playerloginevent;
@@ -82,6 +84,7 @@ class EventListener implements Listener
 		$this->athletic = new AthleticCore();
 		$this->mazainpc = new Mazai();
 		$this->gamemasternpc = new GameMaster();
+		$this->mazaimasternpc = new MazaiMaster();
 		$this->playerjoinevent = new PlayerJoin($this->plugin);
 		$this->playerquitevent = new PlayerQuit($this->plugin);
 		$this->playerloginevent = new PlayerLogin($this->plugin);
@@ -102,8 +105,9 @@ class EventListener implements Listener
 	public function onJoin(PlayerJoinEvent $event)
 	{
 		$this->playerjoinevent->event($event);
-		$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260,4,265), Item::get(Item::SPLASH_POTION, 25, 1));
+		$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260,4,265), Item::get(Item::POTION, 11, 1));
 		$this->gamemasternpc->Create($event->getPlayer(), "§aGame§7Master", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
+		$this->mazaimasternpc->Create($event->getPlayer(), "§a魔剤§7マスター", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
 	}
 
 	public function onQuit(PlayerQuitEvent $event)
@@ -112,6 +116,7 @@ class EventListener implements Listener
 		$this->speedcorepvp->GameQuit($event->getPlayer());
 		$this->mazainpc->Remove($event->getPlayer());
 		$this->gamemasternpc->Remove($event->getPlayer());
+		$this->mazaimasternpc->Remove($event->getPlayer());
 		//$this->athletic->onQuit($event);
 	}
 
@@ -130,6 +135,7 @@ class EventListener implements Listener
 		$this->datapacketreceiveevent->event($event);
 		$this->mazainpc->ClickEntity($event);
 		$this->gamemasternpc->ClickEntity($event);
+		$this->mazaimasternpc->ClickEntity($event);
 	}
 
 	public function pnPreLogin(PlayerPreLoginEvent $event)
@@ -196,6 +202,7 @@ class EventListener implements Listener
 		$this->speedcorepvp->LevelChange($event);
 		$this->mazainpc->Check($event);
 		$this->gamemasternpc->Check($event);
+		$this->mazaimasternpc->Check($event);
 	}
 
 	public function onChat(PlayerChatEvent $event) {

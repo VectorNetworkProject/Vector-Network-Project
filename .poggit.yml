@@ -6,8 +6,6 @@ projects:
     path: AntiCheat/
   BanAPI:
     path: BanAPI/
-  Games_Core:
-    path: Games_Core/
   OldTask:
     path: OldTask/
 ...

@@ -1,10 +1,9 @@
 # Vector Network Project
 **IP&PORT: play.inkohx.xyz:19132**  
-
+[Lobi](https://web.lobi.co/game/minecraftpe/group/8393ee5ca22f6c38e436a5525efe3dbb38671042)
 <div>
     <a href="https://discord.gg/EF2G5dh"><img src="https://discordapp.com/api/guilds/439355544063705088/embed.png" alt="Discord" /></a>
-</div> 
-[Lobi](https://web.lobi.co/game/minecraftpe/group/8393ee5ca22f6c38e436a5525efe3dbb38671042)
+</div>
 
 ## 情報
 API: 4.0.0  

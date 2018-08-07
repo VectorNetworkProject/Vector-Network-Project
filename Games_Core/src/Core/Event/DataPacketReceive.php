@@ -51,7 +51,6 @@ class DataPacketReceive
 		$this->killsound = new KillSound($this->plugin);
 		$this->mazai = new MazaiPoint();
 	}
-
 	public function event(DataPacketReceiveEvent $event)
 	{
 		$packet = $event->getPacket();

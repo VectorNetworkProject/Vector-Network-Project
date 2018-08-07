@@ -330,6 +330,7 @@ class SpeedCorePvPCore
 			if ($entity instanceof Player) {
 				$this->GameQuit($entity->getPlayer());
 				$entity->getArmorInventory()->clearAll(true);
+				$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $entity), 20);
 			}
 		}
 	}

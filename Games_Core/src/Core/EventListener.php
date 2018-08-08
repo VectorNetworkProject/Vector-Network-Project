@@ -177,6 +177,7 @@ class EventListener implements Listener
 	{
 		$this->playerinteractevent->event($event);
 		$this->speedcorepvp->GameJoin($event->getPlayer(), $event->getBlock());
+		$this->survival->Join($event);
 		//$this->athletic->isAthleticFinish($event, $event->getPlayer());
 		//$this->athletic->touch($event);
 		//$this->athletic->getAthleticData($event);

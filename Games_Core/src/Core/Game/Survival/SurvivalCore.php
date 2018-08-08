@@ -11,6 +11,7 @@ namespace Core\Game\Survival;
 
 use Core\DataFile;
 use Core\Main;
+use Core\Task\Teleport\TeleportSurvivalSpawnTask;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -77,10 +78,10 @@ class SurvivalCore
 	{
 		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
 			$datafile = new DataFile($player->getName());
-			$data = $datafile->get('SURVIVAL_INVENTORY');
+			$data = $datafile->get('SURVIVAL');
 			if (isset($data['items'])) {
 				$data['items'] = $player->getInventory()->getContents();
-				$datafile->write('SURVIVAL_INVENTORY', $data);
+				$datafile->write('SURVIVAL', $data);
 			}
 		}
 	}
@@ -94,7 +95,7 @@ class SurvivalCore
 		if ($entity instanceof Player) {
 			if ($event->getTarget()->getName() === self::LEVEL_NAME) {
 				$datafile = new DataFile($entity->getName());
-				$data = $datafile->get('SURVIVAL_INVENTORY');
+				$data = $datafile->get('SURVIVAL');
 				if (isset($data['items'])) {
 					$items = $data['items'];
 					foreach ($items as $item) {
@@ -105,10 +106,29 @@ class SurvivalCore
 						}
 						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $item['count']));
 					}
+					$spawn = $data['spawn'];
+					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $spawn), 20);
 				}
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
+				$this->SaveSpawn($entity);
 			}
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function SaveSpawn(Player $player)
+	{
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			$spawn = $data['spawn'];
+			$spawn['x'] = $player->getX();
+			$spawn['y'] = $player->getY();
+			$spawn['z'] = $player->getZ();
+			$datafile->write('SURVIVAL', $spawn);
 		}
 	}
 }

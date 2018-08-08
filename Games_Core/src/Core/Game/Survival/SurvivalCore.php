@@ -14,6 +14,7 @@ use Core\Main;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\Player;
 use pocketmine\tile\Sign;
@@ -80,7 +81,15 @@ class SurvivalCore
 				$datafile = new DataFile($entity->getName());
 				$data = $datafile->get('SURVIVAL_INVENTORY');
 				if (isset($data['items'])) {
-					$entity->getInventory()->setContents($data['items']);
+					$items = $data['items'];
+					foreach ($items as $item) {
+						if (isset($item['damage'])) {
+							$damage = $item['damage'];
+						} else {
+							$damage = 0;
+						}
+						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $item['count']));
+					}
 				}
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);

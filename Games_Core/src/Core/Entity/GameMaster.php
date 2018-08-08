@@ -121,14 +121,14 @@ class GameMaster
 							[
 								"type" => "dropdown",
 								"text" => "遊びたいゲームを選択しましょう！",
-								"options" => ["ロビー", "FFAPvP", "SpeedCorePvP", "Athletic"]
+								"options" => ["ロビー", "FFAPvP", "SpeedCorePvP", "Athletic", "Survival"]
 							]
 						]
 					];
 					$modal = new ModalFormRequestPacket();
 					$modal->formId = 45786154;
 					$modal->formData = json_encode($gamesmenu);
-					$player->dataPacket($modal);
+					$player->sendDataPacket($modal, false);
 				}
 			}
 		}

@@ -18,6 +18,7 @@ use Core\Task\LevelCheckingTask;
 use Core\Task\RemoveArmorTask;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
@@ -301,6 +302,34 @@ class SpeedCorePvPCore
 					$event->setDrops([Item::get(Item::AIR, 0, 0)]);
 					$this->plugin->getScheduler()->scheduleDelayedTask(new AutosetBlockTask($this->plugin, $block), self::$blockids[$block->getId()] * 20);
 				}
+			}
+		}
+	}
+
+	/**
+	 * @param BlockPlaceEvent $event
+	 */
+	public function AntiPlace(BlockPlaceEvent $event)
+	{
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		if ($player->getName() === $this->fieldname) {
+			switch ($block->getId()) {
+				case Block::MELON_BLOCK:
+					if (!$player->isOp()) {
+						$event->setCancelled(true);
+					}
+					break;
+				case Block::LOG:
+					if (!$player->isOp()) {
+						$event->setCancelled(true);
+					}
+					break;
+				case Block::LOG2:
+					if (!$player->isOp()) {
+						$event->setCancelled(true);
+					}
+					break;
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 name: Games_Core
 main: Core\Main
 api: 4.0.0
-version: 2.2.0
+version: 2.9.4
 author: "VectorNetworkDevelopmentTeam"
 authors: ['InkoHX', 'MazaiCrafty']
 commands:

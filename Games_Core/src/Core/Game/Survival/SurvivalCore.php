@@ -29,11 +29,17 @@ class SurvivalCore
 		$this->plugin = $plugin;
 	}
 
+	/**
+	 * @param Player $player
+	 */
 	public function Kit(Player $player)
 	{
 
 	}
 
+	/**
+	 * @param PlayerInteractEvent $event
+	 */
 	public function Join(PlayerInteractEvent $event)
 	{
 		$player = $event->getPlayer();
@@ -49,6 +55,9 @@ class SurvivalCore
 		}
 	}
 
+	/**
+	 * @param SignChangeEvent $event
+	 */
 	public function Sign(SignChangeEvent $event)
 	{
 		$player = $event->getPlayer();
@@ -61,6 +70,9 @@ class SurvivalCore
 		}
 	}
 
+	/**
+	 * @param Player $player
+	 */
 	public function SaveInventory(Player $player)
 	{
 		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
@@ -73,6 +85,9 @@ class SurvivalCore
 		}
 	}
 
+	/**
+	 * @param EntityLevelChangeEvent $event
+	 */
 	public function LoadInventory(EntityLevelChangeEvent $event)
 	{
 		$entity = $event->getEntity();

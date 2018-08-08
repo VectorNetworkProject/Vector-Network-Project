@@ -62,11 +62,24 @@ class PlayerLogin
 			];
 			$data->write('COREPVP', $corepvp);
 		}
-		if (($inventory = $data->get('SURVIVAL_INVENTORY')) === null) {
+		if (($inventory = $data->get('SURVIVAL')) === null) {
 			$inventory = [
-				"items" => []
+				"items" => [],
+				"breakblock" => 0,
+				"placeblock" => 0,
+				"kill" => 0,
+				"death" => 0,
+				"breakdiamond" => 0,
+				"breakgold" => 0,
+				"breakcoal" => 0,
+				"breakiron" => 0,
+				"spawn" => [
+					"x" => 225,
+					"y" => 243,
+					"z" => 256
+				]
 			];
-			$data->write('SURVIVAL_INVENTORY', $inventory);
+			$data->write('SURVIVAL', $inventory);
 		}
 	}
 }

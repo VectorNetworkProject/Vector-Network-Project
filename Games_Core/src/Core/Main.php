@@ -15,6 +15,7 @@
 
 namespace Core;
 
+use Core\Commands\adtag;
 use Core\Commands\debug;
 use Core\Commands\killsound;
 use Core\Commands\ping;
@@ -95,7 +96,8 @@ class Main extends PluginBase
 			new settag($this),
 			new selectgame($this),
 			new debug($this),
-			new killsound($this)
+			new killsound($this),
+			new adtag($this)
 		];
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
 	}

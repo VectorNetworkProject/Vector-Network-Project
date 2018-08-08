@@ -29,8 +29,10 @@ use Core\Event\PlayerRespawn;
 use Core\Game\Athletic\AthleticCore;
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
+use Core\Game\Survival\SurvivalCore;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
@@ -57,6 +59,7 @@ class EventListener implements Listener
 	protected $ffapvp;
 	protected $speedcorepvp;
 	protected $athletic;
+	protected $survival;
 	protected $mazainpc;
 	protected $gamemasternpc;
 	protected $mazaimasternpc;
@@ -82,6 +85,7 @@ class EventListener implements Listener
 		$this->ffapvp = new FFAPvPCore($this->plugin);
 		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 		$this->athletic = new AthleticCore();
+		$this->survival = new SurvivalCore($this->plugin);
 		$this->mazainpc = new Mazai();
 		$this->gamemasternpc = new GameMaster();
 		$this->mazaimasternpc = new MazaiMaster();
@@ -105,7 +109,7 @@ class EventListener implements Listener
 	public function onJoin(PlayerJoinEvent $event)
 	{
 		$this->playerjoinevent->event($event);
-		$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260,4,265), Item::get(Item::POTION, 11, 1));
+		$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
 		$this->gamemasternpc->Create($event->getPlayer(), "§aGame§7Master", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
 		$this->mazaimasternpc->Create($event->getPlayer(), "§a魔剤§7マスター", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
 	}
@@ -114,6 +118,7 @@ class EventListener implements Listener
 	{
 		$this->playerquitevent->event($event);
 		$this->speedcorepvp->GameQuit($event->getPlayer());
+		$this->survival->SaveInventory($event->getPlayer());
 		$this->mazainpc->Remove($event->getPlayer());
 		$this->gamemasternpc->Remove($event->getPlayer());
 		$this->mazaimasternpc->Remove($event->getPlayer());
@@ -200,16 +205,24 @@ class EventListener implements Listener
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
 		$this->speedcorepvp->LevelChange($event);
+		$this->survival->LoadInventory($event);
 		$this->mazainpc->Check($event);
 		$this->gamemasternpc->Check($event);
 		$this->mazaimasternpc->Check($event);
 	}
 
-	public function onChat(PlayerChatEvent $event) {
+	public function onChat(PlayerChatEvent $event)
+	{
 		$this->speedcorepvp->TeamChat($event);
 	}
 
-	public function onPlayerAchievementAwarded(PlayerAchievementAwardedEvent $event) {
+	public function onPlayerAchievementAwarded(PlayerAchievementAwardedEvent $event)
+	{
 		$event->setCancelled(true);
+	}
+
+	public function onSignChange(SignChangeEvent $event)
+	{
+		$this->survival->Sign($event);
 	}
 }

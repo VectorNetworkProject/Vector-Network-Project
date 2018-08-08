@@ -20,6 +20,7 @@ use Core\Task\Teleport\TeleportAthleticTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
 use Core\Task\Teleport\TeleportSpeedCorePvPTask;
+use Core\Task\Teleport\TeleportSurvivalTask;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
@@ -193,6 +194,23 @@ class DataPacketReceive
 								} else {
 									$player->sendMessage("§e10秒後テレポートします。");
 									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportAthleticTask($this->plugin, $player), 10 * 20);
+								}
+							}
+						} else {
+							$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
+						}
+						break;
+					case 4:
+						if ($player->isOp()) {
+							if ($player->getLevel()->getName() === "Survival") {
+								$player->sendMessage("§c既にSurvivalに居ます");
+							} else {
+								if ($player->getLevel()->getName() === "lobby") {
+									$player->teleport(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+									$player->sendMessage("§aテレポートしました。");
+								} else {
+									$player->sendMessage("§e10秒後テレポートします。");
+									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
 								}
 							}
 						} else {

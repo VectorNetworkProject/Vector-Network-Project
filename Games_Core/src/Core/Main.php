@@ -61,6 +61,7 @@ class Main extends PluginBase
 		$this->getServer()->loadLevel("ffapvp");
 		$this->getServer()->loadLevel("corepvp");
 		$this->getServer()->loadLevel("athletic");
+		$this->getServer()->loadLevel("Survival");
 		$lobby = $this->getServer()->getLevelByName("lobby");
 		$ffapvp = $this->getServer()->getLevelByName("ffapvp");
 		$speedcorepvp = $this->getServer()->getLevelByName("corepvp");

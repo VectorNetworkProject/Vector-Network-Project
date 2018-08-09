@@ -8,23 +8,22 @@
 
 namespace Core\Event;
 
+use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use pocketmine\event\block\BlockPlaceEvent;
 
 class BlockPlace
 {
+	protected $plugin, $survival;
+
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
+		$this->survival = new SurvivalCore($this->plugin);
 	}
 
 	public function event(BlockPlaceEvent $event)
 	{
-		/*
-        $player = $event->getPlayer();
-        if (!$player->isOp()) {
-            $event->setCancelled(true);
-        }
-        */
+		$this->survival->AddPlaceCount($event->getPlayer());
 	}
 }

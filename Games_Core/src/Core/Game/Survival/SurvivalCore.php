@@ -11,7 +11,14 @@ namespace Core\Game\Survival;
 
 use Core\DataFile;
 use Core\Main;
+use Core\Player\Level;
+use Core\Player\Money;
+use Core\Task\LevelCheckingTask;
 use Core\Task\Teleport\TeleportSurvivalSpawnTask;
+use pocketmine\block\Block;
+use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -23,11 +30,13 @@ use pocketmine\tile\Sign;
 class SurvivalCore
 {
 	const LEVEL_NAME = "Survival";
-	protected $plugin;
+	protected $plugin, $money, $level;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
+		$this->money = new Money();
+		$this->level = new Level();
 	}
 
 	/**
@@ -35,7 +44,7 @@ class SurvivalCore
 	 */
 	public function Kit(Player $player)
 	{
-
+		$player->getInventory()->addItem(Item::get(Item::STEAK, 0, 64));
 	}
 
 	/**
@@ -51,6 +60,10 @@ class SurvivalCore
 				$text = $tile->getText();
 				if ($text[0] === "§7[§2Survival §eJoin§7]") {
 					$player->teleport(new Position(mt_rand(1, 999), 300, mt_rand(1, 999), $this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)));
+					$player->addEffect(new EffectInstance(Effect::getEffect(Effect::DAMAGE_RESISTANCE), 10 * 20, 256, false));
+					$player->addEffect(new EffectInstance(Effect::getEffect(Effect::REGENERATION), 15 * 20, 256, false));
+					$this->Kit($player);
+					$player->addTitle("§aTeleport", "§eサバイバルの世界へ転送されました。", 40, 60, 40);
 				}
 			}
 		}
@@ -107,7 +120,7 @@ class SurvivalCore
 						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $item['count']));
 					}
 					$spawn = $data['spawn'];
-					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $spawn), 20);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $spawn), 3 * 20);
 				}
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
@@ -129,6 +142,118 @@ class SurvivalCore
 			$spawn['y'] = $player->getY();
 			$spawn['z'] = $player->getZ();
 			$datafile->write('SURVIVAL', $spawn);
+		}
+	}
+
+	/**
+	 * @param BlockBreakEvent $event
+	 */
+	public function BreakBlock(BlockBreakEvent $event)
+	{
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			switch ($block->getId()) {
+				case Block::DIAMOND_ORE:
+					$data['breakdiamond'] += 1;
+					$money = mt_rand(100, 300);
+					$exp = mt_rand(50, 100);
+					$this->money->addMoney($player->getName(), $money);
+					$this->level->addExp($player->getName(), $exp);
+					$datafile->write('SURVIVAL', $data);
+					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
+					break;
+				case Block::IRON_ORE:
+					$data['breakiron'] += 1;
+					$money = mt_rand(30, 60);
+					$exp = mt_rand(20, 30);
+					$this->money->addMoney($player->getName(), $money);
+					$this->level->addExp($player->getName(), $exp);
+					$datafile->write('SURVIVAL', $data);
+					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
+					break;
+				case Block::GOLD_ORE:
+					$data['breakgold'] += 1;
+					$money = mt_rand(40, 70);
+					$exp = mt_rand(30, 50);
+					$this->money->addMoney($player->getName(), $money);
+					$this->level->addExp($player->getName(), $exp);
+					$datafile->write('SURVIVAL', $data);
+					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
+					break;
+				case Block::COAL_ORE:
+					$data['breakcoal'] += 1;
+					$money = mt_rand(1, 10);
+					$exp = mt_rand(1, 10);
+					$this->money->addMoney($player->getName(), $money);
+					$this->level->addExp($player->getName(), $exp);
+					$datafile->write('SURVIVAL', $data);
+					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
+					break;
+			}
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function AddKillCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			$data['kill'] += 1;
+			$datafile->write('SURVIVAL', $data);
+			$rand = mt_rand(1, 50);
+			$this->money->addMoney($player->getName(), $rand);
+			$player->sendMessage("§a+$rand §6V§bN§eCoin");
+			$this->level->LevelSystem($player);
+			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function AddDeathCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			$data['death'] += 1;
+			$data['spawn']['x'] = 225;
+			$data['spawn']['y'] = 243;
+			$data['spawn']['z'] = 256;
+			$datafile->write('SURVIVAL', $data);
+			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function AddBreakCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			$data['breakblock'] += 1;
+			$datafile->write('SURVIVAL', $data);
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function AddPlaceCount(Player $player)
+	{
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			$data['placeblock'] += 1;
+			$datafile->write('SURVIVAL', $data);
 		}
 	}
 }

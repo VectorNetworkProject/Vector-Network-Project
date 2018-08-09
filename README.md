@@ -7,7 +7,9 @@
 
 ## 情報
 API: 4.0.0  
-Software: PocketMine-MP dev1364
+Software: PocketMine-MP dev1364  
+
+Games_CoreはPocketMine-MPのPluginManager.phpの[callEvent](https://github.com/VectorNetworkProject/PocketMine-MP/blob/master/src/pocketmine/plugin/PluginManager.php#L536)から[この](https://github.com/VectorNetworkProject/PocketMine-MP/blob/master/src/pocketmine/plugin/PluginManager.php#L537-#L540)処理を消す必要があります。
 
 ```
 __     __        _               _   _      _                      _      ____            _           _   

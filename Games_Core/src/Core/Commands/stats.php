@@ -9,6 +9,7 @@
 namespace Core\Commands;
 
 use Core\DataFile;
+use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use Core\Player\KD;
 use Core\Player\Level;
@@ -77,14 +78,14 @@ class stats extends PluginCommand
 			$speedcorepvp_lose = $speedcorepvp['lose'];
 			$speedcorepvp_kd = $this->kd->SCPKD($sender->getName());
 			$speedcorepvp_wl = $this->kd->SCPWL($sender->getName());
-			$survival_kill = $survival['kill'];
-			$survival_death = $survival['death'];
-			$survival_place = $survival['placeblock'];
-			$survival_breakblock = $survival['breakblock'];
-			$survival_breakdiamond = $survival['breakdiamond'];
-			$survival_breakiron = $survival['breakiron'];
-			$survival_breakgold = $survival['breakgold'];
-			$survival_breakcoal = $survival['breakcoal'];
+			$survival_kill = SurvivalCore::getKillCount($name);
+			$survival_death = SurvivalCore::getDeathCount($name);
+			$survival_place = SurvivalCore::getPlaceCount($name);
+			$survival_breakblock = SurvivalCore::getBreakBlock($name);
+			$survival_breakdiamond = SurvivalCore::getBreakDiamond($name);
+			$survival_breakiron = SurvivalCore::getBreakIron($name);
+			$survival_breakgold = SurvivalCore::getBreakGold($name);
+			$survival_breakcoal = SurvivalCore::getBreakCoal($name);
 			$status = [
 				"type" => "custom_form",
 				"title" => "§l$name のステータス",

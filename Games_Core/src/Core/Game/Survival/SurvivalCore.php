@@ -256,4 +256,92 @@ class SurvivalCore
 			$datafile->write('SURVIVAL', $data);
 		}
 	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getPlaceCount(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['placeblock'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getBreakBlock(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['breakblock'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getDeathCount(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['death'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getKillCount(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['kill'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getBreakDiamond(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['breakdiamond'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getBreakIron(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['breakiron'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getBreakGold(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['breakgold'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return int
+	 */
+	public static function getBreakCoal(string $name): int
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['breakcoal'];
+	}
 }

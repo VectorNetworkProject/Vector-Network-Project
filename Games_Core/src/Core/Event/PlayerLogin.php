@@ -64,7 +64,6 @@ class PlayerLogin
 		}
 		if (($inventory = $data->get('SURVIVAL')) === null) {
 			$inventory = [
-				"items" => [],
 				"breakblock" => 0,
 				"placeblock" => 0,
 				"kill" => 0,
@@ -73,6 +72,7 @@ class PlayerLogin
 				"breakgold" => 0,
 				"breakcoal" => 0,
 				"breakiron" => 0,
+				"items" => [],
 				"spawn" => [
 					"x" => 225,
 					"y" => 243,

@@ -57,6 +57,7 @@ class stats extends PluginCommand
 			$userdata = $datafile->get('USERDATA');
 			$ffapvp = $datafile->get('FFAPVP');
 			$speedcorepvp = $datafile->get('COREPVP');
+			$survival = $datafile->get('SURVIVAL');
 			$level = $this->level->getLevel($name);
 			$money = $this->money->getMoney($name);
 			$exp = $this->level->getExp($name);
@@ -76,6 +77,14 @@ class stats extends PluginCommand
 			$speedcorepvp_lose = $speedcorepvp['lose'];
 			$speedcorepvp_kd = $this->kd->SCPKD($sender->getName());
 			$speedcorepvp_wl = $this->kd->SCPWL($sender->getName());
+			$survival_kill = $survival['kill'];
+			$survival_death = $survival['death'];
+			$survival_place = $survival['placeblock'];
+			$survival_breakblock = $survival['breakblock'];
+			$survival_breakdiamond = $survival['breakdiamond'];
+			$survival_breakiron = $survival['breakiron'];
+			$survival_breakgold = $survival['breakgold'];
+			$survival_breakcoal = $survival['breakcoal'];
 			$status = [
 				"type" => "custom_form",
 				"title" => "§l$name のステータス",
@@ -90,14 +99,18 @@ class stats extends PluginCommand
 					],
 					[
 						"type" => "label",
-						"text" => "---=== §bSpeed§aCore§cPvP §r===---\n§eキル数§r: $speedcorepvp_kill\n§cデス数§r: $speedcorepvp_death\n§aコア§c破壊回数§r: $speedcorepvp_breakcore\n§aWin§r: $speedcorepvp_win\n §cLose§r: $speedcorepvp_lose\n§eK§7/§cD§r: $speedcorepvp_kd\n§aW§7/§cL§r: $speedcorepvp_wl"
+						"text" => "---=== §bSpeed§aCore§cPvP §r===---\n§eキル数§r: $speedcorepvp_kill\n§cデス数§r: $speedcorepvp_death\n§aコア§c破壊回数§r: $speedcorepvp_breakcore\n§aWin§r: $speedcorepvp_win\n§cLose§r: $speedcorepvp_lose\n§eK§7/§cD§r: $speedcorepvp_kd\n§aW§7/§cL§r: $speedcorepvp_wl"
+					],
+					[
+						"type" => "label",
+						"text" => "---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭§aの数§r: $survival_breakcoal"
 					]
 				]
 			];
 			$modal = new ModalFormRequestPacket();
 			$modal->formId = mt_rand(1111111, 9999999);
 			$modal->formData = json_encode($status);
-			$sender->dataPacket($modal);
+			$sender->sendDataPacket($modal, false);
 			return true;
 		}
 		$sender->sendMessage(TextFormat::RED . "このコマンドはプレイヤーのみが実行できます。");

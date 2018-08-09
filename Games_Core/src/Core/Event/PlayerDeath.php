@@ -10,6 +10,7 @@ namespace Core\Event;
 
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
+use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use Core\Player\KillSound;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -23,12 +24,14 @@ class PlayerDeath
 	protected $ffapvp;
 	protected $killsound;
 	protected $speedcorepvp;
+	protected $survival;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
 		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
+		$this->survival = new SurvivalCore($this->plugin);
 		$this->killsound = new KillSound($this->plugin);
 	}
 
@@ -66,6 +69,18 @@ class PlayerDeath
 			} else {
 				$this->DeathMessage('corepvp', $player->getName());
 				$this->speedcorepvp->AddDeathCount($player);
+			}
+		} elseif ($player->getLevel()->getName() === "Survival") {
+			if ($cause instanceof EntityDamageByEntityEvent) {
+				$damager = $cause->getDamager();
+				if ($damager instanceof Player) {
+					$this->survival->AddKillCount($damager);
+					$this->killsound->PlaySound($damager);
+					$this->DeathMessage("Survival", $player->getName(), $damager->getName());
+				}
+			} else {
+				$this->DeathMessage("Survival", $player->getName());
+				$this->survival->AddDeathCount($player);
 			}
 		}
 	}

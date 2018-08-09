@@ -165,6 +165,7 @@ class EventListener implements Listener
 		$this->blockbreakevent->event($event);
 		$this->speedcorepvp->BreakCore($event);
 		$this->speedcorepvp->DropItem($event);
+		$this->survival->BreakBlock($event);
 	}
 
 	public function onPlace(BlockPlaceEvent $event)

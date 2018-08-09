@@ -104,7 +104,7 @@ class stats extends PluginCommand
 					],
 					[
 						"type" => "label",
-						"text" => "---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭§aの数§r: $survival_breakcoal"
+						"text" => "---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭鉱石§aの数§r: $survival_breakcoal"
 					]
 				]
 			];

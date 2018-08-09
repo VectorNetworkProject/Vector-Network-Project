@@ -534,7 +534,7 @@ class SpeedCorePvPCore
 				$soundpacket = new PlaySoundPacket();
 				$soundpacket->soundName = 'music.breakcore';
 				$soundpacket->volume = 1;
-				$soundpacket->pitch = mt_rand(1, 3);
+				$soundpacket->pitch = self::Rand();
 				$soundpacket->x = $player->getX();
 				$soundpacket->y = $player->getY();
 				$soundpacket->z = $player->getZ();
@@ -551,6 +551,16 @@ class SpeedCorePvPCore
 				}
 			}
 		}
+	}
+
+	/**
+	 * @return float|int
+	 */
+	public static function Rand()
+	{
+		$int = mt_rand() / mt_getrandmax();
+		$rand = floor($int * pow(10, 1)) / pow(10, 1);
+		return $rand;
 	}
 
 	/**

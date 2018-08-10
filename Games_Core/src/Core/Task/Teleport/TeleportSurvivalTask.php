@@ -28,6 +28,7 @@ class TeleportSurvivalTask extends PluginTask
 	{
 		$level = $this->owner->getServer()->getLevelByName("Survival");
 		$this->player->teleport(new Position(225, 243, 256, $level));
+		$this->player->setSpawn(new Position(225, 243, 256, $level));
 		$this->player->setHealth(20);
 		$this->player->setMaxHealth(20);
 		$this->player->setFood(20);

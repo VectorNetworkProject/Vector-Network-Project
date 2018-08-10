@@ -202,6 +202,7 @@ class SurvivalCore
 					$this->money->addMoney($player->getName(), $money);
 					$this->level->addExp($player->getName(), $exp);
 					$datafile->write('SURVIVAL', $data);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
 					break;
 				case Block::IRON_ORE:
@@ -210,7 +211,9 @@ class SurvivalCore
 					$exp = mt_rand(20, 30);
 					$this->money->addMoney($player->getName(), $money);
 					$this->level->addExp($player->getName(), $exp);
+					$event->setDrops([Item::IRON_INGOT, 0, 1]);
 					$datafile->write('SURVIVAL', $data);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
 					break;
 				case Block::GOLD_ORE:
@@ -220,6 +223,8 @@ class SurvivalCore
 					$this->money->addMoney($player->getName(), $money);
 					$this->level->addExp($player->getName(), $exp);
 					$datafile->write('SURVIVAL', $data);
+					$event->setDrops([Item::get(Item::GOLD_INGOT, 0, 1)]);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
 					break;
 				case Block::COAL_ORE:
@@ -229,6 +234,7 @@ class SurvivalCore
 					$this->money->addMoney($player->getName(), $money);
 					$this->level->addExp($player->getName(), $exp);
 					$datafile->write('SURVIVAL', $data);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");
 					break;
 			}

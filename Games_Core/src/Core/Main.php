@@ -59,7 +59,6 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
-		$this->getScheduler()->scheduleRepeatingTask(new FoodTask($this), 10 * 20);
 		$this->getServer()->loadLevel("ffapvp");
 		$this->getServer()->loadLevel("corepvp");
 		$this->getServer()->loadLevel("athletic");

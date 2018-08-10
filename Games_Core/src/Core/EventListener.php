@@ -19,6 +19,7 @@ use Core\Event\EntityInventoryChange;
 use Core\Event\EntityShootBow;
 use Core\Event\PlayerCommandPreprocess;
 use Core\Event\PlayerDeath;
+use Core\Event\PlayerExhaust;
 use Core\Event\PlayerInteract;
 use Core\Event\PlayerJoin;
 use Core\Event\PlayerLogin;
@@ -42,6 +43,7 @@ use pocketmine\event\player\PlayerAchievementAwardedEvent;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
@@ -78,6 +80,7 @@ class EventListener implements Listener
 	protected $playerrespawnevent;
 	protected $entityinventorychange;
 	protected $entityshootbowevent;
+	protected $playerexhaustevent;
 
 	public function __construct(Main $plugin)
 	{
@@ -104,6 +107,7 @@ class EventListener implements Listener
 		$this->playerrespawnevent = new PlayerRespawn($this->plugin);
 		$this->entityinventorychange = new EntityInventoryChange($this->plugin);
 		$this->entityshootbowevent = new EntityShootBow($this->plugin);
+		$this->playerexhaustevent = new PlayerExhaust($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -230,5 +234,10 @@ class EventListener implements Listener
 	public function onSignChange(SignChangeEvent $event)
 	{
 		$this->survival->Sign($event);
+	}
+
+	public function onPlayerExhaust(PlayerExhaustEvent $event)
+	{
+		$this->playerexhaustevent->event($event);
 	}
 }

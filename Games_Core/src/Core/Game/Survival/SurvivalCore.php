@@ -93,8 +93,13 @@ class SurvivalCore
 			$datafile = new DataFile($player->getName());
 			$data = $datafile->get('SURVIVAL');
 			if (isset($data['items'])) {
-				$data['items'] = $player->getInventory()->getContents();
-				$datafile->write('SURVIVAL', $data);
+				if (empty($player->getInventory()->getContents())) {
+					$data['items'] = [];
+					$datafile->write('SURVIVAL', $data);
+				} else {
+					$data['items'] = $player->getInventory()->getContents();
+					$datafile->write('SURVIVAL', $data);
+				}
 			}
 		}
 	}
@@ -120,11 +125,14 @@ class SurvivalCore
 						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $item['count']));
 					}
 					$spawn = $data['spawn'];
+					$entity->setHealth(self::getHealth($entity->getName()));
+					$entity->setFood(self::getFood($entity->getName()));
+					$this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($spawn['x'], $spawn['z']);
 					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $spawn), 3 * 20);
 				}
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
-				$this->SaveSpawn($entity);
+				$this->SaveSpawn($entity->getName(), $entity->getLevel()->getName(), $entity->getX(), $entity->getY(), $entity->getZ());
 			}
 		}
 	}
@@ -132,16 +140,45 @@ class SurvivalCore
 	/**
 	 * @param Player $player
 	 */
-	public function SaveSpawn(Player $player)
+	public function SaveHeath(Player $player)
 	{
 		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
 			$datafile = new DataFile($player->getName());
 			$data = $datafile->get('SURVIVAL');
-			$spawn = $data['spawn'];
-			$spawn['x'] = $player->getX();
-			$spawn['y'] = $player->getY();
-			$spawn['z'] = $player->getZ();
-			$datafile->write('SURVIVAL', $spawn);
+			$data['health'] = $player->getHealth();
+			$datafile->write('SURVIVAL', $data);
+		}
+	}
+
+	/**
+	 * @param Player $player
+	 */
+	public function SaveFood(Player $player)
+	{
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			$datafile = new DataFile($player->getName());
+			$data = $datafile->get('SURVIVAL');
+			$data['food'] = $player->getFood();
+			$datafile->write('SURVIVAL', $data);
+		}
+	}
+
+	/**
+	 * @param string $name
+	 * @param string $level
+	 * @param float $x
+	 * @param float $y
+	 * @param float $z
+	 */
+	public function SaveSpawn(string $name, string $level, float $x, float $y, float $z)
+	{
+		if ($level === self::LEVEL_NAME) {
+			$datafile = new DataFile($name);
+			$data = $datafile->get('SURVIVAL');
+			$data['spawn']['x'] = $x;
+			$data['spawn']['y'] = $y;
+			$data['spawn']['z'] = $z;
+			$datafile->write('SURVIVAL', $data);
 		}
 	}
 
@@ -223,10 +260,9 @@ class SurvivalCore
 			$datafile = new DataFile($player->getName());
 			$data = $datafile->get('SURVIVAL');
 			$data['death'] += 1;
-			$data['spawn']['x'] = 225;
-			$data['spawn']['y'] = 243;
-			$data['spawn']['z'] = 256;
+			$data['items'] = [];
 			$datafile->write('SURVIVAL', $data);
+			$this->SaveSpawn($player->getName(), $player->getLevel()->getName(), 225, 243, 256);
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
 	}
@@ -343,5 +379,27 @@ class SurvivalCore
 		$datafile = new DataFile($name);
 		$data = $datafile->get('SURVIVAL');
 		return $data['breakcoal'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return float
+	 */
+	public static function getHealth(string $name): float
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['health'];
+	}
+
+	/**
+	 * @param string $name
+	 * @return float
+	 */
+	public static function getFood(string $name): float
+	{
+		$datafile = new DataFile($name);
+		$data = $datafile->get('SURVIVAL');
+		return $data['health'];
 	}
 }

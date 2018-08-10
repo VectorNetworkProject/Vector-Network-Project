@@ -58,7 +58,6 @@ class stats extends PluginCommand
 			$userdata = $datafile->get('USERDATA');
 			$ffapvp = $datafile->get('FFAPVP');
 			$speedcorepvp = $datafile->get('COREPVP');
-			$survival = $datafile->get('SURVIVAL');
 			$level = $this->level->getLevel($name);
 			$money = $this->money->getMoney($name);
 			$exp = $this->level->getExp($name);

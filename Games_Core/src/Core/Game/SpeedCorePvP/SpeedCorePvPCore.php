@@ -18,6 +18,7 @@ use Core\Task\LevelCheckingTask;
 use Core\Task\RemoveArmorTask;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
@@ -306,6 +307,34 @@ class SpeedCorePvPCore
 	}
 
 	/**
+	 * @param BlockPlaceEvent $event
+	 */
+	public function AntiPlace(BlockPlaceEvent $event)
+	{
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		if ($player->getName() === $this->fieldname) {
+			switch ($block->getId()) {
+				case Block::MELON_BLOCK:
+					if (!$player->isOp()) {
+						$event->setCancelled(true);
+					}
+					break;
+				case Block::LOG:
+					if (!$player->isOp()) {
+						$event->setCancelled(true);
+					}
+					break;
+				case Block::LOG2:
+					if (!$player->isOp()) {
+						$event->setCancelled(true);
+					}
+					break;
+			}
+		}
+	}
+
+	/**
 	 * @param int $teamid
 	 */
 	public function ReducePlayerCount(int $teamid)
@@ -330,6 +359,7 @@ class SpeedCorePvPCore
 			if ($entity instanceof Player) {
 				$this->GameQuit($entity->getPlayer());
 				$entity->getArmorInventory()->clearAll(true);
+				$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $entity), 20);
 			}
 		}
 	}
@@ -392,12 +422,12 @@ class SpeedCorePvPCore
 	{
 		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
 			if (isset($this->team[$event->getPlayer()->getName()])) {
-				if (strpos($event->getMessage(), '!') !== false or strpos($event->getMessage(), '！') !== false) {
+				if (strpos($event->getMessage(), '@') !== false or strpos($event->getMessage(), '＠') !== false) {
 					$event->setCancelled(true);
 					foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
 						if (isset($this->team[$player->getName()])) {
 							if ($this->team[$player->getName()] === $this->team[$event->getPlayer()->getName()]) {
-								$message = str_replace(['!', '！'], '', $event->getMessage());
+								$message = str_replace(['＠', '@'], '', $event->getMessage());
 								$player->sendMessage("§7(TEAM) " . $event->getPlayer()->getName() . " >>> " . $message);
 							}
 						}
@@ -504,7 +534,7 @@ class SpeedCorePvPCore
 				$soundpacket = new PlaySoundPacket();
 				$soundpacket->soundName = 'music.breakcore';
 				$soundpacket->volume = 1;
-				$soundpacket->pitch = 0.5;
+				$soundpacket->pitch = self::Rand();
 				$soundpacket->x = $player->getX();
 				$soundpacket->y = $player->getY();
 				$soundpacket->z = $player->getZ();
@@ -521,6 +551,26 @@ class SpeedCorePvPCore
 				}
 			}
 		}
+	}
+
+	/**
+	 * @return float|int
+	 */
+	public static function Rand()
+	{
+		$rand = mt_rand(1, 3);
+		switch ($rand) {
+			case 1:
+				return 1;
+				break;
+			case 2:
+				return 0.9;
+				break;
+			case 3:
+				return 0.8;
+				break;
+		}
+		return 0;
 	}
 
 	/**
@@ -604,16 +654,16 @@ class SpeedCorePvPCore
 						$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
 					}
 				}
+				$player->getArmorInventory()->clearAll(true);
+				$player->getInventory()->clearAll(true);
+				$player->removeAllEffects();
+				$player->setMaxHealth(20);
+				$player->setHealth(20);
+				$player->setFood(20);
+				$player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
+				$player->teleport(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
+				$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $player), 20);
 			}
-			$player->getArmorInventory()->clearAll(true);
-			$player->getInventory()->clearAll(true);
-			$player->removeAllEffects();
-			$player->setMaxHealth(20);
-			$player->setHealth(20);
-			$player->setFood(20);
-			$player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
-			$player->teleport(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
-			$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $player), 20);
 		}
 		unset($this->team);
 		$this->setHP(1, 100);

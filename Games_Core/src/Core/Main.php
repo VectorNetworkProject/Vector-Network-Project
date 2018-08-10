@@ -15,6 +15,7 @@
 
 namespace Core;
 
+use Core\Commands\adtag;
 use Core\Commands\debug;
 use Core\Commands\killsound;
 use Core\Commands\ping;
@@ -24,6 +25,7 @@ use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Task\AutoSavingTask;
+use Core\Task\FoodTask;
 use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
@@ -45,7 +47,7 @@ class Main extends PluginBase
                                                                                    |__/               
                      §7Developers: §bInkoHX & MazaiCrafty
                      §aLICENSE: §cMIT
-                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1273
+                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1364
     ";
 
 	public function onEnable(): void
@@ -56,9 +58,11 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new FoodTask($this), 10 * 20);
 		$this->getServer()->loadLevel("ffapvp");
 		$this->getServer()->loadLevel("corepvp");
 		$this->getServer()->loadLevel("athletic");
+		$this->getServer()->loadLevel("Survival");
 		$lobby = $this->getServer()->getLevelByName("lobby");
 		$ffapvp = $this->getServer()->getLevelByName("ffapvp");
 		$speedcorepvp = $this->getServer()->getLevelByName("corepvp");
@@ -92,7 +96,8 @@ class Main extends PluginBase
 			new settag($this),
 			new selectgame($this),
 			new debug($this),
-			new killsound($this)
+			new killsound($this),
+			new adtag($this)
 		];
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
 	}

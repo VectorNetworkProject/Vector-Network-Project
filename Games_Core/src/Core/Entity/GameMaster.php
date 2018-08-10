@@ -2,12 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/08/02
- * Time: 16:54
+ * Date: 2018/08/03
+ * Time: 12:46
  */
 
 namespace Core\Entity;
-
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
@@ -24,7 +23,7 @@ use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\Player;
 use pocketmine\utils\UUID;
 
-class Mazai
+class GameMaster
 {
 	protected static $players = [];
 
@@ -36,7 +35,7 @@ class Mazai
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username = "§a魔剤§e売りの§a魔剤§eさん", Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
+	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
 	{
 		$addplayerpacket = new AddPlayerPacket();
 		$addplayerpacket->uuid = ($uuid = UUID::fromRandom());
@@ -58,7 +57,7 @@ class Mazai
 		$player->dataPacket($addplayerpacket);
 		for ($type = 0; $type <= 1; $type++) {
 			$playerlistpacket = new PlayerListPacket();
-			$playerlistpacket->entries[] = PlayerListEntry::createAdditionEntry($uuid, $eid, "", "", 0, new Skin("Standard_Custom", base64_decode(file_get_contents("plugins/Games_Core/resources/skins/MazaiNPC"))));
+			$playerlistpacket->entries[] = PlayerListEntry::createAdditionEntry($uuid, $eid, "", "", 0, new Skin("Standard_Custom", base64_decode(file_get_contents("plugins/Games_Core/resources/skins/GameMaster"))));
 			$playerlistpacket->type = $type;
 			$player->dataPacket($playerlistpacket);
 		}
@@ -102,13 +101,12 @@ class Mazai
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
 			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
+				$this->Create($entity, "§aGame§7Master", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
 			} else {
 				$this->Remove($entity);
 			}
 		}
 	}
-
 	public function ClickEntity(DataPacketReceiveEvent $event)
 	{
 		$packet = $event->getPacket();
@@ -116,20 +114,21 @@ class Mazai
 		if ($packet instanceof InventoryTransactionPacket) {
 			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
 				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
-					$shop = [
-						"type" => "form",
-						"title" => "§a魔剤さんの§e変換所",
-						"content" => "§6V§bN§eCoin§rを§aMAZAI§rにします。",
-						"buttons" => [
+					$gamesmenu = [
+						"type" => "custom_form",
+						"title" => "ゲーム選択",
+						"content" => [
 							[
-								"text" => "§e1§aMAZAI\n§e10000§6V§bN§eCoin"
+								"type" => "dropdown",
+								"text" => "遊びたいゲームを選択しましょう！",
+								"options" => ["ロビー", "FFAPvP", "SpeedCorePvP", "Athletic", "Survival"]
 							]
 						]
 					];
 					$modal = new ModalFormRequestPacket();
-					$modal->formData = json_encode($shop);
-					$modal->formId = 75498654;
-					$player->dataPacket($modal);
+					$modal->formId = 45786154;
+					$modal->formData = json_encode($gamesmenu);
+					$player->sendDataPacket($modal, false);
 				}
 			}
 		}

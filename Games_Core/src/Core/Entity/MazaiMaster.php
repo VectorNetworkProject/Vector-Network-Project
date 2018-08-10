@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/08/02
- * Time: 16:54
+ * Date: 2018/08/05
+ * Time: 14:21
  */
 
 namespace Core\Entity;
@@ -24,7 +24,7 @@ use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\Player;
 use pocketmine\utils\UUID;
 
-class Mazai
+class MazaiMaster
 {
 	protected static $players = [];
 
@@ -36,7 +36,7 @@ class Mazai
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username = "§a魔剤§e売りの§a魔剤§eさん", Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
+	public function Create(Player $player, string $username = "§a魔剤§7マスター", Vector3 $pos, Item $item, int $yaw = 105, int $headyaw = 105)
 	{
 		$addplayerpacket = new AddPlayerPacket();
 		$addplayerpacket->uuid = ($uuid = UUID::fromRandom());
@@ -102,7 +102,7 @@ class Mazai
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
 			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
+				$this->Create($entity, "§a魔剤§7マスター", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
 			} else {
 				$this->Remove($entity);
 			}
@@ -118,17 +118,20 @@ class Mazai
 				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
 					$shop = [
 						"type" => "form",
-						"title" => "§a魔剤さんの§e変換所",
-						"content" => "§6V§bN§eCoin§rを§aMAZAI§rにします。",
+						"title" => "§aMAZAI§e変換所",
+						"content" => "§aMAZAI§rを色んなものに変換します。",
 						"buttons" => [
 							[
-								"text" => "§e1§aMAZAI\n§e10000§6V§bN§eCoin"
+								"text" => "§e300§aXP\n§e1§aMAZAI"
+							],
+							[
+								"text" => "§e10000§6V§bN§eCoin\n§e1§aMAZAI"
 							]
 						]
 					];
 					$modal = new ModalFormRequestPacket();
 					$modal->formData = json_encode($shop);
-					$modal->formId = 75498654;
+					$modal->formId = 8168764;
 					$player->dataPacket($modal);
 				}
 			}

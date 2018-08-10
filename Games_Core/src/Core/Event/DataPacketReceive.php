@@ -8,30 +8,40 @@
 
 namespace Core\Event;
 
-use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use Core\Player\KillSound;
+use Core\Player\Level;
+use Core\Player\MazaiPoint;
 use Core\Player\Money;
 use Core\Player\Rank;
 use Core\Player\Tag;
+use Core\Task\LevelCheckingTask;
 use Core\Task\Teleport\TeleportAthleticTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
 use Core\Task\Teleport\TeleportSpeedCorePvPTask;
+use Core\Task\Teleport\TeleportSurvivalTask;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
 {
+
+	const BUY_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
+	const BUY_ERROR = "§7[§c失敗§7] §r§6V§bN§eCoin§cがたりません。";
+	const MAZAI_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
+	const MAZAI_ERROR = "§7[§c失敗§7] §r§aMAZAI§cが足りません";
+
 	protected $plugin;
 	protected $money;
-	protected $ok;
-	protected $error;
 	protected $rank;
 	protected $tag;
+	protected $level;
 	protected $killsound;
 	protected $speedcorepvp;
+	protected $mazai;
 
 	public function __construct(Main $plugin)
 	{
@@ -39,74 +49,74 @@ class DataPacketReceive
 		$this->money = new Money();
 		$this->rank = new Rank($this->plugin);
 		$this->tag = new Tag();
+		$this->level = new Level();
 		$this->killsound = new KillSound($this->plugin);
-		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
-		$this->ok = "§7[§a成功§7] §a購入に成功しました。";
-		$this->error = "§7[§c失敗§7] §r§6V§bN§eCoin§rがたりません。";
+		$this->mazai = new MazaiPoint();
 	}
-
 	public function event(DataPacketReceiveEvent $event)
 	{
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();
 		if ($packet instanceof ModalFormResponsePacket) {
 			if ($packet->formId === 45661984) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				switch ($data[0]) {
 					case 0:
 						if ($this->money->reduceMoney($player->getName(), 1500000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 1);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 1:
 						if ($this->money->reduceMoney($player->getName(), 1000000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 2);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 2:
 						if ($this->money->reduceMoney($player->getName(), 700000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 3);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 3:
 						if ($this->money->reduceMoney($player->getName(), 500000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 4);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 4:
 						if ($this->money->reduceMoney($player->getName(), 300000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 5);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 5:
 						if ($this->money->reduceMoney($player->getName(), 100000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 6);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					case 6:
 						if ($this->money->reduceMoney($player->getName(), 50000)) {
-							$player->sendMessage($this->ok);
+							$player->sendMessage(self::BUY_SUCCESS);
 							$this->rank->setRank($player->getName(), 7);
 						} else {
-							$player->sendMessage($this->error);
+							$player->sendMessage(self::BUY_ERROR);
 						}
 						break;
 					default:
@@ -115,7 +125,9 @@ class DataPacketReceive
 				}
 			}
 			if ($packet->formId === 8489612) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				if (empty($data)) {
 					$player->sendMessage("§7[§c失敗§7] §cタグ名を記入して下さい。");
 				} else {
@@ -128,12 +140,14 @@ class DataPacketReceive
 						$player->sendMessage("§7[§b情報§7] §6V§bN§eCoin§7を§61000§7消費しました。");
 						$this->tag->setTag($player, $tag, $data[1]);
 					} else {
-						$player->sendMessage($this->error);
+						$player->sendMessage(self::BUY_ERROR);
 					}
 				}
 			}
 			if ($packet->formId === 45786154) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				switch ($data[0]) {
 					case 0:
 						if ($player->getLevel()->getName() === "lobby") {
@@ -187,10 +201,25 @@ class DataPacketReceive
 							$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
 						}
 						break;
+					case 4:
+						$form = [
+							"type" => "modal",
+							"title" => "注意",
+							"content" => "このゲームのステージはかなり重くアプリがクラッシュする事があります。\nそれでも参加したい方は諦めずに参加を繰り返して下さい。",
+							"button1" => "俺の端末にクラッシュなんてねぇ",
+							"button2" => "いや俺の端末はクソだから..."
+						];
+						$modal = new ModalFormRequestPacket();
+						$modal->formId = 348574546;
+						$modal->formData = json_encode($form);
+						$player->sendDataPacket($modal, false);
+						break;
 				}
 			}
 			if ($packet->formId === 94572154) {
-				$data = json_decode($packet->formData, true);
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
 				switch ($data[0]) {
 					case 0:
 						$this->killsound->setKillSound($player, 0);
@@ -228,6 +257,64 @@ class DataPacketReceive
 						$this->killsound->setKillSound($player, 8);
 						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【さっさと逃げればいいものを】に設定しました。");
 						break;
+				}
+			}
+			if ($packet->formId === 75498654) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				switch ($data) {
+					case 0:
+						if ($this->money->reduceMoney($player->getName(), 10000)) {
+							$player->sendMessage(self::BUY_SUCCESS);
+							$this->mazai->addMazai($player->getName(), 1);
+						} else {
+							$player->sendMessage(self::BUY_ERROR);
+						}
+						break;
+				}
+			}
+			if ($packet->formId === 8168764) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				switch ($data) {
+					case 0:
+						if ($this->mazai->reduceMazai($player->getName(), 1)) {
+							$player->sendMessage(self::MAZAI_SUCCESS);
+							$this->level->addExp($player->getName(), 300);
+							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+						} else {
+							$player->sendMessage(self::MAZAI_ERROR);
+						}
+						break;
+					case 1:
+						if ($this->mazai->reduceMazai($player->getName(), 1)) {
+							$player->sendMessage(self::MAZAI_SUCCESS);
+							$this->money->addMoney($player->getName(), 10000);
+						} else {
+							$player->sendMessage(self::MAZAI_ERROR);
+						}
+						break;
+				}
+			}
+			if ($packet->formId === 348574546) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				if ($data) {
+					if ($player->getLevel()->getName() === "Survival") {
+						$player->sendMessage("§c既にSurvivalに居ます");
+					} else {
+						if ($player->getLevel()->getName() === "lobby") {
+							$player->teleport(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+							$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+							$player->sendMessage("§aテレポートしました。");
+						} else {
+							$player->sendMessage("§e10秒後テレポートします。");
+							$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
+						}
+					}
 				}
 			}
 		}

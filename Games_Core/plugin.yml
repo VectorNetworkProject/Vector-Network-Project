@@ -1,7 +1,7 @@
 name: Games_Core
 main: Core\Main
 api: 4.0.0
-version: 2.2.0
+version: 2.9.4
 author: "VectorNetworkDevelopmentTeam"
 authors: ['InkoHX', 'MazaiCrafty']
 commands:
@@ -37,6 +37,10 @@ commands:
     usage: "/killsound"
     permission: vector.network.player
     description: "敵を倒した時のサウンドを設定します。"
+  adtag:
+    usage: "/adtag"
+    permission: vector.network.admin
+    description: "Admin Command"
 permissions:
   vector.network.player:
     default: true

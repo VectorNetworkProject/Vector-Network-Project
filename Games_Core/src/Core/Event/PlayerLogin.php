@@ -72,6 +72,8 @@ class PlayerLogin
 				"breakgold" => 0,
 				"breakcoal" => 0,
 				"breakiron" => 0,
+				"health" => 20,
+				"food" => 20,
 				"items" => [],
 				"spawn" => [
 					"x" => 225,

@@ -207,6 +207,7 @@ class DataPacketReceive
 							} else {
 								if ($player->getLevel()->getName() === "lobby") {
 									$player->teleport(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+									$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
 									$player->sendMessage("§aテレポートしました。");
 								} else {
 									$player->sendMessage("§e10秒後テレポートします。");

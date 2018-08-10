@@ -119,6 +119,9 @@ class EventListener implements Listener
 		$this->playerquitevent->event($event);
 		$this->speedcorepvp->GameQuit($event->getPlayer());
 		$this->survival->SaveInventory($event->getPlayer());
+		$this->survival->SaveSpawn($event->getPlayer()->getName(), $event->getPlayer()->getLevel()->getName(), $event->getPlayer()->getX(), $event->getPlayer()->getY(), $event->getPlayer()->getZ());
+		$this->survival->SaveHeath($event->getPlayer());
+		$this->survival->SaveFood($event->getPlayer());
 		$this->mazainpc->Remove($event->getPlayer());
 		$this->gamemasternpc->Remove($event->getPlayer());
 		$this->mazaimasternpc->Remove($event->getPlayer());

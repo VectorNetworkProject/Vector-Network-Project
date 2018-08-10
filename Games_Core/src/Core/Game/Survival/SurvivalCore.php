@@ -133,6 +133,8 @@ class SurvivalCore
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
 				$this->SaveSpawn($entity->getName(), $entity->getLevel()->getName(), $entity->getX(), $entity->getY(), $entity->getZ());
+				$this->SaveFood($entity);
+				$this->SaveHeath($entity);
 			}
 		}
 	}

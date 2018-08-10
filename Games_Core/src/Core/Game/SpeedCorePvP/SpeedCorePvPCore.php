@@ -558,9 +558,19 @@ class SpeedCorePvPCore
 	 */
 	public static function Rand()
 	{
-		$int = mt_rand() / mt_getrandmax();
-		$rand = floor($int * pow(10, 1)) / pow(10, 1);
-		return $rand;
+		$rand = mt_rand(1, 3);
+		switch ($rand) {
+			case 1:
+				return 1;
+				break;
+			case 2:
+				return 0.9;
+				break;
+			case 3:
+				return 0.8;
+				break;
+		}
+		return 0;
 	}
 
 	/**

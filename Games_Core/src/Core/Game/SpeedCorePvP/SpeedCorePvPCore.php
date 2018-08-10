@@ -654,16 +654,16 @@ class SpeedCorePvPCore
 						$player->sendMessage("§7[§bSpeed§aCore§cPvP§7] 残念...あなたのチームは敗北しました。\n§7[§bSpeed§aCore§cPvP§7] §6500§6V§bN§eCoin増えました。");
 					}
 				}
+				$player->getArmorInventory()->clearAll(true);
+				$player->getInventory()->clearAll(true);
+				$player->removeAllEffects();
+				$player->setMaxHealth(20);
+				$player->setHealth(20);
+				$player->setFood(20);
+				$player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
+				$player->teleport(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
+				$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $player), 20);
 			}
-			$player->getArmorInventory()->clearAll(true);
-			$player->getInventory()->clearAll(true);
-			$player->removeAllEffects();
-			$player->setMaxHealth(20);
-			$player->setHealth(20);
-			$player->setFood(20);
-			$player->setSpawn(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
-			$player->teleport(new Position(257, 8, 257, $this->plugin->getServer()->getLevelByName("lobby")));
-			$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $player), 20);
 		}
 		unset($this->team);
 		$this->setHP(1, 100);

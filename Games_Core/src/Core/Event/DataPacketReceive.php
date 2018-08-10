@@ -23,6 +23,7 @@ use Core\Task\Teleport\TeleportSpeedCorePvPTask;
 use Core\Task\Teleport\TeleportSurvivalTask;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
 class DataPacketReceive
@@ -201,22 +202,17 @@ class DataPacketReceive
 						}
 						break;
 					case 4:
-						if ($player->isOp()) {
-							if ($player->getLevel()->getName() === "Survival") {
-								$player->sendMessage("§c既にSurvivalに居ます");
-							} else {
-								if ($player->getLevel()->getName() === "lobby") {
-									$player->teleport(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
-									$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
-									$player->sendMessage("§aテレポートしました。");
-								} else {
-									$player->sendMessage("§e10秒後テレポートします。");
-									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
-								}
-							}
-						} else {
-							$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
-						}
+						$form = [
+							"type" => "modal",
+							"title" => "注意",
+							"content" => "このゲームのステージはかなり重くアプリがクラッシュする事があります。\nそれでも参加したい方は諦めずに参加を繰り返して下さい。",
+							"button1" => "俺の端末にクラッシュなんてねぇ",
+							"button2" => "いや俺の端末はクソだから..."
+						];
+						$modal = new ModalFormRequestPacket();
+						$modal->formId = 348574546;
+						$modal->formData = json_encode($form);
+						$player->sendDataPacket($modal, false);
 						break;
 				}
 			}
@@ -300,6 +296,25 @@ class DataPacketReceive
 							$player->sendMessage(self::MAZAI_ERROR);
 						}
 						break;
+				}
+			}
+			if ($packet->formId === 348574546) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				if ($data) {
+					if ($player->getLevel()->getName() === "Survival") {
+						$player->sendMessage("§c既にSurvivalに居ます");
+					} else {
+						if ($player->getLevel()->getName() === "lobby") {
+							$player->teleport(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+							$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+							$player->sendMessage("§aテレポートしました。");
+						} else {
+							$player->sendMessage("§e10秒後テレポートします。");
+							$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
+						}
+					}
 				}
 			}
 		}

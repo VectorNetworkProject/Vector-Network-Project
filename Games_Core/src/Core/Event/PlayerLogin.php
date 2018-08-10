@@ -75,11 +75,9 @@ class PlayerLogin
 				"health" => 20,
 				"food" => 20,
 				"items" => [],
-				"spawn" => [
-					"x" => 225,
-					"y" => 243,
-					"z" => 256
-				]
+				"x" => 225,
+				"y" => 243,
+				"z" => 256
 			];
 			$data->write('SURVIVAL', $inventory);
 		}

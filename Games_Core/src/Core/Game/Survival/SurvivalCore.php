@@ -124,11 +124,10 @@ class SurvivalCore
 						}
 						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $item['count']));
 					}
-					$spawn = $data['spawn'];
 					$entity->setHealth(self::getHealth($entity->getName()));
 					$entity->setFood(self::getFood($entity->getName()));
-					$this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($spawn['x'], $spawn['z']);
-					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $spawn), 3 * 20);
+					$this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($data['x'], $data['z']);
+					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $data), 3 * 20);
 				}
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
@@ -177,9 +176,9 @@ class SurvivalCore
 		if ($level === self::LEVEL_NAME) {
 			$datafile = new DataFile($name);
 			$data = $datafile->get('SURVIVAL');
-			$data['spawn']['x'] = $x;
-			$data['spawn']['y'] = $y;
-			$data['spawn']['z'] = $z;
+			$data['x'] = $x;
+			$data['y'] = $y;
+			$data['z'] = $z;
 			$datafile->write('SURVIVAL', $data);
 		}
 	}
@@ -211,7 +210,7 @@ class SurvivalCore
 					$exp = mt_rand(20, 30);
 					$this->money->addMoney($player->getName(), $money);
 					$this->level->addExp($player->getName(), $exp);
-					$event->setDrops([Item::IRON_INGOT, 0, 1]);
+					$event->setDrops([Item::get(Item::IRON_INGOT, 0, 1)]);
 					$datafile->write('SURVIVAL', $data);
 					$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 					$player->sendMessage("§a+$money §6V§bN§eCoin\n§a+$exp EXP");

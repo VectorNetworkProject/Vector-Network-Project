@@ -132,6 +132,6 @@ class KillSound
 		$sound->x = $x;
 		$sound->y = $y;
 		$sound->z = $z;
-		$player->dataPacket($sound);
+		$player->sendDataPacket($sound, false);
 	}
 }

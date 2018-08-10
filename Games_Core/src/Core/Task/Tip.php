@@ -19,7 +19,7 @@ class Tip extends PluginTask
 
 	public function onRun(int $currentTick)
 	{
-		$rand = mt_rand(1, 10);
+		$rand = mt_rand(1, 16);
 		switch ($rand) {
 			case 1:
 				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7このゲームはまだ未完成です。");
@@ -50,6 +50,24 @@ class Tip extends PluginTask
 				break;
 			case 10:
 				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7/selectgameでゲームを選択できます。");
+				break;
+			case 11:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7よく過疎過疎うんこサーバーって言われます。");
+				break;
+			case 12:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7SpeedCorePvPは二つチームに分かれてコアを削り合うゲームだよ!!");
+				break;
+			case 13:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7FFAPvPはただのPvP");
+				break;
+			case 14:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7Survivalはサバイバルだよ自分の好きなようにできる事が可能です。(重いけどね)");
+				break;
+			case 15:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7Athleticはまだ開発中なんだ！！");
+				break;
+			case 16:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7この鯖には魔剤要素があります。");
 				break;
 		}
 	}

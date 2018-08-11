@@ -104,6 +104,25 @@ class SurvivalCore
 		}
 	}
 
+    /**public function SaveInventory(Player $player) {
+        if($player->getLevel()->getName() == self::LEVEL_NAME) {
+            $datafile = new DataFile($player->getName());
+            $data = $datafile->get("SURVIVAL");
+            if(isset($data["items"])) {
+                if(empty($player->getInventory()->getContents())) {
+                    unset($data["items"]);
+                    $datafile->write("SURVIVAL", $data);
+                }else{
+                    $data["items"] = [];
+                    foreach($player->getInventory()->getContents() as $slot => $item) {
+                        $data["items"][$slot] = $item->jsonSerialize();
+                    }
+                    $datafile->write("SURVIVAL", $data);
+                }
+            }
+        }
+    }**/
+
 	/**
 	 * @param EntityLevelChangeEvent $event
 	 */
@@ -142,6 +161,31 @@ class SurvivalCore
 			}
 		}
 	}
+
+    /**public function LoadInventory(EntityLevelChangeEvent $event) {
+        $player = $event->getEntity();
+        if($player instanceof Player) {
+            if($event->getTarget()->getName() == self::LEVEL_NAME) {
+                $datafile = new DataFile($player->getName());
+                $data = $datafile->get("SURVIVAL");
+                if(isset($data["items"])) {
+                    foreach($data["items"] as $slot => $jsonItem) {
+                        $item = Item::jsonDeserialize($jsonItem);
+                        $player->getInventory()->setItem($slot, $item);
+                    }
+                    $player->setHealth(self::getHealth($player->getName()));
+                    $player->setFood(self::getFood($player->getName()));
+                    $this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($data['x'], $data['z']);
+                    $this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $player, $data), 3 * 20);
+                }
+            }elseif($event->getOrigin()->getName() === self::LEVEL_NAME) {
+                $this->SaveInventory($player);
+                $this->SaveSpawn($player->getName(), $player->getLevel()->getName(), $player->getX(), $player->getY(), $player->getZ());
+                $this->SaveFood($player);
+                $this->SaveHeath($player);
+            }
+        }
+    }**/
 
 	/**
 	 * @param Player $player

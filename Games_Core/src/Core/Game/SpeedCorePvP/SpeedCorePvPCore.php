@@ -24,12 +24,14 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
+use pocketmine\tile\Sign;
 use pocketmine\utils\Color;
 
 class SpeedCorePvPCore
@@ -589,6 +591,22 @@ class SpeedCorePvPCore
 		if ($event->getLine(0) === "SCP2") {
 			$event->setLine(0, "§7[§bS§aC§cP §aSTATUS§7]");
 			$event->setLine(1, "§7看板をタッチしてステータスを見ます");
+		}
+	}
+
+	public function Interact(PlayerInteractEvent $event)
+	{
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		$tile = $block->getLevel()->getTile($block);
+		if (!$player->getLevel()->getName() === $this->fieldname) return;
+		if (!$tile instanceof Sign) return;
+		$text = $tile->getText();
+		if ($text[0] === "§7[§bS§aC§cP §aSHOP§7]") {
+			$player->sendMessage("§c準備中");
+		}
+		if ($text[0] === "§7[§bS§aC§cP §aSTATUS§7]") {
+			$player->sendMessage("§c準備中");
 		}
 	}
 

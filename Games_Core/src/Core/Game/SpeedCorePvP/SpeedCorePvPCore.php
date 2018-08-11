@@ -604,7 +604,25 @@ class SpeedCorePvPCore
 		if (!$tile instanceof Sign) return;
 		$text = $tile->getText();
 		if ($text[0] === "§7[§bS§aC§cP §aSHOP§7]") {
-			$player->sendMessage("§c準備中");
+			$ui = [
+				"type" => "form",
+				"title" => "§bSpeed§aCore§cPvP",
+				"content" => "採掘した資材を武器等に変換できます。",
+				"buttons" => [
+					[
+						"text" => "§6弓\n§e金: §612個"
+					],
+					[
+						"text" => "§7矢\n§e金: §62個"
+					],
+					[
+						"text" => ""
+					]
+				]
+			];
+			$modal = new ModalFormRequestPacket();
+			$modal->formId = 489234852;
+			$modal->formData = json_encode($ui);
 		}
 		if ($text[0] === "§7[§bS§aC§cP §aSTATUS§7]") {
 			$red = self::getPlayerCount(1);

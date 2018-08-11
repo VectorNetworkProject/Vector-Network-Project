@@ -19,6 +19,7 @@ use Core\Task\RemoveArmorTask;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
@@ -574,6 +575,20 @@ class SpeedCorePvPCore
 	}
 
 	/**
+	 * @param SignChangeEvent $event
+	 */
+	public function Sign(SignChangeEvent $event)
+	{
+		$player = $event->getPlayer();
+		if (!$player->getLevel()->getName() === $this->fieldname) return;
+		if (!$player->isOp()) return;
+		if ($event->getLine(0) === "SCP1") {
+			$event->setLine(0, "§7[§bS§aC§cP §aSHOP§7]");
+			$event->setLine(1, "§7看板をタッチしてメニューを開きます");
+		}
+	}
+
+	/**
 	 * @param BlockBreakEvent $event
 	 */
 	public function BreakCore(BlockBreakEvent $event)
@@ -582,57 +597,52 @@ class SpeedCorePvPCore
 		$block = $event->getBlock();
 		$red = $this->point["red.core"];
 		$blue = $this->point["blue.core"];
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			if ($this->getGameMode()) {
-				if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
-					if ($this->team[$player->getName()] === "Blue") {
-						if ($this->redcount >= 2 && $this->bluecount >= 2) {
-							$event->setCancelled(true);
-							$this->redhp--;
-							$this->money->addMoney($player->getName(), 10);
-							$this->AddBreakCoreCount($player);
-							$player->sendMessage("§a+10 §6V§bN§eCoin");
-							$this->level->LevelSystem($player);
-							$this->SendAttackMessage("Red", $player->getName());
-							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
-							if ($this->redhp <= 0) {
-								$this->EndGame("Blue");
-							}
-						} else {
-							$event->setCancelled(true);
-							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
-						}
-					} else {
-						$event->setCancelled(true);
-						$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
-					}
-				} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
-					if ($this->team[$player->getName()] === "Red") {
-						if ($this->bluecount >= 2 && $this->redcount >= 2) {
-							$event->setCancelled(true);
-							$this->bluehp--;
-							$this->money->addMoney($player->getName(), 10);
-							$this->AddBreakCoreCount($player);
-							$player->sendMessage("§a+10 §6V§bN§eCoin");
-							$this->level->LevelSystem($player);
-							$this->SendAttackMessage("Blue", $player->getName());
-							$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
-							if ($this->bluehp <= 0) {
-								$this->EndGame("Red");
-							}
-						} else {
-							$event->setCancelled(true);
-							$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
-						}
-					} else {
-						$event->setCancelled(true);
-						$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
-					}
-				}
-			} else {
-				$player->sendMessage("§cゲームモードがfalseだよ");
-				$event->setCancelled(true);
+		if ($player->getLevel()->getName() !== $this->fieldname) return;
+		if (!($this->getGameMode())) {
+			$player->sendMessage("§cゲームモードがfalseだよ");
+			$event->setCancelled(true);
+			return;
+		}
+		if ($block->getX() === $red["x"] && $block->getY() === $red["y"] && $block->getZ() === $red["z"]) {
+			$event->setCancelled(true);
+			if ($this->team[$player->getName()] !== "Blue") {
+				$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
+				return;
 			}
+			if ($this->redcount < 2 || $this->bluecount < 2) {
+				$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
+				return;
+			}
+			$this->redhp--;
+			$this->money->addMoney($player->getName(), 10);
+			$this->AddBreakCoreCount($player);
+			$player->sendMessage("§a+10 §6V§bN§eCoin");
+			$this->level->LevelSystem($player);
+			$this->SendAttackMessage("Red", $player->getName());
+			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+		} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
+			$event->setCancelled(true);
+			if ($this->team[$player->getName()] !== "Red") {
+				$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
+				return;
+			}
+			if ($this->bluecount < 2 || $this->redcount < 2) {
+				$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
+				return;
+			}
+			$this->bluehp--;
+			$this->money->addMoney($player->getName(), 10);
+			$this->AddBreakCoreCount($player);
+			$player->sendMessage("§a+10 §6V§bN§eCoin");
+			$this->level->LevelSystem($player);
+			$this->SendAttackMessage("Blue", $player->getName());
+			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+		}
+		if ($this->redhp <= 0) {
+			$this->EndGame("Blue");
+		}
+		if ($this->bluehp <= 0) {
+			$this->EndGame("Red");
 		}
 	}
 

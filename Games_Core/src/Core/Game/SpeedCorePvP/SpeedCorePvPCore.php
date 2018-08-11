@@ -29,6 +29,7 @@ use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\tile\Sign;
@@ -606,7 +607,28 @@ class SpeedCorePvPCore
 			$player->sendMessage("§c準備中");
 		}
 		if ($text[0] === "§7[§bS§aC§cP §aSTATUS§7]") {
-			$player->sendMessage("§c準備中");
+			$red = self::getPlayerCount(1);
+			$redhp = self::getHP(1);
+			$blue = self::getPlayerCount(2);
+			$bluehp = self::getHP(2);
+			$ui = [
+				"type" => "custom_form",
+				"title" => "§bSpeed§aCore§cPvP",
+				"content" => [
+					[
+						"type" => "label",
+						"text" => "---===<§c Red §r>===---\n§6人数§r: $red 人\n§aHP§r: $redhp"
+					],
+					[
+						"type" => "label",
+						"text" => "---===<§9 Blue §r>===---\n§6人数§r: $blue 人\n§aHP§r: $bluehp"
+					]
+				]
+			];
+			$modal = new ModalFormRequestPacket();
+			$modal->formId = mt_rand(1111111, 99999999);
+			$modal->formData = json_encode($ui);
+			$player->sendDataPacket($modal, false);
 		}
 	}
 

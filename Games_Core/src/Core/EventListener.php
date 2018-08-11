@@ -234,6 +234,7 @@ class EventListener implements Listener
 	public function onSignChange(SignChangeEvent $event)
 	{
 		$this->survival->Sign($event);
+		$this->speedcorepvp->Sign($event);
 	}
 
 	public function onPlayerExhaust(PlayerExhaustEvent $event)

@@ -586,6 +586,10 @@ class SpeedCorePvPCore
 			$event->setLine(0, "§7[§bS§aC§cP §aSHOP§7]");
 			$event->setLine(1, "§7看板をタッチしてメニューを開きます");
 		}
+		if ($event->getLine(0) === "SCP2") {
+			$event->setLine(0, "§7[§bS§aC§cP §aSTATUS§7]");
+			$event->setLine(1, "§7看板をタッチしてステータスを見ます");
+		}
 	}
 
 	/**

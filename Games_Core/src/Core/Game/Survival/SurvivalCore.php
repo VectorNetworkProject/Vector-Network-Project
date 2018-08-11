@@ -94,7 +94,7 @@ class SurvivalCore
 			$data = $datafile->get('SURVIVAL');
 			if (isset($data['items'])) {
 				if (empty($player->getInventory()->getContents())) {
-					$data['items'] = [];
+					unset($data['items']);
 					$datafile->write('SURVIVAL', $data);
 				} else {
 					$data['items'] = $player->getInventory()->getContents();
@@ -122,7 +122,12 @@ class SurvivalCore
 						} else {
 							$damage = 0;
 						}
-						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $item['count']));
+						if (isset($item['count'])) {
+							$count = $item['count'];
+						} else {
+							$count = 1;
+						}
+						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $count));
 					}
 					$entity->setHealth(self::getHealth($entity->getName()));
 					$entity->setFood(self::getFood($entity->getName()));

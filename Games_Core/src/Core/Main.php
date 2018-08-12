@@ -26,7 +26,7 @@ use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Task\AutoSavingTask;
-use Core\Task\FoodTask;
+// TODO use Core\Task\FoodTask;
 use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
@@ -37,9 +37,7 @@ use pocketmine\utils\TextFormat;
 
 class Main extends PluginBase
 {
-	public static $datafolder;
-	public static $instance = null;
-	const STARTMESSAGE = "\n
+	private const START_MESSAGE = "\n
 §6__     __        _            §b _   _      _                      _   §e ____            _           _   
 §6\ \   / /__  ___| |_ ___  _ __§b| \ | | ___| |___      _____  _ __| | _§e|  _ \ _ __ ___ (_) ___  ___| |_ 
 §6 \ \ / / _ \/ __| __/ _ \| '__§b|  \| |/ _ \ __\ \ /\ / / _ \| '__| |/ /§e |_) | '__/ _ \| |/ _ \/ __| __|
@@ -51,6 +49,26 @@ class Main extends PluginBase
                      §c動作環境: §bPocketMine-MP §e4.0.0+dev.1364
     ";
 
+	/** @var Main */
+	public static $instance;
+	/** @var string */
+	public static $datafolder;
+	/** @var string[] */
+	public static $levels = [
+		"ffapvp",
+		"corepvp",
+		"athletic",
+		"Survival"
+	];
+
+	public function onLoad(): void
+	{
+		self::$instance = $this;
+		$this
+			->loadLevels()
+			->registerCommands();
+	}
+
 	public function onEnable(): void
 	{
 		date_default_timezone_set("Asia/Tokyo");
@@ -59,25 +77,9 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
-		$this->getServer()->loadLevel("ffapvp");
-		$this->getServer()->loadLevel("corepvp");
-		$this->getServer()->loadLevel("athletic");
-		$this->getServer()->loadLevel("Survival");
-		$lobby = $this->getServer()->getLevelByName("lobby");
-		$ffapvp = $this->getServer()->getLevelByName("ffapvp");
-		$speedcorepvp = $this->getServer()->getLevelByName("corepvp");
-		$athletic = $this->getServer()->getLevelByName("athletic");
-		$ffapvp->setTime(Level::TIME_FULL);
-		$lobby->setTime(Level::TIME_FULL);
-		$speedcorepvp->setTime(Level::TIME_FULL);
-		$athletic->setTime(Level::TIME_FULL);
-		$lobby->stopTime();
-		$ffapvp->stopTime();
-		$speedcorepvp->stopTime();
-		$athletic->stopTime();
 		@mkdir(Main::getDataFolder(), 0755);
 		$this->saveDefaultConfig();
-		$this->getLogger()->info(self::STARTMESSAGE);
+		$this->getLogger()->info(self::START_MESSAGE);
 		Tag::registerColors();
 	}
 
@@ -86,7 +88,24 @@ class Main extends PluginBase
 		$this->getLogger()->info(TextFormat::RED . "Games_Coreを終了しました。");
 	}
 
-	private function registerCommands()
+	private function loadLevels(): self
+	{
+		$server = $this->getServer();
+		foreach (self::$levels as $levelName) {
+			$server->loadLevel($levelName);
+			$level = $server->getLevelByName($levelName);
+			if ($level === null) {
+				$this->getLogger()->error("ワールド: " . $levelName . " が存在しません。");
+			}else {
+				$level->setTime(Level::TIME_FULL);
+				$level->stopTime();
+				$this->getLogger()->info("Level: " . $levelName . " を読み込みました");
+			}
+		}
+		return $this;
+	}
+
+	private function registerCommands(): self
 	{
 		$commands = [
 			new ping($this),
@@ -101,11 +120,6 @@ class Main extends PluginBase
 			new gamestatus($this)
 		];
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
-	}
-
-	public function onLoad(): void
-	{
-		self::$instance = $this;
-		$this->registerCommands();
+		return $this;
 	}
 }

@@ -10,44 +10,44 @@ namespace Core;
 
 class DataFile
 {
-	private $folderName = "/players";
-	private $dir = null;
+	private static $folderName = "/players";
+	private static $dir;
 
-	public function __construct($name)
+	public function __construct(string $name)
 	{
-		$this->dir = Main::$datafolder . $this->folderName . "/" . strtoupper(substr($name, 0, 1)) . "/" . strtolower($name) . "/";
-		if (!file_exists($this->dir)) {
-			mkdir($this->dir, 0755, true);
+		self::$dir = Main::$datafolder . self::$folderName . "/" . strtoupper(substr($name, 0, 1)) . "/" . strtolower($name) . "/";
+		if (!file_exists(self::$dir)) {
+			mkdir(self::$dir, 0755, true);
 		}
 	}
 
 	/**
-	 * @param $file
+	 * @param string $file
 	 * @param string $data
 	 * @param int $format
 	 */
-	public function write($file, $data = "", $format = 0)
+	public function write(string $file, string $data = "", int $format = 0): void
 	{
-		file_put_contents($this->dir . $file, base64_encode(gzencode(json_encode($data, $format), 9)));
+		file_put_contents(self::$dir . $file, base64_encode(gzencode(json_encode($data, $format), 9)));
 	}
 
 	/**
 	 * @param $file
 	 * @param bool $bool
-	 * @return mixed|null
+	 * @return string|null
 	 */
-	public function get($file, $bool = true)
+	public function get($file, $bool = true): ?string
 	{
-		return file_exists($this->dir . $file) ? json_decode(gzdecode(base64_decode(file_get_contents($this->dir . $file))), $bool) : null;
+		return file_exists(self::$dir . $file) ? json_decode(gzdecode(base64_decode(file_get_contents(self::$dir . $file))), $bool) : null;
 	}
 
 	/**
-	 * @param $dir
-	 * @param $file
+	 * @param string $dir
+	 * @param string $file
 	 * @param string $data
 	 * @param int $format
 	 */
-	public static function writeTo($dir, $file, $data = "", $format = 0)
+	public static function writeTo(string $dir, string $file, string $data = "", int $format = 0): void
 	{
 		if (!file_exists($dir)) {
 			mkdir($dir, 0755, true);
@@ -56,32 +56,32 @@ class DataFile
 	}
 
 	/**
-	 * @param $dir
-	 * @param $file
+	 * @param string $dir
+	 * @param string $file
 	 * @param bool $bool
-	 * @return mixed|null
+	 * @return string|null
 	 */
-	public static function readFrom($dir, $file, $bool = true)
+	public static function readFrom(string $dir, string $file, bool $bool = true): ?string
 	{
 		return file_exists($dir . $file) ? json_decode(gzdecode(base64_decode(file_get_contents($dir . $file))), $bool) : null;
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 * @param string $data
 	 * @param int $format
 	 */
-	public static function writeToPath($path, $data = "", $format = 0)
+	public static function writeToPath(string $path, string $data = "", int $format = 0): void
 	{
 		file_put_contents($path, base64_encode(gzencode(json_encode($data, $format), 9)));
 	}
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 * @param bool $bool
-	 * @return mixed|null
+	 * @return string|null
 	 */
-	public static function readFromPath($path, $bool = true)
+	public static function readFromPath(string $path, bool $bool = true): ?string
 	{
 		return file_exists($path) ? json_decode(gzdecode(base64_decode(file_get_contents($path))), $bool) : null;
 	}

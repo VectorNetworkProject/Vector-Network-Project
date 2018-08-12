@@ -60,6 +60,8 @@ class Main extends PluginBase
 		"athletic",
 		"Survival"
 	];
+	/** @var bool */
+	public static $isDev = true;
 
 	public function onLoad(): void
 	{
@@ -77,7 +79,6 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
-		@mkdir(Main::getDataFolder(), 0755);
 		$this->saveDefaultConfig();
 		$this->getLogger()->info(self::START_MESSAGE);
 		Tag::registerColors();
@@ -90,17 +91,19 @@ class Main extends PluginBase
 
 	private function loadLevels(): self
 	{
-		$server = $this->getServer();
-		foreach (self::$levels as $levelName) {
-			$server->loadLevel($levelName);
-			$level = $server->getLevelByName($levelName);
-			if ($level === null) {
-				$this->getLogger()->error("ワールド: " . $levelName . " が存在しません。");
-			}else {
-				$level->setTime(Level::TIME_FULL);
-				$level->stopTime();
-				$this->getLogger()->info("Level: " . $levelName . " を読み込みました");
+		if (!self::isDev()) {
+			$server = $this->getServer();
+			foreach (self::$levels as $levelName) {
+				$server->loadLevel($levelName);
+				$level = $server->getLevelByName($levelName);
+				if ($level !== null) {
+					$level->setTime(Level::TIME_FULL);
+					$level->stopTime();
+					$this->getLogger()->info("Level: " . $levelName . " を読み込みました");
+				}
 			}
+		}else {
+			$this->getLogger()->debug(count(self::$levels) . "つのワールドを読み込むよう設定されています");
 		}
 		return $this;
 	}
@@ -121,5 +124,10 @@ class Main extends PluginBase
 		];
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
 		return $this;
+	}
+
+	public static function isDev(): bool
+	{
+		return self::$isDev;
 	}
 }

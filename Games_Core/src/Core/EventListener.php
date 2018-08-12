@@ -113,23 +113,25 @@ class EventListener implements Listener
 	public function onJoin(PlayerJoinEvent $event)
 	{
 		$this->playerjoinevent->event($event);
-		$this->mazainpc->Create($event->getPlayer(), "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
-		$this->gamemasternpc->Create($event->getPlayer(), "§aGame§7Master", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
-		$this->mazaimasternpc->Create($event->getPlayer(), "§a魔剤§7マスター", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
+		$player = $event->getPlayer();
+		$this->mazainpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
+		$this->gamemasternpc->Create($player, "§aGame§7Master", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
+		$this->mazaimasternpc->Create($player, "§a魔剤§7マスター", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
 	}
 
 	public function onQuit(PlayerQuitEvent $event)
 	{
 		$this->playerquitevent->event($event);
-		$this->speedcorepvp->GameQuit($event->getPlayer());
-		$this->survival->SaveInventory($event->getPlayer());
-		$this->survival->SaveSpawn($event->getPlayer()->getName(), $event->getPlayer()->getLevel()->getName(), $event->getPlayer()->getX(), $event->getPlayer()->getY(), $event->getPlayer()->getZ());
-		$this->survival->SaveHeath($event->getPlayer());
-		$this->survival->SaveFood($event->getPlayer());
-		$this->mazainpc->Remove($event->getPlayer());
-		$this->gamemasternpc->Remove($event->getPlayer());
-		$this->mazaimasternpc->Remove($event->getPlayer());
-		//$this->athletic->onQuit($event);
+		$player = $event->getPlayer();
+		$this->speedcorepvp->GameQuit($player);
+		$this->survival->SaveInventory($player);
+		$this->survival->SaveSpawn($player->getName(), $player->getLevel()->getName(), $player->x, $player->y, $player->z);
+		$this->survival->SaveHeath($player);
+		$this->survival->SaveFood($player);
+		$this->mazainpc->Remove($player);
+		$this->gamemasternpc->Remove($player);
+		$this->mazaimasternpc->Remove($player);
+		// $this->athletic->onQuit($event);
 	}
 
 	public function onLogin(PlayerLoginEvent $event)

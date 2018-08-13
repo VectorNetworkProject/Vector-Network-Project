@@ -11,18 +11,19 @@ namespace Core\Event;
 use Core\DataFile;
 use Core\Entity\Bossbar;
 use Core\Main;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 
-class PlayerQuit
+class PlayerQuit implements Listener
 {
-	protected $plugin;
+	private $plugin;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 	}
 
-	public function event(PlayerQuitEvent $event)
+	public function event(PlayerQuitEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$name = $player->getName();

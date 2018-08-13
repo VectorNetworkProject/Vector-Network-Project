@@ -21,27 +21,27 @@ use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
 use Core\Task\Teleport\TeleportSpeedCorePvPTask;
 use Core\Task\Teleport\TeleportSurvivalTask;
+use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
 
-class DataPacketReceive
+class DataPacketReceive implements Listener
 {
 
-	const BUY_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
-	const BUY_ERROR = "§7[§c失敗§7] §r§6V§bN§eCoin§cがたりません。";
-	const MAZAI_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
-	const MAZAI_ERROR = "§7[§c失敗§7] §r§aMAZAI§cが足りません";
+	private const BUY_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
+	private const BUY_ERROR = "§7[§c失敗§7] §r§6V§bN§eCoin§cがたりません。";
+	private const MAZAI_SUCCESS = "§7[§a成功§7] §a購入に成功しました。";
+	private const MAZAI_ERROR = "§7[§c失敗§7] §r§aMAZAI§cが足りません";
 
-	protected $plugin;
-	protected $money;
-	protected $rank;
-	protected $tag;
-	protected $level;
-	protected $killsound;
-	protected $speedcorepvp;
-	protected $mazai;
+	private $plugin;
+	private $money;
+	private $rank;
+	private $tag;
+	private $level;
+	private $killsound;
+	private $mazai;
 
 	public function __construct(Main $plugin)
 	{
@@ -53,7 +53,8 @@ class DataPacketReceive
 		$this->killsound = new KillSound($this->plugin);
 		$this->mazai = new MazaiPoint();
 	}
-	public function event(DataPacketReceiveEvent $event)
+
+	public function event(DataPacketReceiveEvent $event): void
 	{
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();

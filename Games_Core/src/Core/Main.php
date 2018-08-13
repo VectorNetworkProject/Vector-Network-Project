@@ -25,6 +25,21 @@ use Core\Commands\selectgame;
 use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
+use Core\Event\BlockBreak;
+use Core\Event\BlockPlace;
+use Core\Event\DataPacketReceive;
+use Core\Event\EntityDamage;
+use Core\Event\EntityInventoryChange;
+use Core\Event\EntityShootBow;
+use Core\Event\PlayerCommandPreprocess;
+use Core\Event\PlayerDeath;
+use Core\Event\PlayerExhaust;
+use Core\Event\PlayerJoin;
+use Core\Event\PlayerLogin;
+use Core\Event\PlayerMove;
+use Core\Event\PlayerPreLogin;
+use Core\Event\PlayerQuit;
+use Core\Event\PlayerRespawn;
 use Core\Task\AutoSavingTask;
 // TODO use Core\Task\FoodTask;
 use Core\Task\RemoveItemTask;
@@ -75,7 +90,7 @@ class Main extends PluginBase
 	{
 		date_default_timezone_set("Asia/Tokyo");
 		self::$datafolder = $this->getDataFolder();
-		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		$this->registerEvents();
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
@@ -123,6 +138,26 @@ class Main extends PluginBase
 			new gamestatus($this)
 		];
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
+		return $this;
+	}
+
+	private function registerEvents(): self {
+		$plm = $this->getServer()->getPluginManager();
+		$plm->registerEvents(new BlockBreak($this), $this);
+		$plm->registerEvents(new BlockPlace($this), $this);
+		$plm->registerEvents(new DataPacketReceive($this), $this);
+		$plm->registerEvents(new EntityDamage($this), $this);
+		$plm->registerEvents(new EntityInventoryChange($this), $this);
+		$plm->registerEvents(new EntityShootBow($this), $this);
+		$plm->registerEvents(new PlayerCommandPreprocess($this), $this);
+		$plm->registerEvents(new PlayerDeath($this), $this);
+		$plm->registerEvents(new PlayerExhaust($this), $this);
+		$plm->registerEvents(new PlayerJoin($this), $this);
+		$plm->registerEvents(new PlayerLogin($this), $this);
+		$plm->registerEvents(new PlayerMove($this), $this);
+		$plm->registerEvents(new PlayerPreLogin($this), $this);
+		$plm->registerEvents(new PlayerQuit($this), $this);
+		$plm->registerEvents(new PlayerRespawn($this), $this);
 		return $this;
 	}
 

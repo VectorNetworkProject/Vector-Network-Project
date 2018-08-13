@@ -8,21 +8,21 @@
 
 namespace Core\Event;
 
-
 use Core\Main;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
+use pocketmine\event\Listener;
 use pocketmine\item\Item;
 
-class EntityInventoryChange
+class EntityInventoryChange implements Listener
 {
-	protected $plugin;
+	private $plugin;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 	}
 
-	public function event(EntityInventoryChangeEvent $event)
+	public function event(EntityInventoryChangeEvent $event): void
 	{
 		if ($event->getEntity()->getLevel()->getName() === "corepvp") {
 			if ($event->getSlot() === 0) {

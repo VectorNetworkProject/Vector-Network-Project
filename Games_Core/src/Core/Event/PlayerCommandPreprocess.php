@@ -13,14 +13,15 @@ use Core\Main;
 use Core\Player\Level;
 use Core\Player\Rank;
 use Core\Player\Tag;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
-class PlayerCommandPreprocess
+class PlayerCommandPreprocess implements Listener
 {
-	protected $plugin;
-	protected $rank;
-	protected $level;
-	protected $tag;
+	private $plugin;
+	private $rank;
+	private $level;
+	private $tag;
 
 	public function __construct(Main $plugin)
 	{
@@ -30,7 +31,7 @@ class PlayerCommandPreprocess
 		$this->tag = new Tag();
 	}
 
-	public function event(PlayerCommandPreprocessEvent $event)
+	public function event(PlayerCommandPreprocessEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$name = $player->getName();

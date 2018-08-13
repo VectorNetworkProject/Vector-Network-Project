@@ -10,11 +10,13 @@ namespace Core\Event;
 
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Main;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 
-class PlayerInteract
+class PlayerInteract implements Listener
 {
-	protected $plugin, $ffapvp, $speedcorepvp;
+	private $plugin;
+	private $ffapvp;
 
 	public function __construct(Main $plugin)
 	{
@@ -22,7 +24,7 @@ class PlayerInteract
 		$this->ffapvp = new FFAPvPCore($this->plugin);
 	}
 
-	public function event(PlayerInteractEvent $event)
+	public function event(PlayerInteractEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$block = $event->getBlock();

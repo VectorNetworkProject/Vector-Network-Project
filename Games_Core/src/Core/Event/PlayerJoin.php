@@ -14,14 +14,15 @@ use Core\Player\Level;
 use Core\Player\Rank;
 use Core\Player\Tag;
 use Core\Task\JoinTitle;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 
-class PlayerJoin
+class PlayerJoin implements Listener
 {
-	protected $plugin;
-	protected $level;
-	protected $rank;
-	protected $tag;
+	private $plugin;
+	private $level;
+	private $rank;
+	private $tag;
 
 	public function __construct(Main $plugin)
 	{
@@ -31,7 +32,7 @@ class PlayerJoin
 		$this->tag = new Tag();
 	}
 
-	public function event(PlayerJoinEvent $event)
+	public function event(PlayerJoinEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$name = $player->getName();

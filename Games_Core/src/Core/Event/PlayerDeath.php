@@ -14,17 +14,18 @@ use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use Core\Player\KillSound;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class PlayerDeath
+class PlayerDeath implements Listener
 {
-	protected $plugin;
-	protected $ffapvp;
-	protected $killsound;
-	protected $speedcorepvp;
-	protected $survival;
+	private $plugin;
+	private $ffapvp;
+	private $killsound;
+	private $speedcorepvp;
+	private $survival;
 
 	public function __construct(Main $plugin)
 	{
@@ -35,7 +36,7 @@ class PlayerDeath
 		$this->killsound = new KillSound($this->plugin);
 	}
 
-	public function event(PlayerDeathEvent $event)
+	public function event(PlayerDeathEvent $event): void
 	{
 		$event->setDeathMessage(null);
 		$player = $event->getPlayer();
@@ -85,7 +86,7 @@ class PlayerDeath
 		}
 	}
 
-	public function DeathMessage(string $levelname, string $killed = null, string $killer = null)
+	public function DeathMessage(string $levelname, string $killed = null, string $killer = null): void
 	{
 		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
 			if ($player->getLevel()->getName() === $levelname) {

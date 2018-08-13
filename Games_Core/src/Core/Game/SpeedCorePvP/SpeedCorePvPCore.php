@@ -8,7 +8,6 @@
 
 namespace Core\Game\SpeedCorePvP;
 
-
 use Core\DataFile;
 use Core\Main;
 use Core\Player\Level;

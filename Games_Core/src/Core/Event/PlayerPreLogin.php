@@ -9,18 +9,19 @@
 namespace Core\Event;
 
 use Core\Main;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerPreLoginEvent;
 
-class PlayerPreLogin
+class PlayerPreLogin implements Listener
 {
-	protected $plugin;
+	private $plugin;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 	}
 
-	public function event(PlayerPreLoginEvent $event)
+	public function event(PlayerPreLoginEvent $event): void
 	{
 		$player = $event->getPlayer();
 		if ($this->plugin->getServer()->hasWhitelist()) {

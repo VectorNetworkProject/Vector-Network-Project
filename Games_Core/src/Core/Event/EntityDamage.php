@@ -11,11 +11,12 @@ namespace Core\Event;
 use Core\Main;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\Listener;
 use pocketmine\Player;
 
-class EntityDamage
+class EntityDamage implements Listener
 {
-	protected $plugin;
+	private $plugin;
 
 	public function __construct(Main $plugin)
 	{

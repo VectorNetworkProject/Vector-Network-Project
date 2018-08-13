@@ -10,18 +10,19 @@ namespace Core\Event;
 
 use Core\DataFile;
 use Core\Main;
+use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 
-class PlayerLogin
+class PlayerLogin implements Listener
 {
-	protected $plugin;
+	private $plugin;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 	}
 
-	public function event(PlayerLoginEvent $event)
+	public function event(PlayerLoginEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$name = $player->getName();

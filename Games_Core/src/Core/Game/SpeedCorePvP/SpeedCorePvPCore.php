@@ -31,24 +31,54 @@ use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Color;
 
 class SpeedCorePvPCore
 {
-	protected $plugin;
-	protected $bluecolor;
-	protected $redcolor;
-	protected $bluehp = 100;
-	protected $redhp = 100;
-	protected $bluecount = 0;
-	protected $redcount = 0;
-	protected $team = [];
-	protected $gamemode = false;
-	protected $money;
-	protected $level;
-	protected $fieldname = "corepvp";
-	protected $point = [
+	/** @var int */
+	public const TEAM_RED = 1;
+	public const TEAM_BLUE = 2;
+
+	/** @var SpeedCorePvPCore */
+	private static $instance;
+	/** @var int[] */
+	private static $blockids = [
+		Block::IRON_ORE => 20,
+		Block::GOLD_ORE => 20,
+		Block::COAL_ORE => 15,
+		Block::DIAMOND_ORE => 60,
+		Block::LOG => 10,
+		Block::MELON_BLOCK => 10
+	];
+
+	/** @var Main */
+	private $plugin;
+	/** @var Color */
+	private $redColor;
+	/** @var Color */
+	private $blueColor;
+	/** @var int */
+	private $redHp = 100;
+	/** @var int */
+	private $blueHp = 100;
+	/** @var int */
+	private $redCount = 0;
+	/** @var int */
+	private $blueCount = 0;
+	/** @var array */
+	private $team = [];
+	/** @var bool */
+	private $gamemode = false;
+	/** @var Money */
+	private $money;
+	/** @var Level */
+	private $level;
+	/** @var string */
+	private $fieldName = "corepvp";
+	/** @var array */
+	private $point = [
 		"blue.core" => [
 			"x" => 52,
 			"y" => 61,
@@ -73,21 +103,13 @@ class SpeedCorePvPCore
 
 	public function __construct(Main $plugin)
 	{
+		self::$instance = $this;
 		$this->plugin = $plugin;
-		$this->bluecolor = new Color(0, 0, 255);
-		$this->redcolor = new Color(255, 0, 0);
+		$this->redColor = new Color(255, 0, 0);
+		$this->blueColor = new Color(0, 0, 255);
 		$this->money = new Money();
 		$this->level = new Level();
 	}
-
-	public static $blockids = [
-		Block::IRON_ORE => 20,
-		Block::GOLD_ORE => 20,
-		Block::COAL_ORE => 15,
-		Block::DIAMOND_ORE => 60,
-		Block::LOG => 10,
-		Block::MELON_BLOCK => 10
-	];
 
 	/**
 	 * @return bool
@@ -99,116 +121,122 @@ class SpeedCorePvPCore
 
 	/**
 	 * @param bool $bool
+	 * @return SpeedCorePvPCore
 	 */
-	public function setGameMode(bool $bool)
+	public function setGameMode(bool $bool): self
 	{
-		if ($bool) {
-			$this->gamemode = true;
-		} else {
-			$this->gamemode = false;
-		}
+		$this->gamemode = $bool;
+		return $this;
 	}
 
 	/**
-	 * @param int $teamid
+	 * @param int $teamId
 	 * @param int $hp
+	 * @return SpeedCorePvPCore
 	 */
-	public function setHP(int $teamid, int $hp)
+	public function setHP(int $teamId, int $hp): self
 	{
-		switch ($teamid) {
-			case 1:
-				$this->redhp = $hp;
+		switch ($teamId) {
+			case self::TEAM_RED:
+				$this->redHp = $hp;
 				break;
-			case 2:
-				$this->bluehp = $hp;
+			case self::TEAM_BLUE:
+				$this->blueHp = $hp;
 				break;
 			default:
-				return;
+				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
 				break;
 		}
+		return $this;
 	}
 
 	/**
-	 * @param int $teamid
+	 * @param int $teamId
 	 * @return int
 	 */
-	public function getHP(int $teamid): int
+	public function getHP(int $teamId = self::TEAM_RED): int
 	{
-		switch ($teamid) {
-			case 1:
-				return $this->redhp;
+		switch ($teamId) {
+			case self::TEAM_RED:
+				return $this->redHp;
 				break;
-			case 2:
-				return $this->bluehp;
+			case self::TEAM_BLUE:
+				return $this->blueHp;
 				break;
 			default:
-				return 0;
+				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
 				break;
 		}
 	}
 
 	/**
-	 * @param int $teamid
+	 * @param int $teamId
 	 * @param int $count
+	 * @return SpeedCorePvPCore
 	 */
-	public function setPlayerCount(int $teamid, int $count)
+	public function setPlayerCount(int $teamId, int $count): self
 	{
-		switch ($teamid) {
-			case 1:
-				$this->redcount = $count;
+		switch ($teamId) {
+			case self::TEAM_RED:
+				$this->redCount = $count;
 				break;
-			case 2:
-				$this->bluecount = $count;
+			case self::TEAM_BLUE:
+				$this->blueCount = $count;
 				break;
 			default:
-				return;
+				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
 				break;
 		}
+		return $this;
 	}
 
 	/**
-	 * @param int $teamid
+	 * @param int $teamId
+	 * @return SpeedCorePvPCore
 	 */
-	public function AddPlayerCount(int $teamid)
+	public function AddPlayerCount(int $teamId = self::TEAM_RED): self
 	{
-		switch ($teamid) {
-			case 1:
-				$this->redcount++;
+		switch ($teamId) {
+			case self::TEAM_RED:
+				++$this->redCount;
 				break;
-			case 2:
-				$this->bluecount++;
+			case self::TEAM_BLUE:
+				++$this->blueCount;
 				break;
 			default:
-				return;
+				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
 				break;
 		}
+		return $this;
 	}
 
 	/**
-	 * @param int $teamid
+	 * @param int $teamId
 	 * @return int
 	 */
-	public function getPlayerCount(int $teamid): int
+	public function getPlayerCount(int $teamId = self::TEAM_RED): int
 	{
-		switch ($teamid) {
-			case 1:
-				return $this->redcount;
+		switch ($teamId) {
+			case self::TEAM_RED:
+				return $this->redCount;
 				break;
-			case 2:
-				return $this->bluecount;
+			case self::TEAM_BLUE:
+				return $this->blueCount;
 				break;
 			default:
+				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
 				return 0;
-				break;
 		}
 	}
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function setSpawn(Player $player)
+	public function setSpawn(Player $player): self
 	{
-		$level = $this->plugin->getServer()->getLevelByName($this->fieldname);
+		// TODO: レベルをインスタンスにコンストラクタで渡しておくことでエラー回避
+		$level = Server::getInstance()->getLevelByName($this->fieldName);
 		$red = $this->point["red.spawn"];
 		$blue = $this->point["blue.spawn"];
 		if ($this->team[$player->getName()] === "Red") {
@@ -218,67 +246,67 @@ class SpeedCorePvPCore
 			$player->setSpawn(new Position($blue["x"], $blue["y"], $blue["z"], $level));
 			$player->teleport(new Position($blue["x"], $blue["y"], $blue["z"], $level));
 		}
+		return $this;
 	}
 
 	/**
 	 * @param Player $player
 	 * @param Block $block
+	 * @return SpeedCorePvPCore
 	 */
-	public function GameJoin(Player $player, Block $block)
+	public function GameJoin(Player $player, Block $block): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
+		if ($player->getLevel()->getName() === $this->fieldName) {
 			if ($block->getId() === Block::EMERALD_BLOCK) {
 				$this->setGameMode(true);
 				if (isset($this->team[$player->getName()])) {
 					$player->sendMessage("§cあなたは既にチームに所属しています。");
-					return;
+					return $this;
 				}
 
-				if ($this->redcount < $this->bluecount) {
+				if ($this->redCount < $this->blueCount) {
 					$this->team[$player->getName()] = "Red";
-					$this->AddPlayerCount(1);
-					$this->setSpawn($player);
-					$this->Kit($player);
+					$this->AddPlayerCount(self::TEAM_RED);
 					$player->sendMessage("§7あなたは §cRed §7Teamになりました。");
-					return;
 				} else {
 					$this->team[$player->getName()] = "Blue";
-					$this->AddPlayerCount(2);
-					$this->setSpawn($player);
-					$this->Kit($player);
+					$this->AddPlayerCount(self::TEAM_BLUE);
 					$player->sendMessage("§7あなたは §9Blue §7Teamになりました。");
-					return;
 				}
+				$this->setSpawn($player);
+				$this->Kit($player);
 			}
 		}
+		return $this;
 	}
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function GameQuit(Player $player)
+	public function GameQuit(Player $player): self
 	{
 		if (isset($this->team[$player->getName()])) {
 			if ($this->team[$player->getName()] === "Red") {
-				unset($this->team[$player->getName()]);
-				$this->ReducePlayerCount(1);
+				$this->ReducePlayerCount(self::TEAM_RED);
 				$player->sendMessage("§cRed §7Teamから退出しました。");
 			} elseif ($this->team[$player->getName()] === "Blue") {
-				unset($this->team[$player->getName()]);
-				$this->ReducePlayerCount(2);
+				$this->ReducePlayerCount(self::TEAM_BLUE);
 				$player->sendMessage("§9Blue §7Teamから退出しました。");
 			}
+			unset($this->team[$player->getName()]);
 		}
+		return $this;
 	}
 
 	/**
 	 * @param BlockBreakEvent $event
 	 */
-	public function DropItem(BlockBreakEvent $event)
+	public function DropItem(BlockBreakEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
-		if ($player->getLevel()->getName() === $this->fieldname) {
+		if ($player->getLevel()->getName() === $this->fieldName) {
 			switch ($block->getId()) {
 				case Block::IRON_ORE:
 					$event->setDrops([Item::get(Item::IRON_INGOT, 0, 1)]);
@@ -312,55 +340,48 @@ class SpeedCorePvPCore
 	/**
 	 * @param BlockPlaceEvent $event
 	 */
-	public function AntiPlace(BlockPlaceEvent $event)
+	public function AntiPlace(BlockPlaceEvent $event): void
 	{
 		$player = $event->getPlayer();
-		$block = $event->getBlock();
-		if ($player->getName() === $this->fieldname) {
-			switch ($block->getId()) {
-				case Block::MELON_BLOCK:
-					if (!$player->isOp()) {
+		if (!$player->isOp()) {
+			$block = $event->getBlock();
+			if ($player->getName() === $this->fieldName) {
+				switch ($block->getId()) {
+					case Block::MELON_BLOCK:
+					case Block::LOG:
+					case Block::LOG2:
 						$event->setCancelled(true);
-					}
-					break;
-				case Block::LOG:
-					if (!$player->isOp()) {
-						$event->setCancelled(true);
-					}
-					break;
-				case Block::LOG2:
-					if (!$player->isOp()) {
-						$event->setCancelled(true);
-					}
-					break;
+						break;
+				}
 			}
 		}
 	}
 
 	/**
-	 * @param int $teamid
+	 * @param int $teamId
+	 * @return SpeedCorePvPCore
 	 */
-	public function ReducePlayerCount(int $teamid)
+	public function ReducePlayerCount(int $teamId): self
 	{
-		switch ($teamid) {
-			case 1:
-				$this->redcount--;
+		switch ($teamId) {
+			case self::TEAM_RED:
+				--$this->redCount;
 				break;
-			case 2:
-				$this->bluecount--;
+			case self::TEAM_BLUE:
+				--$this->blueCount;
 				break;
 			default:
-				return;
 				break;
 		}
+		return $this;
 	}
 
-	public function LevelChange(EntityLevelChangeEvent $event)
+	public function LevelChange(EntityLevelChangeEvent $event): void
 	{
 		$entity = $event->getEntity();
-		if ($event->getOrigin()->getName() === $this->fieldname) {
+		if ($event->getOrigin()->getName() === $this->fieldName) {
 			if ($entity instanceof Player) {
-				$this->GameQuit($entity->getPlayer());
+				$this->GameQuit($entity);
 				$entity->getArmorInventory()->clearAll(true);
 				$this->plugin->getScheduler()->scheduleDelayedTask(new RemoveArmorTask($this->plugin, $entity), 20);
 			}
@@ -369,8 +390,9 @@ class SpeedCorePvPCore
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function Kit(Player $player)
+	public function kit(Player $player): self
 	{
 		$armors = [
 			"leather_cap" => Item::get(Item::LEATHER_CAP, 0, 1),
@@ -385,7 +407,7 @@ class SpeedCorePvPCore
 			"stone_axe" => Item::get(Item::STONE_AXE, 0, 1),
 			"stone_shovel" => Item::get(Item::STONE_SHOVEL, 0, 1)
 		];
-		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redcolor : $teamColor = $this->bluecolor;
+		$this->team[$player->getName()] === "Red" ? $teamColor = $this->redColor : $teamColor = $this->blueColor;
 		foreach ($armors as $armor) {
 			if ($armor instanceof Durable and $armor instanceof Armor) {
 				$armor->setUnbreakable(true);
@@ -412,18 +434,20 @@ class SpeedCorePvPCore
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function Respawn(Player $player)
+	public function respawn(Player $player): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			$this->Kit($player);
+		if ($player->getLevel()->getName() === $this->fieldName) {
+			$this->kit($player);
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
+		return $this;
 	}
 
-	public function TeamChat(PlayerChatEvent $event)
+	public function teamChat(PlayerChatEvent $event): void
 	{
-		if ($event->getPlayer()->getLevel()->getName() === $this->fieldname) {
+		if ($event->getPlayer()->getLevel()->getName() === $this->fieldName) {
 			if (isset($this->team[$event->getPlayer()->getName()])) {
 				if (strpos($event->getMessage(), '@') !== false or strpos($event->getMessage(), '＠') !== false) {
 					$event->setCancelled(true);
@@ -442,81 +466,91 @@ class SpeedCorePvPCore
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function AddDeathCount(Player $player)
+	public function addDeathCount(Player $player): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			$datafile = new DataFile($player->getName());
+		if ($player->getLevel()->getName() === $this->fieldName) {
+			$datafile = new DataFile($player->getName());// TODO
 			$data = $datafile->get('COREPVP');
 			$data['death'] += 1;
 			$datafile->write('COREPVP', $data);
 		}
+		return $this;
 	}
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function AddKillCount(Player $player)
+	public function addKillCount(Player $player): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			$datafile = new DataFile($player->getName());
+		if ($player->getLevel()->getName() === $this->fieldName) {
+			$datafile = new DataFile($player->getName());// TODO
 			$data = $datafile->get('COREPVP');
 			$data['kill'] += 1;
 			$datafile->write('COREPVP', $data);
 			$rand = mt_rand(1, 50);
 			$this->money->addMoney($player->getName(), $rand);
-			$player->sendMessage("§a+$rand §6V§bN§eCoin");
+			$player->sendMessage("§a+".$rand." §6V§bN§eCoin");
 			$this->level->LevelSystem($player);
 			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 		}
+		return $this;
 	}
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function AddWinCount(Player $player)
+	public function addWinCount(Player $player): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			$datafile = new DataFile($player->getName());
+		if ($player->getLevel()->getName() === $this->fieldName) {
+			$datafile = new DataFile($player->getName());// TODO
 			$data = $datafile->get('COREPVP');
 			$data['win'] += 1;
 			$datafile->write('COREPVP', $data);
 		}
+		return $this;
 	}
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function AddLoseCount(Player $player)
+	public function addLoseCount(Player $player): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			$datafile = new DataFile($player->getName());
+		if ($player->getLevel()->getName() === $this->fieldName) {
+			$datafile = new DataFile($player->getName());// TODO
 			$data = $datafile->get('COREPVP');
 			$data['lose'] += 1;
 			$datafile->write('COREPVP', $data);
 		}
+		return $this;
 	}
 
 	/**
 	 * @param Player $player
+	 * @return SpeedCorePvPCore
 	 */
-	public function AddBreakCoreCount(Player $player)
+	public function addBreakCoreCount(Player $player): self
 	{
-		if ($player->getLevel()->getName() === $this->fieldname) {
-			$datafile = new DataFile($player->getName());
+		if ($player->getLevel()->getName() === $this->fieldName) {
+			$datafile = new DataFile($player->getName());// TODO
 			$data = $datafile->get('COREPVP');
 			$data['breakcore'] += 1;
 			$datafile->write('COREPVP', $data);
 		}
+		return $this;
 	}
 
 	/**
 	 * @param EntityDamageEvent $event
 	 */
-	public function Damage(EntityDamageEvent $event)
+	public function damage(EntityDamageEvent $event): void
 	{
 		$entity = $event->getEntity();
-		if ($entity->getLevel()->getName() === $this->fieldname) {
+		if ($entity->getLevel()->getName() === $this->fieldName) {
 			if ($event instanceof EntityDamageByEntityEvent and $entity instanceof Player) {
 				$damager = $event->getDamager();
 				if ($damager instanceof Player) {
@@ -530,7 +564,12 @@ class SpeedCorePvPCore
 		}
 	}
 
-	public function SendAttackMessage(string $team, string $name)
+	/**
+	 * @param string $team
+	 * @param string $name
+	 * @return SpeedCorePvPCore
+	 */
+	public function SendAttackMessage(string $team, string $name): self
 	{
 		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
 			if (isset($this->team[$player->getName()])) {
@@ -545,44 +584,33 @@ class SpeedCorePvPCore
 				switch ($team) {
 					case 'Red':
 						$player->addTitle("", "§cRed§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §9$name\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a100");
+						$player->sendTip("§c攻撃者: §9".$name."\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a100");
 						break;
 					case 'Blue':
 						$player->addTitle("", "§9Blue§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §c$name\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a100");
+						$player->sendTip("§c攻撃者: §c".$name."\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a100");
 						break;
 				}
 			}
 		}
+		return $this;
 	}
 
 	/**
-	 * @return float|int
+	 * @return float
 	 */
-	public static function Rand()
+	public static function rand(): float
 	{
-		$rand = mt_rand(1, 3);
-		switch ($rand) {
-			case 1:
-				return 1;
-				break;
-			case 2:
-				return 0.9;
-				break;
-			case 3:
-				return 0.8;
-				break;
-		}
-		return 0;
+		return mt_rand(8, 10)/10;
 	}
 
 	/**
 	 * @param SignChangeEvent $event
 	 */
-	public function Sign(SignChangeEvent $event)
+	public function Sign(SignChangeEvent $event): void
 	{
 		$player = $event->getPlayer();
-		if (!$player->getLevel()->getName() === $this->fieldname) return;
+		if (!$player->getLevel()->getName() === $this->fieldName) return;
 		if (!$player->isOp()) return;
 		if ($event->getLine(0) === "SCP1") {
 			$event->setLine(0, "§7[§bS§aC§cP §aSHOP§7]");
@@ -594,15 +622,16 @@ class SpeedCorePvPCore
 		}
 	}
 
-	public function Interact(PlayerInteractEvent $event)
+	public function Interact(PlayerInteractEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$tile = $block->getLevel()->getTile($block);
-		if (!$player->getLevel()->getName() === $this->fieldname) return;
+		if (!$player->getLevel()->getName() === $this->fieldName) return;
 		if (!$tile instanceof Sign) return;
 		$text = $tile->getText();
 		if ($text[0] === "§7[§bS§aC§cP §aSHOP§7]") {
+			// TODO: libform
 			$ui = [
 				"type" => "form",
 				"title" => "§bSpeed§aCore§cPvP",
@@ -625,20 +654,20 @@ class SpeedCorePvPCore
 		}
 		if ($text[0] === "§7[§bS§aC§cP §aSTATUS§7]") {
 			$red = self::getPlayerCount(1);
-			$redhp = self::getHP(1);
+			$redHp = self::getHP(1);
 			$blue = self::getPlayerCount(2);
-			$bluehp = self::getHP(2);
+			$blueHp = self::getHP(2);
 			$ui = [
 				"type" => "custom_form",
 				"title" => "§bSpeed§aCore§cPvP",
 				"content" => [
 					[
 						"type" => "label",
-						"text" => "---===<§c Red §r>===---\n§6人数§r: $red 人\n§aHP§r: $redhp"
+						"text" => "---===<§c Red §r>===---\n§6人数§r: $red 人\n§aHP§r: $redHp"
 					],
 					[
 						"type" => "label",
-						"text" => "---===<§9 Blue §r>===---\n§6人数§r: $blue 人\n§aHP§r: $bluehp"
+						"text" => "---===<§9 Blue §r>===---\n§6人数§r: $blue 人\n§aHP§r: $blueHp"
 					]
 				]
 			];
@@ -652,13 +681,13 @@ class SpeedCorePvPCore
 	/**
 	 * @param BlockBreakEvent $event
 	 */
-	public function BreakCore(BlockBreakEvent $event)
+	public function BreakCore(BlockBreakEvent $event): void
 	{
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$red = $this->point["red.core"];
 		$blue = $this->point["blue.core"];
-		if ($player->getLevel()->getName() !== $this->fieldname) return;
+		if ($player->getLevel()->getName() !== $this->fieldName) return;
 		if (!($this->getGameMode())) {
 			$player->sendMessage("§cゲームモードがfalseだよ");
 			$event->setCancelled(true);
@@ -670,11 +699,11 @@ class SpeedCorePvPCore
 				$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
 				return;
 			}
-			if ($this->redcount < 2 || $this->bluecount < 2) {
+			if ($this->redCount < 2 || $this->blueCount < 2) {
 				$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 				return;
 			}
-			$this->redhp--;
+			--$this->redHp;
 			$this->money->addMoney($player->getName(), 10);
 			$this->AddBreakCoreCount($player);
 			$player->sendMessage("§a+10 §6V§bN§eCoin");
@@ -687,11 +716,11 @@ class SpeedCorePvPCore
 				$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
 				return;
 			}
-			if ($this->bluecount < 2 || $this->redcount < 2) {
+			if ($this->blueCount < 2 || $this->redCount < 2) {
 				$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 				return;
 			}
-			$this->bluehp--;
+			--$this->blueHp;
 			$this->money->addMoney($player->getName(), 10);
 			$this->AddBreakCoreCount($player);
 			$player->sendMessage("§a+10 §6V§bN§eCoin");
@@ -699,10 +728,10 @@ class SpeedCorePvPCore
 			$this->SendAttackMessage("Blue", $player->getName());
 			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 		}
-		if ($this->redhp <= 0) {
+		if ($this->redHp <= 0) {
 			$this->EndGame("Blue");
 		}
-		if ($this->bluehp <= 0) {
+		if ($this->blueHp <= 0) {
 			$this->EndGame("Red");
 		}
 	}
@@ -713,7 +742,7 @@ class SpeedCorePvPCore
 	public function EndGame(string $team)
 	{
 		foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-			if ($player->getLevel()->getName() === $this->fieldname) {
+			if ($player->getLevel()->getName() === $this->fieldName) {
 				if (isset($this->team[$player->getName()])) {
 					if ($this->team[$player->getName()] === $team) {
 						$this->money->addMoney($player->getName(), 3000);
@@ -742,8 +771,8 @@ class SpeedCorePvPCore
 		$this->SetPlayerCount(1, 0);
 		$this->SetPlayerCount(2, 0);
 		$this->setGameMode(false);
-		$level = $this->plugin->getServer()->getLevelByName($this->fieldname);
+		$level = $this->plugin->getServer()->getLevelByName($this->fieldName);
 		$this->plugin->getServer()->unloadLevel($level);
-		$this->plugin->getServer()->loadLevel($this->fieldname);
+		$this->plugin->getServer()->loadLevel($this->fieldName);
 	}
 }

@@ -225,7 +225,6 @@ class SpeedCorePvPCore
 				break;
 			default:
 				throw new \InvalidArgumentException("teamIDは1か2のみです");
-				return 0;
 		}
 	}
 
@@ -430,6 +429,7 @@ class SpeedCorePvPCore
 		$player->getInventory()->addItem($weapons['stone_axe']);
 		$player->getInventory()->addItem($weapons['stone_shovel']);
 		$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 64));
+		return $this;
 	}
 
 	/**
@@ -492,7 +492,7 @@ class SpeedCorePvPCore
 			$datafile->write('COREPVP', $data);
 			$rand = mt_rand(1, 50);
 			$this->money->addMoney($player->getName(), $rand);
-			$player->sendMessage("§a+".$rand." §6V§bN§eCoin");
+			$player->sendMessage("§a+" . $rand . " §6V§bN§eCoin");
 			$this->level->LevelSystem($player);
 			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
 		}
@@ -580,15 +580,15 @@ class SpeedCorePvPCore
 				$soundpacket->x = $player->getX();
 				$soundpacket->y = $player->getY();
 				$soundpacket->z = $player->getZ();
-				$this->plugin->getServer()->broadcastPacket($this->plugin->getServer()->getLevelByName($this->fieldname)->getPlayers(), $soundpacket);
+				$this->plugin->getServer()->broadcastPacket($this->plugin->getServer()->getLevelByName($this->fieldName)->getPlayers(), $soundpacket);
 				switch ($team) {
 					case 'Red':
 						$player->addTitle("", "§cRed§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §9".$name."\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a100");
+						$player->sendTip("§c攻撃者: §9" . $name . "\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a100");
 						break;
 					case 'Blue':
 						$player->addTitle("", "§9Blue§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §c".$name."\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a100");
+						$player->sendTip("§c攻撃者: §c" . $name . "\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a100");
 						break;
 				}
 			}
@@ -601,7 +601,7 @@ class SpeedCorePvPCore
 	 */
 	public static function rand(): float
 	{
-		return mt_rand(8, 10)/10;
+		return mt_rand(8, 10) / 10;
 	}
 
 	/**

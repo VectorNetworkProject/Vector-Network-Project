@@ -59,7 +59,7 @@ class Main extends PluginBase
 §6  \ V /  __/ (__| || (_) | |  §b| |\  |  __/ |_ \ V  V / (_) | |  |   <§e|  __/| | | (_) | |  __/ (__| |_ 
 §6   \_/ \___|\___|\__\___/|_|  §b|_| \_|\___|\__| \_/\_/ \___/|_|  |_|\_\§e_|   |_|  \___// |\___|\___|\__|
                                                                                    |__/               
-                     §7Developers: §bInkoHX & MazaiCrafty
+                     §7Developers: §bInkoHX & MazaiCrafty & yuko fuyutsuki & DusKong
                      §aLICENSE: §cMIT
                      §c動作環境: §bPocketMine-MP §e4.0.0+dev.1364
     ";
@@ -117,7 +117,7 @@ class Main extends PluginBase
 					$this->getLogger()->info("Level: " . $levelName . " を読み込みました");
 				}
 			}
-		}else {
+		} else {
 			$this->getLogger()->debug(count(self::$levels) . "つのワールドを読み込むよう設定されています");
 		}
 		return $this;
@@ -141,7 +141,8 @@ class Main extends PluginBase
 		return $this;
 	}
 
-	private function registerEvents(): self {
+	private function registerEvents(): self
+	{
 		$plm = $this->getServer()->getPluginManager();
 		$plm->registerEvents(new BlockBreak($this), $this);
 		$plm->registerEvents(new BlockPlace($this), $this);

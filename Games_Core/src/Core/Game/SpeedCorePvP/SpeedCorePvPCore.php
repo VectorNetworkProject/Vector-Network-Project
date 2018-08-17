@@ -144,7 +144,7 @@ class SpeedCorePvPCore
 				$this->blueHp = $hp;
 				break;
 			default:
-				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
+				throw new \InvalidArgumentException("teamIDは1か2のみです");
 				break;
 		}
 		return $this;
@@ -164,7 +164,7 @@ class SpeedCorePvPCore
 				return $this->blueHp;
 				break;
 			default:
-				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
+				throw new \InvalidArgumentException("teamIDは1か2のみです");
 				break;
 		}
 	}
@@ -184,7 +184,7 @@ class SpeedCorePvPCore
 				$this->blueCount = $count;
 				break;
 			default:
-				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
+				throw new \InvalidArgumentException("teamIDは1か2のみです");
 				break;
 		}
 		return $this;
@@ -204,7 +204,7 @@ class SpeedCorePvPCore
 				++$this->blueCount;
 				break;
 			default:
-				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
+				throw new \InvalidArgumentException("teamIDは1か2のみです");
 				break;
 		}
 		return $this;
@@ -224,7 +224,7 @@ class SpeedCorePvPCore
 				return $this->blueCount;
 				break;
 			default:
-				throw new \InvalidArgumentException("setHPに使えるteamIDは1か2のみです");
+				throw new \InvalidArgumentException("teamIDは1か2のみです");
 				return 0;
 		}
 	}

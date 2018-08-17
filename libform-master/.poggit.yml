@@ -1,9 +1,0 @@
---- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/fuyutsuki/libform
-branches:
-- master
-projects:
-  libform:
-    path: ""
-    type: library
-    model: virion
-...

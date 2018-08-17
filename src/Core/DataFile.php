@@ -23,10 +23,10 @@ class DataFile
 
 	/**
 	 * @param string $file
-	 * @param string $data
+	 * @param array $data
 	 * @param int $format
 	 */
-	public function write(string $file, string $data = "", int $format = 0): void
+	public function write(string $file, array $data = [], int $format = 0): void
 	{
 		file_put_contents(self::$dir . $file, base64_encode(gzencode(json_encode($data, $format), 9)));
 	}
@@ -34,9 +34,9 @@ class DataFile
 	/**
 	 * @param $file
 	 * @param bool $bool
-	 * @return string|null
+	 * @return array|null
 	 */
-	public function get($file, $bool = true): ?string
+	public function get($file, $bool = true): ?array
 	{
 		return file_exists(self::$dir . $file) ? json_decode(gzdecode(base64_decode(file_get_contents(self::$dir . $file))), $bool) : null;
 	}

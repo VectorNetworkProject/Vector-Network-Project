@@ -90,39 +90,17 @@ class stats extends PluginCommand
 			$survival_breakgold = SurvivalCore::getBreakGold($name);
 			$survival_breakcoal = SurvivalCore::getBreakCoal($name);
 
-			/*$custom = FormApi::makeCustomForm([new CustomUIResponse(), "responsePlayerStatus"]);
-			$custom->setTitle("§l$name のステータス");
-			$custom->addElement(new Label("現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"));
-			$custom->addElement(new Label("---=== §6FFA§cPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death\n§eK§7/§cD§r: $ffapvp_kd"));
-			$custom->addElement(new Label("---=== §bSpeed§aCore§cPvP §r===---\n§eキル数§r: $speedcorepvp_kill\n§cデス数§r: $speedcorepvp_death\n§aコア§c破壊回数§r: $speedcorepvp_breakcore\n§aWin§r: $speedcorepvp_win\n§cLose§r: $speedcorepvp_lose\n§eK§7/§cD§r: $speedcorepvp_kd\n§aW§7/§cL§r: $speedcorepvp_wl"));
-			$custom->addElement(new Label("---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭鉱石§aの数§r: $survival_breakcoal"));
-			$custom->sendToPlayer($sender);*/
-			$status = [
-				"type" => "custom_form",
-				"title" => "§l$name のステータス",
-				"content" => [
-					[
-						"type" => "label",
-						"text" => "現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"
-					],
-					[
-						"type" => "label",
-						"text" => "---=== §6FFA§cPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death\n§eK§7/§cD§r: $ffapvp_kd"
-					],
-					[
-						"type" => "label",
-						"text" => "---=== §bSpeed§aCore§cPvP §r===---\n§eキル数§r: $speedcorepvp_kill\n§cデス数§r: $speedcorepvp_death\n§aコア§c破壊回数§r: $speedcorepvp_breakcore\n§aWin§r: $speedcorepvp_win\n§cLose§r: $speedcorepvp_lose\n§eK§7/§cD§r: $speedcorepvp_kd\n§aW§7/§cL§r: $speedcorepvp_wl"
-					],
-					[
-						"type" => "label",
-						"text" => "---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭鉱石§aの数§r: $survival_breakcoal"
-					]
-				]
-			];
-			$modal = new ModalFormRequestPacket();
-			$modal->formId = mt_rand(1111111, 9999999);
-			$modal->formData = json_encode($status);
-			$sender->sendDataPacket($modal, false);
+			$custom = FormApi::makeCustomForm(function (?array $response) {
+				if (FormApi::formCancelled($response)) {
+					// フォームをキャンセルしていなければ
+				}
+			});
+			$custom->setTitle("§l$name のステータス")
+				->addElement(new Label("現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"))
+				->addElement(new Label("---=== §6FFA§cPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death\n§eK§7/§cD§r: $ffapvp_kd"))
+				->addElement(new Label("---=== §bSpeed§aCore§cPvP §r===---\n§eキル数§r: $speedcorepvp_kill\n§cデス数§r: $speedcorepvp_death\n§aコア§c破壊回数§r: $speedcorepvp_breakcore\n§aWin§r: $speedcorepvp_win\n§cLose§r: $speedcorepvp_lose\n§eK§7/§cD§r: $speedcorepvp_kd\n§aW§7/§cL§r: $speedcorepvp_wl"))
+				->addElement(new Label("---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭鉱石§aの数§r: $survival_breakcoal"))
+				->sendToPlayer($sender);
 			return true;
 		}
 		$sender->sendMessage(TextFormat::RED . "このコマンドはプレイヤーのみが実行できます。");

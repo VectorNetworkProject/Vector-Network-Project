@@ -89,8 +89,8 @@ class stats extends PluginCommand
 			$survival_breakcoal = SurvivalCore::getBreakCoal($name);
 
 			$custom = FormApi::makeCustomForm(function (?array $response) {
-				if (FormApi::formCancelled($response)) {
-					// フォームをキャンセルしていなければ
+				if (FormApi::formCancelled($response) === null) {
+					return;
 				}
 			});
 			$custom->setTitle("§l$name のステータス")

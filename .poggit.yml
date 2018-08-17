@@ -3,12 +3,6 @@ branches:
 - master
 - dev/adjustment
 projects:
-  AntiCheat:
-    path: AntiCheat/
-  BanAPI:
-    path: BanAPI/
   Games_Core:
     path: Games_Core/
-  OldTask:
-    path: OldTask/
 ...

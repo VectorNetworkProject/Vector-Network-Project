@@ -4,5 +4,5 @@ branches:
 - dev/adjustment
 projects:
   Games_Core:
-    path: Games_Core/
+    path: ""
 ...

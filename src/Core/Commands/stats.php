@@ -21,8 +21,8 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
+use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
-use tokyo\pmmp\libform\Label;
 
 class stats extends PluginCommand
 {

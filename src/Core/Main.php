@@ -48,6 +48,7 @@ use Core\Player\Tag;
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
+use tokyo\pmmp\libform\FormApi;
 
 class Main extends PluginBase
 {
@@ -91,6 +92,7 @@ class Main extends PluginBase
 		$this->saveDefaultConfig();
 		$this->getLogger()->info(self::START_MESSAGE);
 		Tag::registerColors();
+		FormApi::register($this);
 	}
 
 	public function onDisable(): void

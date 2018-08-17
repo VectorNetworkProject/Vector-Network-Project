@@ -41,7 +41,6 @@ use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
 use Core\Task\AutoSavingTask;
-// TODO use Core\Task\FoodTask;
 use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
@@ -66,31 +65,26 @@ class Main extends PluginBase
 
 	/** @var Main */
 	public static $instance;
+
 	/** @var string */
 	public static $datafolder;
-	/** @var string[] */
-	public static $levels = [
-		"ffapvp",
-		"corepvp",
-		"athletic",
-		"Survival"
-	];
+
 	/** @var bool */
 	public static $isDev = true;
 
 	public function onLoad(): void
 	{
 		self::$instance = $this;
-		$this
-			->loadLevels()
-			->registerCommands();
+		$this->registerCommands();
 	}
 
 	public function onEnable(): void
 	{
 		date_default_timezone_set("Asia/Tokyo");
 		self::$datafolder = $this->getDataFolder();
-		$this->registerEvents();
+		self::loadLevels();
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		//$this->registerEvents();
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
@@ -106,19 +100,17 @@ class Main extends PluginBase
 
 	private function loadLevels(): self
 	{
-		if (!self::isDev()) {
-			$server = $this->getServer();
-			foreach (self::$levels as $levelName) {
-				$server->loadLevel($levelName);
-				$level = $server->getLevelByName($levelName);
-				if ($level !== null) {
-					$level->setTime(Level::TIME_FULL);
-					$level->stopTime();
-					$this->getLogger()->info("Level: " . $levelName . " を読み込みました");
-				}
+		foreach (scandir('worlds/') as $levelName) {
+			if ($levelName === '.' or $levelName === '..' or $levelName === $this->getServer()->getDefaultLevel()->getName()) {
+				continue;
 			}
-		} else {
-			$this->getLogger()->debug(count(self::$levels) . "つのワールドを読み込むよう設定されています");
+			$this->getServer()->loadLevel($levelName);
+			$level = $this->getServer()->getLevelByName($levelName);
+			if ($level !== null) {
+				$level->setTime(Level::TIME_FULL);
+				$level->stopTime();
+				$this->getLogger()->info(TextFormat::AQUA . "Level: " . $levelName . " を読み込みました");
+			}
 		}
 		return $this;
 	}

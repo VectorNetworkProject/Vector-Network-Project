@@ -17,6 +17,7 @@ use pocketmine\plugin\Plugin;
 class TeleportSurvivalSpawnTask extends PluginTask
 {
 	protected $player, $spawn;
+
 	public function __construct(Plugin $plugin, Player $player, array $spawn)
 	{
 		parent::__construct($plugin);

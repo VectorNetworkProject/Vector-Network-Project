@@ -43,35 +43,35 @@
   },
   "repositories": [
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/VectorNetworkProject/PocketMine-MP"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/pmmp/RakLib"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/pmmp/SPL"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/pmmp/BinaryUtils"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/pmmp/NBT"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/pmmp/Math"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/pmmp/Snooze"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "https://github.com/fuyutsuki/libform"
     }
   ]

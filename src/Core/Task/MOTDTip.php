@@ -23,7 +23,7 @@ class MOTDTip extends PluginTask
 		$rand = mt_rand(1, 2);
 		switch ($rand) {
 			case 1:
-				$this->owner->getServer()->getNetwork()->setName("§l§6>§e>§6e> §a3GAMES §6<§e<§6<§7");
+				$this->owner->getServer()->getNetwork()->setName("§l§6>§e>§6> §a3GAMES §6<§e<§6<§7");
 				break;
 			default:
 				$this->owner->getServer()->getNetwork()->setName("§6Vector §bNetwork §eProject§7");

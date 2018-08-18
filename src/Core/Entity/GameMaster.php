@@ -115,13 +115,24 @@ class GameMaster
 			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
 				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
 					$gamesmenu = [
-						"type" => "custom_form",
+						"type" => "form",
 						"title" => "ゲーム選択",
-						"content" => [
+						"content" => "遊びたいゲームを選択して下さい",
+						"buttons" => [
 							[
-								"type" => "dropdown",
-								"text" => "遊びたいゲームを選択しましょう！",
-								"options" => ["ロビー", "FFAPvP", "SpeedCorePvP", "Athletic", "Survival"]
+								"text" => "§eロビー"
+							],
+							[
+								"text" => "§6FFA§cPvP"
+							],
+							[
+								"text" => "§bSpeed§aCore§cPvP"
+							],
+							[
+								"text" => "§dAthletic"
+							],
+							[
+								"text" => "§aSurvival"
 							]
 						]
 					];

@@ -149,7 +149,7 @@ class DataPacketReceive implements Listener
 				if (($data = json_decode($packet->formData)) === null) {
 					return;
 				}
-				switch ($data[0]) {
+				switch ($data) {
 					case 0:
 						if ($player->getLevel()->getName() === "lobby") {
 							$player->sendMessage("§c既にロビーに居ます。");

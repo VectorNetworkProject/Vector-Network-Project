@@ -41,6 +41,7 @@ use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
 use Core\Task\AutoSavingTask;
+use Core\Task\MOTDTip;
 use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
@@ -90,6 +91,7 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new MOTDTip($this), 30 * 20);
 		$this->saveDefaultConfig();
 		foreach ($this->getServer()->getLevels() as $level) {
 			$level->setTime(6000);

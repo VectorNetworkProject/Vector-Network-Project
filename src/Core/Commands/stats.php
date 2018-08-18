@@ -88,10 +88,8 @@ class stats extends PluginCommand
 			$survival_breakgold = SurvivalCore::getBreakGold($name);
 			$survival_breakcoal = SurvivalCore::getBreakCoal($name);
 
-			$custom = FormApi::makeCustomForm(function (?array $response) {
-				if (FormApi::formCancelled($response) === null) {
-					return;
-				}
+			$custom = FormApi::makeCustomForm(function ($response) {
+				if (!FormApi::formCancelled($response)) {}
 			});
 			$custom->setTitle("§l$name のステータス")
 				->addElement(new Label("現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"))

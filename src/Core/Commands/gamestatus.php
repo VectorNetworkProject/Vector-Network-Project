@@ -11,13 +11,12 @@ namespace Core\Commands;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat;
 
+use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
-use tokyo\pmmp\libform\Label;
 
 class gamestatus extends PluginCommand
 {
@@ -37,7 +36,7 @@ class gamestatus extends PluginCommand
 			return false;
 		}
 		if (!$sender instanceof Player) {
-			$sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");
+			$sender->sendMessage(TextFormat::RED . "このコマンドはプレイヤーのみが実行できます。");
 			return true;
 		}
 		$survival = count($this->getPlugin()->getServer()->getLevelByName('Survival')->getPlayers());
@@ -45,12 +44,12 @@ class gamestatus extends PluginCommand
 		$ffapvp = count($this->getPlugin()->getServer()->getLevelByName('ffapvp')->getPlayers());
 		$lobby = count($this->getPlugin()->getServer()->getLevelByName('lobby')->getPlayers());
 		$custom = FormApi::makeCustomForm(function (?array $response) {
-			if (FormApi::formCancelled($response)) {
-				// フォームをキャンセルしていなければ
+			if (!FormApi::formCancelled($response)) {
 			}
 		});
 		$custom->setTitle("ゲームステータス")
 			->addElement(new Label("§6ロビー§r: $lobby 人\n§6FFA§cPvP§r: $ffapvp 人\n§bSpeed§aCore§cPvP§r: $speedcorepvp 人\n§aSurvival§r: $survival 人"))
+			->setId(mt_rand(111111, 9999999))
 			->sendToPlayer($sender);
 		return true;
 	}

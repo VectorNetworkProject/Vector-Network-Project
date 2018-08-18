@@ -17,6 +17,7 @@ class MOTDTip extends PluginTask
 	{
 		parent::__construct($plugin);
 	}
+
 	public function onRun(int $currentTick)
 	{
 		$rand = mt_rand(1, 2);

@@ -47,6 +47,7 @@ use Core\Player\Tag;
 
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\FormApi;
 
@@ -90,9 +91,13 @@ class Main extends PluginBase
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
 		$this->saveDefaultConfig();
-		$this->getLogger()->info(self::START_MESSAGE);
+		foreach ($this->getServer()->getLevels() as $level) {
+			$level->setTime(6000);
+			$level->stopTime();
+		}
 		Tag::registerColors();
 		FormApi::register($this);
+		$this->getLogger()->info(self::START_MESSAGE);
 	}
 
 	public function onDisable(): void
@@ -107,12 +112,6 @@ class Main extends PluginBase
 				continue;
 			}
 			$this->getServer()->loadLevel($levelName);
-			$level = $this->getServer()->getLevelByName($levelName);
-			if ($level !== null) {
-				$level->setTime(Level::TIME_FULL);
-				$level->stopTime();
-				$this->getLogger()->info(TextFormat::AQUA . "Level: " . $levelName . " を読み込みました");
-			}
 		}
 		return $this;
 	}

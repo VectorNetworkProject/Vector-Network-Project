@@ -213,7 +213,7 @@ class DataPacketReceive implements Listener
 						$modal = new ModalFormRequestPacket();
 						$modal->formId = 348574546;
 						$modal->formData = json_encode($form);
-						$player->sendDataPacket($modal, false);
+						$player->sendDataPacket($modal);
 						break;
 				}
 			}

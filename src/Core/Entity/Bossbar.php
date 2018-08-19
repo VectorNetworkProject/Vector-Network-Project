@@ -70,10 +70,10 @@ class Bossbar extends Vector3
 		$pk = new BossEventPacket();
 		$pk->bossEid = $this->entityId;
 		$pk->eventType = BossEventPacket::TYPE_HIDE;
-		$player->dataPacket($pk);
+		$player->sendDataPacket($pk);
 		$pk2 = new RemoveEntityPacket();
 		$pk2->entityUniqueId = $this->entityId;
-		$player->dataPacket($pk2);
+		$player->sendDataPacket($pk2);
 		if (isset($this->viewers[$player->getLoaderId()])) {
 			unset($this->viewers[$player->getLoaderId()]);
 		}
@@ -90,8 +90,8 @@ class Bossbar extends Vector3
 		$pk->type = EntityIds::SHULKER;
 		$pk->metadata = $this->metadata;
 		$pk->position = $this;
-		$player->dataPacket($pk);
-		$player->dataPacket($this->getHealthPacket());
+		$player->sendDataPacket($pk);
+		$player->sendDataPacket($this->getHealthPacket());
 		$pk2 = new BossEventPacket;
 		$pk2->bossEid = $this->entityId;
 		$pk2->eventType = BossEventPacket::TYPE_SHOW;
@@ -100,7 +100,7 @@ class Bossbar extends Vector3
 		$pk2->overlay = 0;
 		$pk2->unknownShort = 0;
 		$pk2->color = 0;
-		$player->dataPacket($pk2);
+		$player->sendDataPacket($pk2);
 		if ($isViewer) {
 			$this->viewers[$player->getLoaderId()] = $player;
 		}
@@ -117,14 +117,14 @@ class Bossbar extends Vector3
 		$pk->healthPercent = $this->healthPercent;
 		$pk->title = $this->getMetadata(Entity::DATA_NAMETAG);
 		$pk2 = clone $pk;
-		$player->dataPacket($pk);
+		$player->sendDataPacket($pk);
 		$pk2->eventType = BossEventPacket::TYPE_HEALTH_PERCENT;
-		$player->dataPacket($pk2);
-		$player->dataPacket($this->getHealthPacket());
+		$player->sendDataPacket($pk2);
+		$player->sendDataPacket($this->getHealthPacket());
 		$mpk = new SetEntityDataPacket;
 		$mpk->entityRuntimeId = $this->entityId;
 		$mpk->metadata = $this->metadata;
-		$player->dataPacket($mpk);
+		$player->sendDataPacket($mpk);
 	}
 
 	public function BossbarUpdateAll(): void

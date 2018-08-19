@@ -139,7 +139,7 @@ class GameMaster
 					$modal = new ModalFormRequestPacket();
 					$modal->formId = 45786154;
 					$modal->formData = json_encode($gamesmenu);
-					$player->sendDataPacket($modal, false);
+					$player->sendDataPacket($modal);
 				}
 			}
 		}

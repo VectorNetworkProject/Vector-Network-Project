@@ -401,7 +401,6 @@ class SpeedCorePvPCore
 		];
 		$weapons = [
 			"stone_sword" => Item::get(Item::STONE_SWORD, 0, 1),
-			"bow" => Item::get(Item::BOW, 0, 1),
 			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1),
 			"stone_axe" => Item::get(Item::STONE_AXE, 0, 1),
 			"stone_shovel" => Item::get(Item::STONE_SHOVEL, 0, 1)
@@ -424,11 +423,9 @@ class SpeedCorePvPCore
 		$armor->setLeggings($armors['leather_pants']);
 		$armor->setBoots($armors['leather_boots']);
 		$player->getInventory()->addItem($weapons['stone_sword']);
-		$player->getInventory()->addItem($weapons['bow']);
 		$player->getInventory()->addItem($weapons['gold_pickaxe']);
 		$player->getInventory()->addItem($weapons['stone_axe']);
 		$player->getInventory()->addItem($weapons['stone_shovel']);
-		$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 64));
 		return $this;
 	}
 
@@ -641,16 +638,20 @@ class SpeedCorePvPCore
 						"text" => "§6弓\n§e金: §612個"
 					],
 					[
-						"text" => "§7矢\n§e金: §62個"
+						"text" => "§7矢6個\n§e金: §62個"
 					],
 					[
-						"text" => ""
+						"text" => "§e金リンゴ\n§e金: §650個"
+					],
+					[
+						"text" => "§d上位の§e金リンゴ\n§e金: §6100個"
 					]
 				]
 			];
 			$modal = new ModalFormRequestPacket();
 			$modal->formId = 489234852;
 			$modal->formData = json_encode($ui);
+			$player->sendDataPacket($modal);
 		}
 		if ($text[0] === "§7[§bS§aC§cP §aSTATUS§7]") {
 			$red = self::getPlayerCount(1);

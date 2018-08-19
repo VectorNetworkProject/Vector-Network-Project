@@ -23,7 +23,6 @@ use Core\Task\Teleport\TeleportSpeedCorePvPTask;
 use Core\Task\Teleport\TeleportSurvivalTask;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\item\Bread;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;

@@ -49,7 +49,7 @@ class PlayerDeath implements Listener
 				if ($damager instanceof Player) {
 					$this->ffapvp->AddKillCount($damager);
 					$this->DeathMessage('ffapvp', $player->getName(), $damager->getName());
-					if (!$damager->getMaxHealth() <= 40) {
+					if ($damager->getMaxHealth() < 40) {
 						$damager->setMaxHealth($damager->getMaxHealth() + 1);
 					}
 					$damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));

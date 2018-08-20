@@ -54,7 +54,7 @@ class rankshop extends PluginCommand
 			$modal = new ModalFormRequestPacket();
 			$modal->formId = 45661984;
 			$modal->formData = json_encode($rankmenu);
-			$sender->dataPacket($modal);
+			$sender->sendDataPacket($modal);
 			return true;
 		}
 		$sender->sendMessage(TextFormat::RED . "このコマンドはプレイヤーのみが実行できます。");

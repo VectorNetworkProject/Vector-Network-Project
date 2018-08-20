@@ -18,13 +18,11 @@ use Core\Player\Money;
 use Core\Player\Rank;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-use Core\CustomUIResponse;
+use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
-use tokyo\pmmp\libform\Label;
 
 class stats extends PluginCommand
 {
@@ -90,10 +88,8 @@ class stats extends PluginCommand
 			$survival_breakgold = SurvivalCore::getBreakGold($name);
 			$survival_breakcoal = SurvivalCore::getBreakCoal($name);
 
-			$custom = FormApi::makeCustomForm(function (?array $response) {
-				if (FormApi::formCancelled($response)) {
-					// フォームをキャンセルしていなければ
-				}
+			$custom = FormApi::makeCustomForm(function ($response) {
+				if (!FormApi::formCancelled($response)) {}
 			});
 			$custom->setTitle("§l$name のステータス")
 				->addElement(new Label("現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"))

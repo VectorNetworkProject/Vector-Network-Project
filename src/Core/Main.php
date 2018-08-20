@@ -41,14 +41,16 @@ use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
 use Core\Task\AutoSavingTask;
-// TODO use Core\Task\FoodTask;
+use Core\Task\MOTDTip;
 use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
 use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use tokyo\pmmp\libform\FormApi;
 
 class Main extends PluginBase
 {
@@ -59,44 +61,45 @@ class Main extends PluginBase
 §6  \ V /  __/ (__| || (_) | |  §b| |\  |  __/ |_ \ V  V / (_) | |  |   <§e|  __/| | | (_) | |  __/ (__| |_ 
 §6   \_/ \___|\___|\__\___/|_|  §b|_| \_|\___|\__| \_/\_/ \___/|_|  |_|\_\§e_|   |_|  \___// |\___|\___|\__|
                                                                                    |__/               
-                     §7Developers: §bInkoHX & MazaiCrafty
+                     §7Developers: §bInkoHX & MazaiCrafty & yuko fuyutsuki & DusKong
                      §aLICENSE: §cMIT
                      §c動作環境: §bPocketMine-MP §e4.0.0+dev.1364
     ";
 
 	/** @var Main */
 	public static $instance;
+
 	/** @var string */
 	public static $datafolder;
-	/** @var string[] */
-	public static $levels = [
-		"ffapvp",
-		"corepvp",
-		"athletic",
-		"Survival"
-	];
+
 	/** @var bool */
 	public static $isDev = true;
 
 	public function onLoad(): void
 	{
 		self::$instance = $this;
-		$this
-			->loadLevels()
-			->registerCommands();
+		$this->registerCommands();
 	}
 
 	public function onEnable(): void
 	{
 		date_default_timezone_set("Asia/Tokyo");
 		self::$datafolder = $this->getDataFolder();
-		$this->registerEvents();
+		self::loadLevels();
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		//$this->registerEvents();
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new MOTDTip($this), 30 * 20);
 		$this->saveDefaultConfig();
-		$this->getLogger()->info(self::START_MESSAGE);
+		foreach ($this->getServer()->getLevels() as $level) {
+			$level->setTime(6000);
+			$level->stopTime();
+		}
 		Tag::registerColors();
+		FormApi::register($this);
+		$this->getLogger()->info(self::START_MESSAGE);
 	}
 
 	public function onDisable(): void
@@ -106,19 +109,11 @@ class Main extends PluginBase
 
 	private function loadLevels(): self
 	{
-		if (!self::isDev()) {
-			$server = $this->getServer();
-			foreach (self::$levels as $levelName) {
-				$server->loadLevel($levelName);
-				$level = $server->getLevelByName($levelName);
-				if ($level !== null) {
-					$level->setTime(Level::TIME_FULL);
-					$level->stopTime();
-					$this->getLogger()->info("Level: " . $levelName . " を読み込みました");
-				}
+		foreach (scandir('worlds/') as $levelName) {
+			if ($levelName === '.' or $levelName === '..' or $levelName === $this->getServer()->getDefaultLevel()->getName()) {
+				continue;
 			}
-		}else {
-			$this->getLogger()->debug(count(self::$levels) . "つのワールドを読み込むよう設定されています");
+			$this->getServer()->loadLevel($levelName);
 		}
 		return $this;
 	}
@@ -141,7 +136,8 @@ class Main extends PluginBase
 		return $this;
 	}
 
-	private function registerEvents(): self {
+	private function registerEvents(): self
+	{
 		$plm = $this->getServer()->getPluginManager();
 		$plm->registerEvents(new BlockBreak($this), $this);
 		$plm->registerEvents(new BlockPlace($this), $this);

@@ -36,7 +36,7 @@ class Mazai
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username = "§a魔剤§e売りの§a魔剤§eさん", Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
+	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
 	{
 		$addplayerpacket = new AddPlayerPacket();
 		$addplayerpacket->uuid = ($uuid = UUID::fromRandom());
@@ -55,12 +55,12 @@ class Mazai
 			Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, $flags],
 			Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, $username]
 		];
-		$player->dataPacket($addplayerpacket);
+		$player->sendDataPacket($addplayerpacket);
 		for ($type = 0; $type <= 1; $type++) {
 			$playerlistpacket = new PlayerListPacket();
 			$playerlistpacket->entries[] = PlayerListEntry::createAdditionEntry($uuid, $eid, "", "", 0, new Skin("Standard_Custom", base64_decode(file_get_contents("plugins/Games_Core/resources/skins/MazaiNPC"))));
 			$playerlistpacket->type = $type;
-			$player->dataPacket($playerlistpacket);
+			$player->sendDataPacket($playerlistpacket);
 		}
 		self::$players[$player->getName()] = $eid;
 	}
@@ -74,7 +74,7 @@ class Mazai
 			$eid = self::$players[$player->getName()];
 			$removeentitypacket = new RemoveEntityPacket();
 			$removeentitypacket->entityUniqueId = $eid;
-			$player->dataPacket($removeentitypacket);
+			$player->sendDataPacket($removeentitypacket);
 			unset(self::$players[$player->getName()]);
 		}
 	}
@@ -129,7 +129,7 @@ class Mazai
 					$modal = new ModalFormRequestPacket();
 					$modal->formData = json_encode($shop);
 					$modal->formId = 75498654;
-					$player->dataPacket($modal);
+					$player->sendDataPacket($modal);
 				}
 			}
 		}

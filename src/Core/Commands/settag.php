@@ -15,6 +15,11 @@ use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
+use tokyo\pmmp\libform\FormApi;
+use tokyo\pmmp\libform\Label;
+use tokyo\pmmp\libform\DropDown;
+use tokyo\pmmp\libform\Input;
+
 class settag extends PluginCommand
 {
 	protected $plugin;
@@ -62,7 +67,7 @@ class settag extends PluginCommand
 		$modal = new ModalFormRequestPacket();
 		$modal->formId = 8489612;
 		$modal->formData = json_encode($settag);
-		$sender->dataPacket($modal);
+		$sender->sendDataPacket($modal);
 		return true;
 	}
 }

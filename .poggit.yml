@@ -3,6 +3,6 @@ branches:
 - master
 - dev/adjustment
 projects:
-  Vector-Network-Project:
+  Games_Core:
     path: ""
 ...

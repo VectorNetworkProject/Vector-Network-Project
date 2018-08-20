@@ -53,7 +53,7 @@ class killsound extends PluginCommand
 		$modal = new ModalFormRequestPacket();
 		$modal->formId = 94572154;
 		$modal->formData = json_encode($killsoundmenu);
-		$sender->dataPacket($modal);
+		$sender->sendDataPacket($modal);
 		return true;
 	}
 }

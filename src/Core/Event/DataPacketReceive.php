@@ -23,6 +23,7 @@ use Core\Task\Teleport\TeleportSpeedCorePvPTask;
 use Core\Task\Teleport\TeleportSurvivalTask;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\ModalFormResponsePacket;
@@ -149,7 +150,7 @@ class DataPacketReceive implements Listener
 				if (($data = json_decode($packet->formData)) === null) {
 					return;
 				}
-				switch ($data[0]) {
+				switch ($data) {
 					case 0:
 						if ($player->getLevel()->getName() === "lobby") {
 							$player->sendMessage("§c既にロビーに居ます。");
@@ -213,7 +214,7 @@ class DataPacketReceive implements Listener
 						$modal = new ModalFormRequestPacket();
 						$modal->formId = 348574546;
 						$modal->formData = json_encode($form);
-						$player->sendDataPacket($modal, false);
+						$player->sendDataPacket($modal);
 						break;
 				}
 			}
@@ -316,6 +317,49 @@ class DataPacketReceive implements Listener
 							$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
 						}
 					}
+				}
+			}
+			if ($packet->formId === 489234852) {
+				if (($data = json_decode($packet->formData)) === null) {
+					return;
+				}
+				switch ($data) {
+					case 0:
+						if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 12))) {
+							$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 12));
+							$player->getInventory()->addItem(Item::get(Item::BOW, 0, 1));
+							$player->sendMessage(self::BUY_SUCCESS);
+						} else {
+							$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+						}
+						break;
+					case 1:
+						if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 2))) {
+							$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 2));
+							$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 6));
+							$player->sendMessage(self::BUY_SUCCESS);
+						} else {
+							$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+						}
+						break;
+					case 2:
+						if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 50))) {
+							$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 50));
+							$player->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
+							$player->sendMessage(self::BUY_SUCCESS);
+						} else {
+							$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+						}
+						break;
+					case 3:
+						if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 100))) {
+							$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 100));
+							$player->getInventory()->addItem(Item::get(Item::APPLE_ENCHANTED, 0, 1));
+							$player->sendMessage(self::BUY_SUCCESS);
+						} else {
+							$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+						}
+						break;
 				}
 			}
 		}

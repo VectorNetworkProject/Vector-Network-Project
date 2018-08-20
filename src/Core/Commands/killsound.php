@@ -11,13 +11,26 @@ namespace Core\Commands;
 use Core\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
+use tokyo\pmmp\libform\element\Dropdown;
+use tokyo\pmmp\libform\FormApi;
 
 class killsound extends PluginCommand
 {
-	protected $plugin;
+	private static $sounds = [
+		"サウンド無し",
+		"チーン",
+		"1UP",
+		"骨が折れる音",
+		"デデドン",
+		"ピチューン",
+		"ブスッ",
+		"許してくれたまえ",
+		"さっさと逃げればいいものを"
+	];
+	private $plugin;
+	private $killsound;
 
 	public function __construct(Main $plugin)
 	{
@@ -25,6 +38,7 @@ class killsound extends PluginCommand
 		$this->setPermission("vector.network.player");
 		$this->setDescription("敵を倒した時のサウンドを設定します。");
 		$this->plugin = $plugin;
+		$this->killsound = new \Core\Player\KillSound($plugin);
 	}
 
 	public function execute(CommandSender $sender, string $commandLabel, array $args)
@@ -39,21 +53,50 @@ class killsound extends PluginCommand
 			$sender->sendMessage(TextFormat::RED . "このコマンドはプレイヤーのみが実行できます。");
 			return true;
 		}
-		$killsoundmenu = [
-			"type" => "custom_form",
-			"title" => "キルサウンド選択",
-			"content" => [
-				[
-					"type" => "dropdown",
-					"text" => "敵を倒した時に出るサウンドを設定します。",
-					"options" => ["サウンド無し", "チーン", "1UP", "骨が折れる音", "デデドン", "ピチューン", "ブスッ", "許してくれたまえ", "さっさと逃げればいいものを"]
-				]
-			]
-		];
-		$modal = new ModalFormRequestPacket();
-		$modal->formId = 94572154;
-		$modal->formData = json_encode($killsoundmenu);
-		$sender->sendDataPacket($modal);
+		FormApi::makeCustomForm(function (Player $player, ?array $response) {
+			if (!FormApi::formCancelled($response)) {
+				switch ($response[0]) {
+					case self::$sounds[0]:
+						$this->killsound->setKillSound($player, 0);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを無効にしました。");
+						break;
+					case self::$sounds[1]:
+						$this->killsound->setKillSound($player, 1);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【チーン】に設定しました。");
+						break;
+					case self::$sounds[2]:
+						$this->killsound->setKillSound($player, 2);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【1UP】に設定しました。");
+						break;
+					case self::$sounds[3]:
+						$this->killsound->setKillSound($player, 3);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【骨が折れる音】に設定しました。");
+						break;
+					case self::$sounds[4]:
+						$this->killsound->setKillSound($player, 4);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【デデドン】に設定しました。");
+						break;
+					case self::$sounds[5]:
+						$this->killsound->setKillSound($player, 5);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【ピチューン】に設定しました。");
+						break;
+					case self::$sounds[6]:
+						$this->killsound->setKillSound($player, 6);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【ブスッ】に設定しました。");
+						break;
+					case self::$sounds[7]:
+						$this->killsound->setKillSound($player, 7);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【許してくれたまえ】に設定しました。");
+						break;
+					case self::$sounds[8]:
+						$this->killsound->setKillSound($player, 8);
+						$player->sendMessage("§7[§a成功§7] §aキルサウンドを【さっさと逃げればいいものを】に設定しました。");
+						break;
+				}
+			}
+		})->setTitle("キルサウンド選択")
+			->addEleemnt(new Dropdown("敵を倒したときに出るサウンドを設定します。", self::$sounds))
+			->sendToPlayer($sender);
 		return true;
 	}
 }

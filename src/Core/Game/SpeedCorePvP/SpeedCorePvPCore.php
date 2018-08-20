@@ -29,12 +29,14 @@ use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Color;
+use tokyo\pmmp\libform\element\Button;
+use tokyo\pmmp\libform\element\Label;
+use tokyo\pmmp\libform\FormApi;
 
 class SpeedCorePvPCore
 {
@@ -642,53 +644,27 @@ class SpeedCorePvPCore
 		$text = $tile->getText();
 		if ($text[0] === "§7[§bS§aC§cP §aSHOP§7]") {
 			// TODO: libform
-			$ui = [
-				"type" => "form",
-				"title" => "§bSpeed§aCore§cPvP",
-				"content" => "採掘した資材を武器等に変換できます。",
-				"buttons" => [
-					[
-						"text" => "§6弓\n§e金: §612個"
-					],
-					[
-						"text" => "§7矢6個\n§e金: §62個"
-					],
-					[
-						"text" => "§e金リンゴ\n§e金: §650個"
-					],
-					[
-						"text" => "§d上位の§e金リンゴ\n§e金: §6100個"
-					]
-				]
-			];
-			$modal = new ModalFormRequestPacket();
-			$modal->formId = 489234852;
-			$modal->formData = json_encode($ui);
-			$player->sendDataPacket($modal);
+			FormApi::makeListForm(function(?int $key){
+				// TODO
+			})->setTitle("§bSpeed§aCore§cPvP")
+				->setContent("採掘した資材を武器等に変換できます。")
+				->addButton(new Button("§6弓\n§e金: §612個"))
+				->addButton(new Button("§7矢6個\n§e金: §62個"))
+				->addButton(new Button("§e金リンゴ\n§e金: §650個"))
+				->addButton(new Button("§d上位の§e金リンゴ\n§e金: §6100個"))
+				->sendToPlayer($player);
 		}
 		if ($text[0] === "§7[§bS§aC§cP §aSTATUS§7]") {
 			$red = self::getPlayerCount(1);
 			$redHp = self::getHP(1);
 			$blue = self::getPlayerCount(2);
 			$blueHp = self::getHP(2);
-			$ui = [
-				"type" => "custom_form",
-				"title" => "§bSpeed§aCore§cPvP",
-				"content" => [
-					[
-						"type" => "label",
-						"text" => "---===<§c Red §r>===---\n§6人数§r: $red 人\n§aHP§r: $redHp"
-					],
-					[
-						"type" => "label",
-						"text" => "---===<§9 Blue §r>===---\n§6人数§r: $blue 人\n§aHP§r: $blueHp"
-					]
-				]
-			];
-			$modal = new ModalFormRequestPacket();
-			$modal->formId = mt_rand(1111111, 99999999);
-			$modal->formData = json_encode($ui);
-			$player->sendDataPacket($modal, false);
+			FormApi::makeCustomForm(function(?array $response) {
+				// TODO
+			})->setTitle("§bSpeed§aCore§cPvP")
+				->addElement(new Label("---===<§c Red §r>===---\n§6人数§r: $red 人\n§aHP§r: $redHp"))
+				->addElement(new Label("---===<§9 Blue §r>===---\n§6人数§r: $blue 人\n§aHP§r: $blueHp"))
+				->sendToPlayer($player);
 		}
 	}
 

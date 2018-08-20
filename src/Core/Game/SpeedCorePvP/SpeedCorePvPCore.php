@@ -21,6 +21,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -333,6 +334,18 @@ class SpeedCorePvPCore
 					$this->plugin->getScheduler()->scheduleDelayedTask(new AutosetBlockTask($this->plugin, $block), self::$blockids[$block->getId()] * 20);
 				}
 			}
+		}
+	}
+
+	public function CancelChange(EntityInventoryChangeEvent $event)
+	{
+		$entity = $event->getEntity();
+		if (!$entity instanceof Player) return;
+		if ($entity->getLevel()->getName() !== $this->fieldName) return;
+		if (!isset($this->team[$entity->getName()])) return;
+		if ($event->getSlot() !== 0) return;
+		if ($event->getOldItem()->getId() === Item::LEATHER_HELMET) {
+			$event->setCancelled(true);
 		}
 	}
 

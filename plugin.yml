@@ -1,0 +1,56 @@
+name: Games_Core
+main: Core\Main
+api: 4.0.0
+version: 3.0.0
+author: VectorNetworkDevelopmentTeam
+authors:
+  - InkoHX
+  - MazaiCrafty
+  - yuko fuyutsuki
+  - DusKong
+commands:
+  ping:
+    usage: /ping
+    permission: vector.network.player
+    description: 応答速度を計測します。
+  stats:
+    usage: /stats
+    permission: vector.network.player
+    description: 自分のステータスを表示します。
+  rankshop:
+    usage: /rankshop
+    permission: vector.network.player
+    description: §6V§bN§eCoin§rを使ってランクを買います。
+  setmoney:
+    usage: /setmoney <Name> <int>
+    permission: vector.network.admin
+    description: Admin Command
+  settag:
+    usage: /settag
+    permission: vector.network.player
+    description: §6V§bN§eCoin§rを使ってタグを設定します。
+  selectgame:
+    usage: /selectgame
+    permission: vector.network.player
+    description: 遊びたいゲームを選択できます。
+  debug:
+    usage: /debug
+    permission: vector.network.admin
+    description: Admin Command
+  killsound:
+    usage: /killsound
+    permission: vector.network.player
+    description: 敵を倒した時のサウンドを設定します。
+  adtag:
+    usage: /adtag
+    permission: vector.network.admin
+    description: Admin Command
+  gamestatus:
+    usage: /gamestatus
+    permission: vector.network.player
+    description: どのゲームに何人居るか表示します。
+permissions:
+  vector.network.player:
+    default: true
+  vector.network.admin:
+    default: op

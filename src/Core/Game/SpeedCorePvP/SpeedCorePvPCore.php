@@ -8,6 +8,7 @@
 
 namespace Core\Game\SpeedCorePvP;
 
+use Core\Commands\MessagesEnum;
 use Core\DataFile;
 use Core\Main;
 use Core\Player\Level;
@@ -643,9 +644,47 @@ class SpeedCorePvPCore
 		if (!$tile instanceof Sign) return;
 		$text = $tile->getText();
 		if ($text[0] === "§7[§bS§aC§cP §aSHOP§7]") {
-			// TODO: libform
-			FormApi::makeListForm(function(?int $key){
-				// TODO
+			FormApi::makeListForm(function(Player $player, ?int $key){
+				if (!FormApi::formCancelled($key)) {
+					switch ($key) {
+						case 0:
+							if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 12))) {
+								$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 12));
+								$player->getInventory()->addItem(Item::get(Item::BOW, 0, 1));
+								$player->sendMessage(MessagesEnum::BUY_SUCCESS);
+							} else {
+								$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+							}
+							break;
+						case 1:
+							if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 2))) {
+								$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 2));
+								$player->getInventory()->addItem(Item::get(Item::ARROW, 0, 6));
+								$player->sendMessage(MessagesEnum::BUY_SUCCESS);
+							} else {
+								$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+							}
+							break;
+						case 2:
+							if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 50))) {
+								$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 50));
+								$player->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
+								$player->sendMessage(MessagesEnum::BUY_SUCCESS);
+							} else {
+								$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+							}
+							break;
+						case 3:
+							if ($player->getInventory()->contains(Item::get(Item::GOLD_INGOT, 0, 100))) {
+								$player->getInventory()->removeItem(Item::get(Item::GOLD_INGOT, 0, 100));
+								$player->getInventory()->addItem(Item::get(Item::APPLE_ENCHANTED, 0, 1));
+								$player->sendMessage(MessagesEnum::BUY_SUCCESS);
+							} else {
+								$player->sendMessage("§7[§c失敗§7] §6金§cが足りません。");
+							}
+							break;
+					}
+				}
 			})->setTitle("§bSpeed§aCore§cPvP")
 				->setContent("採掘した資材を武器等に変換できます。")
 				->addButton(new Button("§6弓\n§e金: §612個"))
@@ -659,9 +698,7 @@ class SpeedCorePvPCore
 			$redHp = self::getHP(1);
 			$blue = self::getPlayerCount(2);
 			$blueHp = self::getHP(2);
-			FormApi::makeCustomForm(function(?array $response) {
-				// TODO
-			})->setTitle("§bSpeed§aCore§cPvP")
+			FormApi::makeCustomForm()->setTitle("§bSpeed§aCore§cPvP")
 				->addElement(new Label("---===<§c Red §r>===---\n§6人数§r: $red 人\n§aHP§r: $redHp"))
 				->addElement(new Label("---===<§9 Blue §r>===---\n§6人数§r: $blue 人\n§aHP§r: $blueHp"))
 				->sendToPlayer($player);

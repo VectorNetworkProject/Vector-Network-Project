@@ -16,7 +16,6 @@ use Core\Task\Teleport\TeleportSpeedCorePvPTask;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\level\Position;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Button;

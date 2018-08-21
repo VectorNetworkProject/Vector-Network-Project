@@ -88,7 +88,7 @@ class EventListener implements Listener
 		$this->athletic = new AthleticCore();
 		$this->survival = new SurvivalCore($this->plugin);
 		$this->mazainpc = new Mazai();
-		$this->gamemasternpc = new GameMaster();
+		$this->gamemasternpc = new GameMaster($this->plugin);
 		$this->mazaimasternpc = new MazaiMaster();
 		$this->playerjoinevent = new PlayerJoin($this->plugin);
 		$this->playerquitevent = new PlayerQuit($this->plugin);

@@ -33,7 +33,9 @@ class ping extends PluginCommand
             return false;
         }
         if ($sender instanceof Player) {
-            $sender->sendMessage(TextFormat::YELLOW."Pong! §c".$sender->getPing()."§ems");
+        	$ping = $sender->getPing();
+        	$color = ($ping < 150 ? TextFormat::GREEN : ($ping < 250 ? TextFormat::GOLD : TextFormat::RED));
+            $sender->sendMessage(TextFormat::YELLOW."Pong! $color".$ping."§ems");
             return true;
         }
         $sender->sendMessage(TextFormat::RED."このコマンドはプレイヤーのみが実行できます。");

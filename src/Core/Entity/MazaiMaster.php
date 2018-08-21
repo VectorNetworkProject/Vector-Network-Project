@@ -9,6 +9,12 @@
 namespace Core\Entity;
 
 
+use Core\Commands\MessagesEnum;
+use Core\Main;
+use Core\Player\Level;
+use Core\Player\MazaiPoint;
+use Core\Player\Money;
+use Core\Task\LevelCheckingTask;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Skin;
 use pocketmine\event\entity\EntityLevelChangeEvent;
@@ -17,16 +23,27 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\Player;
 use pocketmine\utils\UUID;
+use tokyo\pmmp\libform\element\Button;
+use tokyo\pmmp\libform\FormApi;
 
 class MazaiMaster
 {
-	protected static $players = [];
+	private static $players = [];
+	private $money;
+	private $level;
+	private $mazai;
+
+	public function __construct()
+	{
+		$this->money = new Money();
+		$this->level = new Level();
+		$this->mazai = new MazaiPoint();
+	}
 
 	/**
 	 * @param Player $player
@@ -116,23 +133,33 @@ class MazaiMaster
 		if ($packet instanceof InventoryTransactionPacket) {
 			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
 				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
-					$shop = [
-						"type" => "form",
-						"title" => "§aMAZAI§e変換所",
-						"content" => "§aMAZAI§rを色んなものに変換します。",
-						"buttons" => [
-							[
-								"text" => "§e300§aXP\n§e1§aMAZAI"
-							],
-							[
-								"text" => "§e10000§6V§bN§eCoin\n§e1§aMAZAI"
-							]
-						]
-					];
-					$modal = new ModalFormRequestPacket();
-					$modal->formData = json_encode($shop);
-					$modal->formId = 8168764;
-					$player->sendDataPacket($modal);
+					FormApi::makeListForm(function (Player $player, ?int $key) {
+						if (!FormApi::formCancelled($key)) {
+							switch ($key) {
+								case 0:
+									if ($this->mazai->reduceMazai($player->getName(), 1)) {
+										$player->sendMessage(MessagesEnum::MAZAI_SUCCESS);
+										$this->level->addExp($player->getName(), 300);
+										Main::$instance->getScheduler()->scheduleDelayedTask(new LevelCheckingTask(Main::$instance, $player), 20);
+									} else {
+										$player->sendMessage(MessagesEnum::MAZAI_ERROR);
+									}
+									break;
+								case 1:
+									if ($this->mazai->reduceMazai($player->getName(), 1)) {
+										$player->sendMessage(MessagesEnum::MAZAI_SUCCESS);
+										$this->money->addMoney($player->getName(), 10000);
+									} else {
+										$player->sendMessage(MessagesEnum::MAZAI_ERROR);
+									}
+									break;
+							}
+						}
+					})->setTitle("§aMAZAI§e変換所")
+						->setContent("§aMAZAI§rを色んなものに変換します。")
+						->addButton(new Button("§e300§aXP\n§e1§aMAZAI"))
+						->addButton(new Button("§e10000§6V§bN§eCoin\n§e1§aMAZAI\""))
+						->sendToPlayer($player);
 				}
 			}
 		}

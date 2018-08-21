@@ -27,7 +27,6 @@ use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
-use Core\Event\DataPacketReceive;
 use Core\Event\EntityDamage;
 use Core\Event\EntityInventoryChange;
 use Core\Event\EntityShootBow;
@@ -46,9 +45,7 @@ use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
-use pocketmine\level\Level;
 use pocketmine\plugin\PluginBase;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\FormApi;
 
@@ -87,7 +84,7 @@ class Main extends PluginBase
 		self::$datafolder = $this->getDataFolder();
 		self::loadLevels();
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-		//$this->registerEvents();
+		// TODO: $this->registerEvents();
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
@@ -141,7 +138,6 @@ class Main extends PluginBase
 		$plm = $this->getServer()->getPluginManager();
 		$plm->registerEvents(new BlockBreak($this), $this);
 		$plm->registerEvents(new BlockPlace($this), $this);
-		$plm->registerEvents(new DataPacketReceive($this), $this);
 		$plm->registerEvents(new EntityDamage($this), $this);
 		$plm->registerEvents(new EntityInventoryChange($this), $this);
 		$plm->registerEvents(new EntityShootBow($this), $this);

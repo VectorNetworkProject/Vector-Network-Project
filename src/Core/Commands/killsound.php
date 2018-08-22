@@ -95,7 +95,7 @@ class killsound extends PluginCommand
 				}
 			}
 		})->setTitle("キルサウンド選択")
-			->addEleemnt(new Dropdown("敵を倒したときに出るサウンドを設定します。", self::$sounds))
+			->addElement(new Dropdown("敵を倒したときに出るサウンドを設定します。", self::$sounds))
 			->sendToPlayer($sender);
 		return true;
 	}

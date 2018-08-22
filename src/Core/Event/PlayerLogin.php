@@ -82,5 +82,12 @@ class PlayerLogin implements Listener
 			];
 			$data->write('SURVIVAL', $inventory);
 		}
+		if (($duel = $data->get('DUEL')) === null) {
+			$duel = [
+				"win" => 0,
+				"lose" => 0
+			];
+			$data->write('DUEL', $duel);
+		}
 	}
 }

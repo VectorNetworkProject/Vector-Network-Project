@@ -60,7 +60,7 @@ class Main extends PluginBase
                                                                                    |__/               
                      §7Developers: §bInkoHX & MazaiCrafty & yuko fuyutsuki & DusKong
                      §aLICENSE: §cMIT
-                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1364
+                     §c動作環境: §bPocketMine-MP §e4.0.0+dev.1405
     ";
 
 	/** @var Main */

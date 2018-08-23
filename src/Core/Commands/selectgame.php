@@ -13,6 +13,7 @@ use Core\Task\Teleport\TeleportAthleticTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
 use Core\Task\Teleport\TeleportSpeedCorePvPTask;
+use Core\Task\Teleport\TeleportSurvivalTask;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\level\Position;

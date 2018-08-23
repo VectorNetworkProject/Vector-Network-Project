@@ -121,10 +121,7 @@ class EventListener implements Listener
 		$this->playerquitevent->event($event);
 		$player = $event->getPlayer();
 		$this->speedcorepvp->GameQuit($player);
-		$this->survival->SaveInventory($player);
-		$this->survival->SaveSpawn($player->getName(), $player->getLevel()->getName(), $player->x, $player->y, $player->z);
-		$this->survival->SaveHeath($player);
-		$this->survival->SaveFood($player);
+		$this->survival->SaveData($event);
 		$this->mazainpc->Remove($player);
 		$this->gamemasternpc->Remove($player);
 		$this->mazaimasternpc->Remove($player);
@@ -215,7 +212,7 @@ class EventListener implements Listener
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
 		$this->speedcorepvp->LevelChange($event);
-		$this->survival->LoadInventory($event);
+		$this->survival->LoadData($event);
 		$this->mazainpc->Check($event);
 		$this->gamemasternpc->Check($event);
 		$this->mazaimasternpc->Check($event);

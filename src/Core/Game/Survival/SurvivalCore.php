@@ -22,6 +22,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\Player;
@@ -94,7 +95,7 @@ class SurvivalCore
 			$data = $datafile->get('SURVIVAL');
 			if (isset($data['items'])) {
 				if (empty($player->getInventory()->getContents())) {
-					unset($data['items']);
+					$data['items'] = array();
 					$datafile->write('SURVIVAL', $data);
 				} else {
 					$data['items'] = $player->getInventory()->getContents();
@@ -107,7 +108,7 @@ class SurvivalCore
 	/**
 	 * @param EntityLevelChangeEvent $event
 	 */
-	public function LoadInventory(EntityLevelChangeEvent $event)
+	public function LoadData(EntityLevelChangeEvent $event)
 	{
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
@@ -129,17 +130,28 @@ class SurvivalCore
 						}
 						$entity->getInventory()->addItem(Item::get($item['id'], $damage, $count));
 					}
-					$entity->setHealth(self::getHealth($entity->getName()));
-					$entity->setFood(self::getFood($entity->getName()));
-					$this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($data['x'], $data['z']);
-					$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $data), 3 * 20);
 				}
+				$entity->setHealth(self::getHealth($entity->getName()));
+				$entity->setFood(self::getFood($entity->getName()));
+				$this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($data['x'], $data['z']);
+				$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $data['x'], $data['y'], $data['z']), 3 * 20);
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
 				$this->SaveSpawn($entity->getName(), $entity->getLevel()->getName(), $entity->getX(), $entity->getY(), $entity->getZ());
 				$this->SaveFood($entity);
 				$this->SaveHeath($entity);
 			}
+		}
+	}
+
+	public function SaveData(PlayerQuitEvent $event)
+	{
+		$player = $event->getPlayer();
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			self::SaveFood($player);
+			self::SaveHeath($player);
+			self::SaveInventory($player);
+			self::SaveSpawn($player->getName(), self::LEVEL_NAME, $player->getX(), $player->getY(), $player->getZ());
 		}
 	}
 

@@ -75,12 +75,19 @@ class PlayerLogin implements Listener
 				"breakiron" => 0,
 				"health" => 20,
 				"food" => 20,
-				"items" => [],
+				"items" => array(),
 				"x" => 225,
 				"y" => 243,
 				"z" => 256
 			];
 			$data->write('SURVIVAL', $inventory);
+		}
+		if (($duel = $data->get('DUEL')) === null) {
+			$duel = [
+				"win" => 0,
+				"lose" => 0
+			];
+			$data->write('DUEL', $duel);
 		}
 	}
 }

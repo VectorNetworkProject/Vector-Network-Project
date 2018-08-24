@@ -69,6 +69,9 @@ class Tip extends PluginTask
 			case 16:
 				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7この鯖には魔剤要素があります。");
 				break;
+			case 17:
+				$this->owner->getServer()->broadcastMessage("§b[§7TIP§b] §7人が少ないときはサバイバルで遊びましょう()");
+				break;
 		}
 	}
 }

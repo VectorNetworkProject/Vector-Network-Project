@@ -9,6 +9,7 @@
 namespace Core\Task\Teleport;
 
 
+use Core\Main;
 use Core\Task\PluginTask;
 use pocketmine\level\Position;
 use pocketmine\Player;
@@ -16,17 +17,19 @@ use pocketmine\plugin\Plugin;
 
 class TeleportSurvivalSpawnTask extends PluginTask
 {
-	protected $player, $spawn;
+	protected static $x, $y, $z, $player;
 
-	public function __construct(Plugin $plugin, Player $player, array $spawn)
+	public function __construct(Plugin $plugin, Player $player, float $x, float $y, float $z)
 	{
 		parent::__construct($plugin);
-		$this->player = $player;
-		$this->spawn = $spawn;
+		self::$player = $player;
+		self::$x = $x;
+		self::$y = $y;
+		self::$z = $z;
 	}
 
 	public function onRun(int $currentTick)
 	{
-		$this->player->teleport(new Position($this->spawn['x'], $this->spawn['y'], $this->spawn['z'], $this->owner->getServer()->getLevelByName('Survival')));
+		self::$player->teleport(new Position(self::$x, self::$y, self::$z, Main::$instance->getServer()->getLevelByName('Survival')));
 	}
 }

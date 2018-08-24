@@ -13,7 +13,6 @@ use Core\Entity\Mazai;
 use Core\Entity\MazaiMaster;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
-use Core\Event\DataPacketReceive;
 use Core\Event\EntityDamage;
 use Core\Event\EntityInventoryChange;
 use Core\Event\EntityShootBow;
@@ -69,7 +68,6 @@ class EventListener implements Listener
 	protected $playerquitevent;
 	protected $playerloginevent;
 	protected $playerdeathevent;
-	protected $datapacketreceiveevent;
 	protected $playerprelogin;
 	protected $playermoveevent;
 	protected $entitydamage;
@@ -90,13 +88,12 @@ class EventListener implements Listener
 		$this->athletic = new AthleticCore();
 		$this->survival = new SurvivalCore($this->plugin);
 		$this->mazainpc = new Mazai();
-		$this->gamemasternpc = new GameMaster();
+		$this->gamemasternpc = new GameMaster($this->plugin);
 		$this->mazaimasternpc = new MazaiMaster();
 		$this->playerjoinevent = new PlayerJoin($this->plugin);
 		$this->playerquitevent = new PlayerQuit($this->plugin);
 		$this->playerloginevent = new PlayerLogin($this->plugin);
 		$this->playerdeathevent = new PlayerDeath($this->plugin);
-		$this->datapacketreceiveevent = new DataPacketReceive($this->plugin);
 		$this->playerprelogin = new PlayerPreLogin($this->plugin);
 		$this->playermoveevent = new PlayerMove($this->plugin);
 		$this->entitydamage = new EntityDamage($this->plugin);
@@ -124,10 +121,7 @@ class EventListener implements Listener
 		$this->playerquitevent->event($event);
 		$player = $event->getPlayer();
 		$this->speedcorepvp->GameQuit($player);
-		$this->survival->SaveInventory($player);
-		$this->survival->SaveSpawn($player->getName(), $player->getLevel()->getName(), $player->x, $player->y, $player->z);
-		$this->survival->SaveHeath($player);
-		$this->survival->SaveFood($player);
+		$this->survival->SaveData($event);
 		$this->mazainpc->Remove($player);
 		$this->gamemasternpc->Remove($player);
 		$this->mazaimasternpc->Remove($player);
@@ -146,7 +140,6 @@ class EventListener implements Listener
 
 	public function onReceive(DataPacketReceiveEvent $event)
 	{
-		$this->datapacketreceiveevent->event($event);
 		$this->mazainpc->ClickEntity($event);
 		$this->gamemasternpc->ClickEntity($event);
 		$this->mazaimasternpc->ClickEntity($event);
@@ -219,7 +212,7 @@ class EventListener implements Listener
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
 		$this->speedcorepvp->LevelChange($event);
-		$this->survival->LoadInventory($event);
+		$this->survival->LoadData($event);
 		$this->mazainpc->Check($event);
 		$this->gamemasternpc->Check($event);
 		$this->mazaimasternpc->Check($event);

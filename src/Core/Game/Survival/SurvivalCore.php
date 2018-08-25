@@ -14,7 +14,6 @@ use Core\Main;
 use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\LevelCheckingTask;
-use Core\Task\Teleport\TeleportSurvivalSpawnTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
@@ -206,6 +205,7 @@ class SurvivalCore
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
+			self::RandomFood($player);
 			$datafile = new DataFile($player->getName());
 			$data = $datafile->get('SURVIVAL');
 			switch ($block->getId()) {
@@ -292,7 +292,7 @@ class SurvivalCore
 	{
 		$datafile = new DataFile($player->getName());
 		$data = $datafile->get('SURVIVAL');
-		$player->teleport(new Position($data['x'], $data['x'], $data['y'], Main::$instance->getServer()->getLevelByName(self::LEVEL_NAME)));
+		$player->teleport(new Position($data['x'], $data['y'], $data['z'], Main::$instance->getServer()->getLevelByName(self::LEVEL_NAME)));
 	}
 
 	/**
@@ -429,5 +429,12 @@ class SurvivalCore
 		$datafile = new DataFile($name);
 		$data = $datafile->get('SURVIVAL');
 		return $data['health'];
+	}
+
+	private static function RandomFood(Player $player) {
+		if (mt_rand(1, 10) === mt_rand(1, 10)) {
+			$player->getInventory()->addItem(Item::get(Item::STEAK, 0, 1));
+			$player->sendMessage("§6ブロックの中からステーキが出てきた！！たまげたなぁ");
+		}
 	}
 }

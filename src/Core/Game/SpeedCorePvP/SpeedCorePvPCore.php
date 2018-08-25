@@ -29,7 +29,9 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Durable;
 use pocketmine\item\Item;
+use pocketmine\level\particle\HugeExplodeSeedParticle;
 use pocketmine\level\Position;
+use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\Player;
 use pocketmine\Server;
@@ -644,7 +646,7 @@ class SpeedCorePvPCore
 		if (!$tile instanceof Sign) return;
 		$text = $tile->getText();
 		if ($text[0] === "§7[§bS§aC§cP §aSHOP§7]") {
-			FormApi::makeListForm(function(Player $player, ?int $key){
+			FormApi::makeListForm(function (Player $player, ?int $key) {
 				if (!FormApi::formCancelled($key)) {
 					switch ($key) {
 						case 0:
@@ -726,7 +728,7 @@ class SpeedCorePvPCore
 				$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
 				return;
 			}
-			if ($this->redCount < 2 || $this->blueCount < 2) {
+			if ($this->redCount < 1 || $this->blueCount < 1) {
 				$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 				return;
 			}
@@ -737,13 +739,14 @@ class SpeedCorePvPCore
 			$this->level->LevelSystem($player);
 			$this->SendAttackMessage("Red", $player->getName());
 			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+			Main::$instance->getServer()->getLevelByName($this->fieldName)->addParticle(new HugeExplodeSeedParticle(new Vector3($red['x'], $red['y'], $red['z'])), $this->plugin->getServer()->getLevelByName($this->fieldName)->getPlayers());
 		} elseif ($block->getX() === $blue["x"] && $block->getY() === $blue["y"] && $block->getZ() === $blue["z"]) {
 			$event->setCancelled(true);
 			if ($this->team[$player->getName()] !== "Red") {
 				$player->sendMessage("§c痛い痛い！！ちょっとこれ味方のコアだよ！！");
 				return;
 			}
-			if ($this->blueCount < 2 || $this->redCount < 2) {
+			if ($this->blueCount < 1 || $this->redCount < 1) {
 				$player->sendMessage("§cプレイヤーが足りない為コアを削る事は出来ません。");
 				return;
 			}
@@ -754,6 +757,7 @@ class SpeedCorePvPCore
 			$this->level->LevelSystem($player);
 			$this->SendAttackMessage("Blue", $player->getName());
 			$this->plugin->getScheduler()->scheduleDelayedTask(new LevelCheckingTask($this->plugin, $player), 20);
+			Main::$instance->getServer()->getLevelByName($this->fieldName)->addParticle(new HugeExplodeSeedParticle(new Vector3($blue['x'], $blue['y'], $blue['z'])), $this->plugin->getServer()->getLevelByName($this->fieldName)->getPlayers());
 		}
 		if ($this->redHp <= 0) {
 			$this->EndGame("Blue");

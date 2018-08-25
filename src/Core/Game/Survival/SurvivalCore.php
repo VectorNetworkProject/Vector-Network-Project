@@ -18,6 +18,7 @@ use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -288,6 +289,10 @@ class SurvivalCore
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
 	}
+
+	/**
+	 * @param Player $player
+	 */
 	public static function Teleport(Player $player)
 	{
 		$datafile = new DataFile($player->getName());
@@ -431,10 +436,24 @@ class SurvivalCore
 		return $data['health'];
 	}
 
-	private static function RandomFood(Player $player) {
+	/**
+	 * @param Player $player
+	 */
+	private static function RandomFood(Player $player)
+	{
 		if (mt_rand(1, 10) === mt_rand(1, 10)) {
 			$player->getInventory()->addItem(Item::get(Item::STEAK, 0, 1));
 			$player->sendMessage("§6ブロックの中からステーキが出てきた！！たまげたなぁ");
 		}
+	}
+
+	public function setSpawnPoint(BlockPlaceEvent $event)
+	{
+		$player = $event->getPlayer();
+		if ($player->getLevel()->getName() !== self::LEVEL_NAME) return;
+		if ($event->getBlock()->getId() !== Block::BED_BLOCK) return;
+		$event->setCancelled(true);
+		$player->getInventory()->removeItem(Item::get(Item::BED, 0, 1));
+		// ここ思考中
 	}
 }

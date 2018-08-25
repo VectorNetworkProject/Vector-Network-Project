@@ -133,8 +133,6 @@ class SurvivalCore
 				}
 				$entity->setHealth(self::getHealth($entity->getName()));
 				$entity->setFood(self::getFood($entity->getName()));
-				$this->plugin->getServer()->getLevelByName(self::LEVEL_NAME)->loadChunk($data['x'], $data['z']);
-				$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalSpawnTask($this->plugin, $entity, $data['x'], $data['y'], $data['z']), 3 * 20);
 			} elseif ($event->getOrigin()->getName() === self::LEVEL_NAME) {
 				$this->SaveInventory($entity);
 				$this->SaveSpawn($entity->getName(), $entity->getLevel()->getName(), $entity->getX(), $entity->getY(), $entity->getZ());
@@ -286,9 +284,15 @@ class SurvivalCore
 			$data['death'] += 1;
 			$data['items'] = [];
 			$datafile->write('SURVIVAL', $data);
-			$this->SaveSpawn($player->getName(), $player->getLevel()->getName(), 225, 243, 256);
+			$this->SaveSpawn($player->getName(), self::LEVEL_NAME, 225, 243, 256);
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
+	}
+	public static function Teleport(Player $player)
+	{
+		$datafile = new DataFile($player->getName());
+		$data = $datafile->get('SURVIVAL');
+		$player->teleport(new Position($data['x'], $data['x'], $data['y'], Main::$instance->getServer()->getLevelByName(self::LEVEL_NAME)));
 	}
 
 	/**

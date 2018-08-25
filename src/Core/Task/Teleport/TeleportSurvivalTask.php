@@ -9,6 +9,7 @@
 namespace Core\Task\Teleport;
 
 
+use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use Core\Task\PluginTask;
 use pocketmine\level\Position;
@@ -27,7 +28,7 @@ class TeleportSurvivalTask extends PluginTask
 	public function onRun(int $currentTick)
 	{
 		$level = $this->owner->getServer()->getLevelByName("Survival");
-		$this->player->teleport(new Position(225, 243, 256, $level));
+		SurvivalCore::Teleport($this->player);
 		$this->player->setSpawn(new Position(225, 243, 256, $level));
 		$this->player->setHealth(20);
 		$this->player->setMaxHealth(20);

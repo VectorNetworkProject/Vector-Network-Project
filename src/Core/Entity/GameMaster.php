@@ -8,6 +8,7 @@
 
 namespace Core\Entity;
 
+use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use Core\Task\Teleport\TeleportAthleticTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
@@ -194,7 +195,7 @@ class GameMaster
 													$player->sendMessage("§c既にSurvivalに居ます");
 												} else {
 													if ($level->getName() === "lobby") {
-														$player->teleport(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
+														SurvivalCore::Teleport($player);
 														$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
 														$player->sendMessage("§aテレポートしました。");
 													} else {

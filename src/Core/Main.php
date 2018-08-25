@@ -45,6 +45,8 @@ use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
+use pocketmine\inventory\ShapedRecipe;
+use pocketmine\item\Item;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\FormApi;
@@ -96,6 +98,7 @@ class Main extends PluginBase
 		}
 		Tag::registerColors();
 		FormApi::register($this);
+		$this->getServer()->getCraftingManager()->registerRecipe(new ShapedRecipe([" A ", "BBB", "CCC"], ["A" => Item::get(Item::REDSTONE_TORCH, 0, 3), "B" => Item::get(Item::DIAMOND, 0, 1), "C" => Item::get(Item::WOODEN_PLANKS, 0, 1)], [Item::get(Item::BED, 0, 1)->setCustomName("§l§b綺麗なベット")]));
 		$this->getLogger()->info(self::START_MESSAGE);
 	}
 

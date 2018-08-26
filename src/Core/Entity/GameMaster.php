@@ -36,7 +36,7 @@ class GameMaster extends EntityBase
 	/**
 	 * @param EntityLevelChangeEvent $event
 	 */
-	public function Check(EntityLevelChangeEvent $event)
+	public function Check(EntityLevelChangeEvent $event): void
 	{
 		$entity = $event->getEntity();
 		if (!$entity instanceof Player) {
@@ -52,7 +52,7 @@ class GameMaster extends EntityBase
 		}
 	}
 
-	public function ClickEntity(DataPacketReceiveEvent $event)
+	public function ClickEntity(DataPacketReceiveEvent $event): void
 	{
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();
@@ -65,88 +65,90 @@ class GameMaster extends EntityBase
 		}
 
 		if ($packet->trData->entityRuntimeId === self::getEid($player)) {
-			FormApi::makeListForm(function (Player $player, ?int $key) {
-				if (!FormApi::formCancelled($key)) {
-					$level = $player->getLevel();
-					switch ($key) {
-						case 0:
+			FormApi::makeListForm(
+			function (Player $player, ?int $key) {
+				if (FormApi::formCancelled($key)) {
+					return;
+				}
+				$level = $player->getLevel();
+				switch ($key) {
+					case 0:
+						if ($level->getName() === "lobby") {
+							$player->sendMessage("§c既にロビーに居ます。");
+						} else {
+							$player->sendMessage("§e10秒後テレポートします。");
+							$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportLobbyTask($this->plugin, $player), 10 * 20);
+						}
+						break;
+					case 1:
+						if ($level->getName() === "ffapvp") {
+							$player->sendMessage("§c既にFFAPvPに居ます");
+						} else {
 							if ($level->getName() === "lobby") {
-								$player->sendMessage("§c既にロビーに居ます。");
+								$player->teleport(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
+								$player->setSpawn(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
+								$player->sendMessage("§aテレポートしました。");
 							} else {
 								$player->sendMessage("§e10秒後テレポートします。");
-								$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportLobbyTask($this->plugin, $player), 10 * 20);
+								$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportFFAPvPTask($this->plugin, $player), 10 * 20);
 							}
-							break;
-						case 1:
-							if ($level->getName() === "ffapvp") {
-								$player->sendMessage("§c既にFFAPvPに居ます");
+						}
+						break;
+					case 2:
+						if ($level->getName() === "corepvp") {
+							$player->sendMessage("§c既にCorePvPに居ます");
+						} else {
+							if ($level->getName() === "lobby") {
+								$player->teleport(new Position(255, 8, 257, $this->plugin->getServer()->getLevelByName("corepvp")));
+								$player->sendMessage("§aテレポートしました。");
+							} else {
+								$player->sendMessage("§e10秒後テレポートします。");
+								$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSpeedCorePvPTask($this->plugin, $player), 10 * 20);
+							}
+						}
+						break;
+					case 3:
+						if ($player->isOp()) {
+							if ($level->getName() === "athletic") {
+								$player->sendMessage("§c既にAthleticに居ます");
 							} else {
 								if ($level->getName() === "lobby") {
-									$player->teleport(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
-									$player->setSpawn(new Position(254, 107, 254, $this->plugin->getServer()->getLevelByName("ffapvp")));
+									$player->teleport(new Position(254, 4, 254, $this->plugin->getServer()->getLevelByName("athletic")));
 									$player->sendMessage("§aテレポートしました。");
 								} else {
 									$player->sendMessage("§e10秒後テレポートします。");
-									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportFFAPvPTask($this->plugin, $player), 10 * 20);
+									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportAthleticTask($this->plugin, $player), 10 * 20);
 								}
 							}
-							break;
-						case 2:
-							if ($level->getName() === "corepvp") {
-								$player->sendMessage("§c既にCorePvPに居ます");
+						} else {
+							$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
+						}
+						break;
+					case 4:
+						FormApi::makeModalForm(function (Player $player, ?bool $bool) {
+							if (FormApi::formCancelled($bool)) {
+								return;
+							}
+
+							$level = $player->getLevel();
+							if ($level->getName() === "Survival") {
+								$player->sendMessage("§c既にSurvivalに居ます");
 							} else {
 								if ($level->getName() === "lobby") {
-									$player->teleport(new Position(255, 8, 257, $this->plugin->getServer()->getLevelByName("corepvp")));
+									SurvivalCore::Teleport($player);
+									$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
 									$player->sendMessage("§aテレポートしました。");
 								} else {
 									$player->sendMessage("§e10秒後テレポートします。");
-									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSpeedCorePvPTask($this->plugin, $player), 10 * 20);
+									$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
 								}
 							}
-							break;
-						case 3:
-							if ($player->isOp()) {
-								if ($level->getName() === "athletic") {
-									$player->sendMessage("§c既にAthleticに居ます");
-								} else {
-									if ($level->getName() === "lobby") {
-										$player->teleport(new Position(254, 4, 254, $this->plugin->getServer()->getLevelByName("athletic")));
-										$player->sendMessage("§aテレポートしました。");
-									} else {
-										$player->sendMessage("§e10秒後テレポートします。");
-										$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportAthleticTask($this->plugin, $player), 10 * 20);
-									}
-								}
-							} else {
-								$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
-							}
-							break;
-						case 4:
-							FormApi::makeModalForm(function (Player $player, ?bool $bool) {
-								if (!FormApi::formCancelled($bool)) {
-									if ($bool) {
-										$level = $player->getLevel();
-										if ($level->getName() === "Survival") {
-											$player->sendMessage("§c既にSurvivalに居ます");
-										} else {
-											if ($level->getName() === "lobby") {
-												SurvivalCore::Teleport($player);
-												$player->setSpawn(new Position(225, 243, 256, $this->plugin->getServer()->getLevelByName("Survival")));
-												$player->sendMessage("§aテレポートしました。");
-											} else {
-												$player->sendMessage("§e10秒後テレポートします。");
-												$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportSurvivalTask($this->plugin, $player), 10 * 20);
-											}
-										}
-									}
-								}
-							})->setTitle("注意")
-								->setContent("このゲームのステージはかなり重くアプリがクラッシュする事があります。\nそれでも参加したい方は諦めずに参加を繰り返して下さい。")
-								->setButtonText(true, "俺の端末にクラッシュなんてねぇ")
-								->setButtonText(false, "いや俺の端末はクソだから...")
-								->sendToPlayer($player);
-							break;
-					}
+						})->setTitle("注意")
+							->setContent("このゲームのステージはかなり重くアプリがクラッシュする事があります。\nそれでも参加したい方は諦めずに参加を繰り返して下さい。")
+							->setButtonText(true, "俺の端末にクラッシュなんてねぇ")
+							->setButtonText(false, "いや俺の端末はクソだから...")
+							->sendToPlayer($player);
+						break;
 				}
 			})->setTitle("ゲーム選択")
 				->setContent("遊びたいゲームを選択してください")

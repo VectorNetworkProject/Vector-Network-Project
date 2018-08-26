@@ -1,7 +1,8 @@
 # Vector Network Project 
 [Lobi](https://web.lobi.co/game/minecraftpe/group/8393ee5ca22f6c38e436a5525efe3dbb38671042)
 <div>
-    <a href="https://discord.gg/EF2G5dh"><img src="https://discordapp.com/api/guilds/439355544063705088/embed.png" alt="Discord" /></a>
+    <a href="https://discord.gg/EF2G5dh"><img src="https://discordapp.com/api/guilds/439355544063705088/embed.png" alt="Discord" /></a>  
+	<a href="https://minecraftpocket-servers.com/server/79944/"><img src="https://minecraftpocket-servers.com/server/79944/banners/banner-1.png" border="0"></a>
 </div>
 
 ## 情報

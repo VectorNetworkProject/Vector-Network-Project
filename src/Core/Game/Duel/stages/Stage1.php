@@ -1,6 +1,8 @@
 <?php
 
-namespace Core\Game\Duel\stage;
+namespace Core\Game\Duel\stages;
+
+use pocketmine\math\Vector3;
 
 class Stage1 {
 

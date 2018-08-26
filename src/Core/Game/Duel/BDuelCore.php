@@ -83,7 +83,7 @@ class DuelCore
 	public function DuelQuit(Player $player)
 	{
 		$gameId = self::getGameIdByPlayer($player);
-		if ($gameId == null) return false;
+		if ($gameId == null) return;
 		if ($this->status[$gameId]) {
 			$this->endGame($player);
 		} else {

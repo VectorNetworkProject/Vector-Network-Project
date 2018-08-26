@@ -14,7 +14,7 @@ use Core\Main;
 use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\Teleport\TeleportDuelStageTask;
-use Core\Game\Duel\stage\Stage1;
+use Core\Game\Duel\stages\Stage1;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerQuitEvent;

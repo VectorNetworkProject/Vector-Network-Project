@@ -15,25 +15,17 @@ use Core\Player\Level;
 use Core\Player\MazaiPoint;
 use Core\Player\Money;
 use Core\Task\LevelCheckingTask;
-use pocketmine\entity\Entity;
-use pocketmine\entity\Skin;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\AddPlayerPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\PlayerListPacket;
-use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
-use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\Player;
-use pocketmine\utils\UUID;
 use tokyo\pmmp\libform\element\Button;
 use tokyo\pmmp\libform\FormApi;
 
 class MazaiMaster extends EntityBase
 {
-	private static $players = [];
 	private $money;
 	private $level;
 	private $mazai;

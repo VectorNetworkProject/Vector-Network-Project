@@ -70,44 +70,79 @@ class Main extends PluginBase
 	public static $instance;
 
 	/** @var string */
-	public static $datafolder;
+	public static $datafolder;	//TODO PluginBase::getDataFolder()はpublicになってるから必要ないかも
 
 	/** @var bool */
 	public static $isDev = true;
 
-	public function onLoad(): void
-	{
+	public function onLoad(): void {
 		self::$instance = $this;
 		$this->registerCommands();
 	}
 
-	protected function onEnable(): void
-	{
-		date_default_timezone_set("Asia/Tokyo");
-		self::$datafolder = $this->getDataFolder();
-		self::loadLevels();
-		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-		// TODO: $this->registerEvents();
-		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
-		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
-		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
-		$this->getScheduler()->scheduleRepeatingTask(new MOTDTip($this), 30 * 20);
-		$this->saveDefaultConfig();
-		foreach ($this->getServer()->getLevels() as $level) {
-			$level->setTime(6000);
-			$level->stopTime();
-		}
-		Tag::registerColors();
-		FormApi::register($this);
-		$this->getServer()->getCraftingManager()->registerRecipe(new ShapedRecipe([" A ", "BBB", "CCC"], ["A" => Item::get(Item::REDSTONE_TORCH, 0, 3), "B" => Item::get(Item::DIAMOND, 0, 1), "C" => Item::get(Item::WOODEN_PLANKS, 0, 1)], [Item::get(Item::BED, 0, 1)->setCustomName("§l§b綺麗なベット")]));
+	protected function onEnable(): void {
+		$this->init();
 		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオンラインになりました。**__");
 		$this->getLogger()->info(self::START_MESSAGE);
 	}
 
-	protected function onDisable(): void
-	{
+	protected function onDisable(): void {
 		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオフラインになりました。**__");
 		$this->getLogger()->info(TextFormat::RED . "Games_Coreを終了しました。");
+	}
+
+	private function init(): void {
+		date_default_timezone_set("Asia/Tokyo");
+		self::$datafolder = $this->getDataFolder();
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		// TODO: $this->registerEvents();
+		$this->saveDefaultConfig();
+		$this->loadLevels()->setLevelsTime()->runTasks()->registerRecipes();
+		Tag::registerColors();
+		FormApi::register($this);
+	}
+
+	private function setLevelsTime(): self {
+		foreach ($this->getServer()->getLevels() as $level) {
+			$level->setTime(6000);
+			$level->stopTime();
+		}
+
+		return $this;
+	}
+
+	private function runTasks(): self {
+		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
+		$this->getScheduler()->scheduleRepeatingTask(new MOTDTip($this), 30 * 20);
+
+		return $this;
+	}
+
+	private function registerRecipes(): self {
+		$recipes = [
+			"豪華なベッド" => new ShapedRecipe(
+				[
+					" A ",
+					"BBB",
+					"CCC"],
+				[
+					"A" => Item::get(Item::REDSTONE_TORCH, 0, 3),
+					"B" => Item::get(Item::DIAMOND, 0, 1),
+					"C" => Item::get(Item::WOODEN_PLANKS, 0, 1)
+				],
+				[
+					Item::get(Item::BED, 0, 1)->setCustomName("§l§b綺麗なベット")
+				]
+			)
+		];
+
+		foreach( $recipes as $recipe ) {
+			$this->getServer()->getCraftingManager()->registerRecipe( $recipe );
+		}
+
+		return $this;
 	}
 
 	private function loadLevels(): self

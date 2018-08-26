@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: PCink
+ * User: InkoHX
  * Date: 2018/08/22
  * Time: 13:10
  */
@@ -9,7 +9,6 @@
 namespace Core\Task\Teleport;
 
 
-use Core\Main;
 use Core\Task\PluginTask;
 use Core\Game\Duel\DuelCore;
 use pocketmine\plugin\Plugin;

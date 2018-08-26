@@ -25,6 +25,7 @@ use Core\Commands\selectgame;
 use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
+use Core\Discord\Discord;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -80,7 +81,7 @@ class Main extends PluginBase
 		$this->registerCommands();
 	}
 
-	public function onEnable(): void
+	protected function onEnable(): void
 	{
 		date_default_timezone_set("Asia/Tokyo");
 		self::$datafolder = $this->getDataFolder();
@@ -99,11 +100,13 @@ class Main extends PluginBase
 		Tag::registerColors();
 		FormApi::register($this);
 		$this->getServer()->getCraftingManager()->registerRecipe(new ShapedRecipe([" A ", "BBB", "CCC"], ["A" => Item::get(Item::REDSTONE_TORCH, 0, 3), "B" => Item::get(Item::DIAMOND, 0, 1), "C" => Item::get(Item::WOODEN_PLANKS, 0, 1)], [Item::get(Item::BED, 0, 1)->setCustomName("§l§b綺麗なベット")]));
+		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオンラインになりました。**__");
 		$this->getLogger()->info(self::START_MESSAGE);
 	}
 
-	public function onDisable(): void
+	protected function onDisable(): void
 	{
+		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオフラインになりました。**__");
 		$this->getLogger()->info(TextFormat::RED . "Games_Coreを終了しました。");
 	}
 

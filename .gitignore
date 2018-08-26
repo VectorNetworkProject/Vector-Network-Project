@@ -5,3 +5,6 @@
 /vendor/*
 composer.phar
 composer.lock
+
+# Config
+resources/WEBHOOK_URL

@@ -85,7 +85,7 @@ abstract class EntityBase
 	 */
 	public function Remove(Player $player, int $id): void
 	{
-		if (isset(self::$players[$player->getName()][$id])) {
+		if (isset(static::$players[$player->getName()][$id])) {
 			$eid = static::$players[$player->getName()][$id];
 			$removeEntityPacket = new RemoveEntityPacket();
 			$removeEntityPacket->entityUniqueId = $eid;

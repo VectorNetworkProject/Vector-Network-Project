@@ -70,7 +70,7 @@ class Main extends PluginBase
 	public static $instance;
 
 	/** @var string */
-	public static $datafolder;	//TODO PluginBase::getDataFolder()はpublicになってるから必要ないかも
+	public static $datafolder;    //TODO PluginBase::getDataFolder()はpublicになってるから必要ないかも
 
 	/** @var bool */
 	public static $isDev = true;
@@ -145,8 +145,8 @@ class Main extends PluginBase
 			)
 		];
 
-		foreach( $recipes as $recipe ) {
-			$this->getServer()->getCraftingManager()->registerRecipe( $recipe );
+		foreach ($recipes as $recipe) {
+			$this->getServer()->getCraftingManager()->registerRecipe($recipe);
 		}
 
 		return $this;

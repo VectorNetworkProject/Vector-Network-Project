@@ -25,6 +25,7 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 abstract class EntityBase
 {
 	protected static $players = [];
+
 	public function __construct()
 	{
 

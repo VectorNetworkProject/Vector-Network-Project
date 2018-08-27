@@ -48,6 +48,7 @@ class PlayerDeath implements Listener
 				$damager = $cause->getDamager();
 				if ($damager instanceof Player) {
 					$this->ffapvp->AddKillCount($damager);
+					$this->ffapvp->AddDeathCount($player);
 					$this->DeathMessage('ffapvp', $player->getName(), $damager->getName());
 					if ($damager->getMaxHealth() < 40) {
 						$damager->setMaxHealth($damager->getMaxHealth() + 1);
@@ -64,18 +65,20 @@ class PlayerDeath implements Listener
 				$damager = $cause->getDamager();
 				if ($damager instanceof Player) {
 					$this->speedcorepvp->AddKillCount($damager);
+					$this->speedcorepvp->addDeathCount($player);
 					$this->killsound->PlaySound($damager);
 					$this->DeathMessage('corepvp', $player->getName(), $damager->getName());
 				}
 			} else {
 				$this->DeathMessage('corepvp', $player->getName());
-				$this->speedcorepvp->AddDeathCount($player);
+				$this->speedcorepvp->addDeathCount($player);
 			}
 		} elseif ($player->getLevel()->getName() === "Survival") {
 			if ($cause instanceof EntityDamageByEntityEvent) {
 				$damager = $cause->getDamager();
 				if ($damager instanceof Player) {
 					$this->survival->AddKillCount($damager);
+					$this->survival->AddDeathCount($player);
 					$this->killsound->PlaySound($damager);
 					$this->DeathMessage("Survival", $player->getName(), $damager->getName());
 				}

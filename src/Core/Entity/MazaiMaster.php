@@ -40,7 +40,7 @@ class MazaiMaster extends EntityBase
 	/**
 	 * @param EntityLevelChangeEvent $event
 	 */
-	public function Check(EntityLevelChangeEvent $event)
+	public function Check(EntityLevelChangeEvent $event): void
 	{
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
@@ -52,7 +52,7 @@ class MazaiMaster extends EntityBase
 		}
 	}
 
-	public function ClickEntity(DataPacketReceiveEvent $event)
+	public function ClickEntity(DataPacketReceiveEvent $event): void
 	{
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();

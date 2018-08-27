@@ -35,7 +35,7 @@ class Mazai extends EntityBase
 	/**
 	 * @param EntityLevelChangeEvent $event
 	 */
-	public function Check(EntityLevelChangeEvent $event)
+	public function Check(EntityLevelChangeEvent $event): void
 	{
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
@@ -47,32 +47,49 @@ class Mazai extends EntityBase
 		}
 	}
 
-	public function ClickEntity(DataPacketReceiveEvent $event)
+	public function ClickEntity(DataPacketReceiveEvent $event) :void
 	{
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();
-		if ($packet instanceof InventoryTransactionPacket) {
-			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
-				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
-					FormApi::makeListForm(function (Player $player, ?int $key) {
-						if (!FormApi::formCancelled($key)) {
-							switch ($key) {
-								case 0:
-									if ($this->money->reduceMoney($player->getName(), 10000)) {
-										$player->sendMessage(MessagesEnum::BUY_SUCCESS);
-										$this->mazai->addMazai($player->getName(), 1);
-									} else {
-										$player->sendMessage(MessagesEnum::BUY_ERROR);
-									}
-									break;
+		if (!$packet instanceof InventoryTransactionPacket)
+		{
+			return;
+		}
+		if ($packet->transactionType !== $packet::TYPE_USE_ITEM_ON_ENTITY)
+		{
+			return;
+		}
+
+		if ($packet->trData->entityRuntimeId === self::getEid($player))
+		{
+			FormApi::makeListForm
+			(
+				function (Player $player, ?int $key)
+				{
+					if (FormApi::formCancelled($key))
+					{
+						return;
+					}
+
+					switch ($key)
+					{
+						case 0:
+							if ($this->money->reduceMoney($player->getName(), 10000))
+							{
+								$player->sendMessage(MessagesEnum::BUY_SUCCESS);
+								$this->mazai->addMazai($player->getName(), 1);
 							}
-						}
-					})->setTitle("§a魔剤さんの§e変換所")
-						->setContent("§6V§bN§eCoin§rを§aMAZAI§rにします。")
-						->addButton(new Button("§e1§aMAZAI\n§e10000§6V§bN§eCoin"))
-						->sendToPlayer($player);
+							else
+							{
+								$player->sendMessage(MessagesEnum::BUY_ERROR);
+							}
+							break;
+					}
 				}
-			}
+			)->setTitle("§a魔剤さんの§e変換所")
+			->setContent("§6V§bN§eCoin§rを§aMAZAI§rにします。")
+			->addButton(new Button("§e1§aMAZAI\n§e10000§6V§bN§eCoin"))
+			->sendToPlayer($player);
 		}
 	}
 }

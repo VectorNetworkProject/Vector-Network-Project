@@ -21,6 +21,7 @@ use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 
+//NOTICE NPCクラスを継承元にしたほうが使いやすいと思う
 abstract class EntityBase
 {
 	protected static $players = [];
@@ -37,7 +38,7 @@ abstract class EntityBase
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0)
+	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0): void
 	{
 		$addPlayerPacket = new AddPlayerPacket();
 		$addPlayerPacket->uuid = ($uuid = UUID::fromRandom());
@@ -78,7 +79,7 @@ abstract class EntityBase
 	/**
 	 * @param Player $player
 	 */
-	public function Remove(Player $player)
+	public function Remove(Player $player): void
 	{
 		if (isset(self::$players[$player->getName()])) {
 			$eid = static::$players[$player->getName()];
@@ -108,11 +109,11 @@ abstract class EntityBase
 	 * @param EntityLevelChangeEvent $event
 	 * @return mixed
 	 */
-	abstract public function Check(EntityLevelChangeEvent $event);
+	abstract public function Check(EntityLevelChangeEvent $event): void;
 
 	/**
 	 * @param DataPacketReceiveEvent $event
 	 * @return mixed
 	 */
-	abstract public function ClickEntity(DataPacketReceiveEvent $event);
+	abstract public function ClickEntity(DataPacketReceiveEvent $event): void;
 }

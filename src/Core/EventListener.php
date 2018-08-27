@@ -111,9 +111,9 @@ class EventListener implements Listener
 	{
 		$this->playerjoinevent->event($event);
 		$player = $event->getPlayer();
-		$this->mazainpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
-		$this->gamemasternpc->Create($player, "§aGame§7Master", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
-		$this->mazaimasternpc->Create($player, "§a魔剤§7マスター", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
+		$this->mazainpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
+		$this->gamemasternpc->Create($player, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
+		$this->mazaimasternpc->Create($player, "§a魔剤§7マスター", "MazaiNPC", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1));
 	}
 
 	public function onQuit(PlayerQuitEvent $event)

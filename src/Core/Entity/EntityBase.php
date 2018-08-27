@@ -37,10 +37,11 @@ abstract class EntityBase
 	 * @param string $skin
 	 * @param Vector3 $pos
 	 * @param Item $item
+	 * @param int $id
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username, string $skin, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0): void
+	public function Create(Player $player, string $username, string $skin, Vector3 $pos, Item $item, int $id, int $yaw = 0, int $headyaw = 0): void
 	{
 		$addPlayerPacket = new AddPlayerPacket();
 		$addPlayerPacket->uuid = ($uuid = UUID::fromRandom());
@@ -74,33 +75,34 @@ abstract class EntityBase
 			$playerListPacket->type = $type;
 			$player->sendDataPacket($playerListPacket);
 		}
-		static::$players[$player->getName()] = $eid;
+		static::$players[$player->getName()][$id] = $eid;
 	}
 
 
 	/**
 	 * @param Player $player
+	 * @param int $id
 	 */
-	public function Remove(Player $player): void
+	public function Remove(Player $player, int $id): void
 	{
-		if (isset(self::$players[$player->getName()])) {
-			$eid = static::$players[$player->getName()];
+		if (isset(self::$players[$player->getName()][$id])) {
+			$eid = static::$players[$player->getName()][$id];
 			$removeEntityPacket = new RemoveEntityPacket();
 			$removeEntityPacket->entityUniqueId = $eid;
 			$player->sendDataPacket($removeEntityPacket);
-			unset(static::$players[$player->getName()]);
+			unset(static::$players[$player->getName()][$id]);
 		}
 	}
 
-
 	/**
 	 * @param Player $player
+	 * @param int $id
 	 * @return int
 	 */
-	public static function getEid(Player $player): int
+	public static function getEid(Player $player, int $id): int
 	{
-		if (isset(static::$players[$player->getName()])) {
-			$eid = static::$players[$player->getName()];
+		if (isset(static::$players[$player->getName()][$id])) {
+			$eid = static::$players[$player->getName()][$id];
 			return $eid;
 		} else {
 			return 0;

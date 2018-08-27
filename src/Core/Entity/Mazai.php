@@ -23,6 +23,8 @@ use tokyo\pmmp\libform\FormApi;
 
 class Mazai extends EntityBase
 {
+	const ENTITY_ID = 2;
+
 	private $money;
 	private $mazai;
 
@@ -40,9 +42,9 @@ class Mazai extends EntityBase
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
 			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
+				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1), self::ENTITY_ID);
 			} else {
-				$this->Remove($entity);
+				$this->Remove($entity, self::ENTITY_ID);
 			}
 		}
 	}
@@ -53,7 +55,7 @@ class Mazai extends EntityBase
 		$player = $event->getPlayer();
 		if ($packet instanceof InventoryTransactionPacket) {
 			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
-				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
+				if ($packet->trData->entityRuntimeId === self::getEid($player, self::ENTITY_ID)) {
 					FormApi::makeListForm(function (Player $player, ?int $key) {
 						if (!FormApi::formCancelled($key)) {
 							switch ($key) {

@@ -26,6 +26,8 @@ use tokyo\pmmp\libform\FormApi;
 
 class GameMaster extends EntityBase
 {
+	const ENTITY_ID = 1;
+
 	protected $plugin;
 
 	public function __construct(Main $plugin)
@@ -41,9 +43,9 @@ class GameMaster extends EntityBase
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
 			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1));
+				$this->Create($entity, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1), self::ENTITY_ID);
 			} else {
-				$this->Remove($entity);
+				$this->Remove($entity, self::ENTITY_ID);
 			}
 		}
 	}
@@ -54,7 +56,7 @@ class GameMaster extends EntityBase
 		$player = $event->getPlayer();
 		if ($packet instanceof InventoryTransactionPacket) {
 			if ($packet->transactionType === $packet::TYPE_USE_ITEM_ON_ENTITY) {
-				if ($packet->trData->entityRuntimeId === self::getEid($player)) {
+				if ($packet->trData->entityRuntimeId === self::getEid($player, self::ENTITY_ID)) {
 					FormApi::makeListForm(function (Player $player, ?int $key) {
 						if (!FormApi::formCancelled($key)) {
 							$level = $player->getLevel();

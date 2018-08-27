@@ -33,12 +33,13 @@ abstract class EntityBase
 	/**
 	 * @param Player $player
 	 * @param string $username
+	 * @param string $skin
 	 * @param Vector3 $pos
 	 * @param Item $item
 	 * @param int $yaw
 	 * @param int $headyaw
 	 */
-	public function Create(Player $player, string $username, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0): void
+	public function Create(Player $player, string $username, string $skin, Vector3 $pos, Item $item, int $yaw = 0, int $headyaw = 0): void
 	{
 		$addPlayerPacket = new AddPlayerPacket();
 		$addPlayerPacket->uuid = ($uuid = UUID::fromRandom());
@@ -67,7 +68,7 @@ abstract class EntityBase
 				"",
 				"",
 				0,
-				new Skin("Standard_Custom", base64_decode(file_get_contents("plugins/Games_Core/resources/skins/GameMaster")))
+				new Skin("Standard_Custom", base64_decode(file_get_contents("plugins/Games_Core/resources/skins/$skin")))
 			);
 			$playerListPacket->type = $type;
 			$player->sendDataPacket($playerListPacket);

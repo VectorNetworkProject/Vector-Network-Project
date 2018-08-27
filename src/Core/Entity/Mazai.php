@@ -40,56 +40,45 @@ class Mazai extends EntityBase
 		$entity = $event->getEntity();
 		if ($entity instanceof Player) {
 			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
+				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1));
 			} else {
 				$this->Remove($entity);
 			}
 		}
 	}
 
-	public function ClickEntity(DataPacketReceiveEvent $event) :void
+	public function ClickEntity(DataPacketReceiveEvent $event): void
 	{
 		$packet = $event->getPacket();
 		$player = $event->getPlayer();
-		if (!$packet instanceof InventoryTransactionPacket)
-		{
+		if (!$packet instanceof InventoryTransactionPacket) {
 			return;
 		}
-		if ($packet->transactionType !== $packet::TYPE_USE_ITEM_ON_ENTITY)
-		{
+		if ($packet->transactionType !== $packet::TYPE_USE_ITEM_ON_ENTITY) {
 			return;
 		}
-
-		if ($packet->trData->entityRuntimeId === self::getEid($player))
-		{
+		if ($packet->trData->entityRuntimeId === self::getEid($player)) {
 			FormApi::makeListForm
 			(
-				function (Player $player, ?int $key)
-				{
-					if (FormApi::formCancelled($key))
-					{
+				function (Player $player, ?int $key) {
+					if (FormApi::formCancelled($key)) {
 						return;
 					}
-
-					switch ($key)
-					{
+					switch ($key) {
 						case 0:
-							if ($this->money->reduceMoney($player->getName(), 10000))
-							{
+							if ($this->money->reduceMoney($player->getName(), 10000)) {
 								$player->sendMessage(MessagesEnum::BUY_SUCCESS);
 								$this->mazai->addMazai($player->getName(), 1);
-							}
-							else
-							{
+							} else {
 								$player->sendMessage(MessagesEnum::BUY_ERROR);
 							}
 							break;
 					}
 				}
 			)->setTitle("§a魔剤さんの§e変換所")
-			->setContent("§6V§bN§eCoin§rを§aMAZAI§rにします。")
-			->addButton(new Button("§e1§aMAZAI\n§e10000§6V§bN§eCoin"))
-			->sendToPlayer($player);
+				->setContent("§6V§bN§eCoin§rを§aMAZAI§rにします。")
+				->addButton(new Button("§e1§aMAZAI\n§e10000§6V§bN§eCoin"))
+				->sendToPlayer($player);
 		}
 	}
 }

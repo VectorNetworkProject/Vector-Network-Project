@@ -122,9 +122,9 @@ class EventListener implements Listener
 		$player = $event->getPlayer();
 		$this->speedcorepvp->GameQuit($player);
 		$this->survival->SaveData($event);
-		$this->mazainpc->Remove($player);
-		$this->gamemasternpc->Remove($player);
-		$this->mazaimasternpc->Remove($player);
+		$this->mazainpc->Remove($player, Mazai::ENTITY_ID);
+		$this->gamemasternpc->Remove($player, GameMaster::ENTITY_ID);
+		$this->mazaimasternpc->Remove($player, MazaiMaster::ENTITY_ID);
 		// $this->athletic->onQuit($event);
 	}
 

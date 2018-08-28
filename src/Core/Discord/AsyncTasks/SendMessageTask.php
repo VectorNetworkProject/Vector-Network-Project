@@ -32,6 +32,6 @@ class SendMessageTask extends AsyncTask
 
 	public function onRun()
 	{
-		Internet::postURL(Discord::getWebhook(), ["content" => self::$message, "username" => self::$username, "avatar_url" => self::$avatarurl]);
+		Internet::postURL(Discord::getWebhook(), json_encode(["content" => self::$message, "username" => self::$username, "avatar_url" => self::$avatarurl]));
 	}
 }

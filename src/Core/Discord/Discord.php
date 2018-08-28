@@ -29,11 +29,12 @@ class Discord
 	/**
 	 * @param string $status
 	 * @param string $message
+	 * @param int $color
 	 * @param string $username
 	 */
-	public static function SendEmbed(string $status, string $message, string $username = "Vector Network")
+	public static function SendEmbed(string $status, string $message, int $color, string $username = "Vector Network")
 	{
-		Main::$instance->getServer()->getAsyncPool()->submitTask(new SendEmbedTask($status, $message, $username));
+		Main::$instance->getServer()->getAsyncPool()->submitTask(new SendEmbedTask($status, $message, $username, $color));
 	}
 
 	/**

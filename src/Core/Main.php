@@ -84,13 +84,13 @@ class Main extends PluginBase
 	protected function onEnable(): void
 	{
 		$this->init();
-		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオンラインになりました。**__");
+		Discord::SendEmbed("ONLINE", "サーバーがオンラインになりました。", 65280);
 		$this->getLogger()->info(self::START_MESSAGE);
 	}
 
 	protected function onDisable(): void
 	{
-		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオフラインになりました。**__");
+		Discord::SendEmbed("OFFLINE", "サーバーがオフラインになりました。", 16711680);
 		$this->getLogger()->info(TextFormat::RED . "Games_Coreを終了しました。");
 	}
 

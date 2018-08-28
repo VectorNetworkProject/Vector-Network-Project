@@ -18,6 +18,16 @@ class SendEmbed extends Thread
 
 	protected static $webhook, $title, $field, $value, $username, $color, $avatarurl;
 
+	/**
+	 * SendEmbed constructor.
+	 * @param string $webhook
+	 * @param string $title
+	 * @param string $field
+	 * @param string $value
+	 * @param int $color
+	 * @param string $username
+	 * @param string $avatarurl
+	 */
 	public function __construct(string $webhook, string $title, string $field, string $value, int $color = 16777215, string $username = "Vector Network", string $avatarurl = Discord::AVATAR_URL)
 	{
 		self::$webhook = $webhook;
@@ -31,6 +41,12 @@ class SendEmbed extends Thread
 
 	public function run()
 	{
+		/**
+		 * @param string $webhook
+		 * @param $data
+		 * @param callable|null $onSuccess
+		 * @return array
+		 */
 		function post(string $webhook, $data, callable $onSuccess = null)
 		{
 			$ch = curl_init($webhook);

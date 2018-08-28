@@ -8,10 +8,8 @@
 
 namespace Core\Discord;
 
-
-use Core\Discord\AsyncTasks\SendEmbedTask;
-use Core\Discord\AsyncTasks\SendMessageTask;
-use Core\Main;
+use Core\Discord\Threads\SendEmbed;
+use Core\Discord\Threads\SendMessage;
 
 class Discord
 {
@@ -19,21 +17,16 @@ class Discord
 
 	/**
 	 * @param string $message
-	 * @param string $usename
 	 */
-	public static function SendMessage(string $message, string $usename = "Vector Network")
+	public static function SendMessage(string $message)
 	{
-		Main::$instance->getServer()->getAsyncPool()->submitTask(new SendMessageTask($message, $usename));
+		$send = new SendMessage(self::getWebhook(), $message);
 	}
 
-	/**
-	 * @param string $status
-	 * @param string $message
-	 * @param string $username
-	 */
-	public static function SendEmbed(string $status, string $message, string $username = "Vector Network")
+	public static function SendEmbed(string $title, string $field, string $value, int $color = 16777215)
 	{
-		Main::$instance->getServer()->getAsyncPool()->submitTask(new SendEmbedTask($status, $message, $username));
+		$send = new SendEmbed(self::getWebhook(), $title, $field, $value, $color);
+		$send->start();
 	}
 
 	/**

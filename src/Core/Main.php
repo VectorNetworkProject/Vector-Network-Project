@@ -26,6 +26,7 @@ use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Discord\Discord;
+use Core\Discord\Threads\SendEmbed;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -70,28 +71,32 @@ class Main extends PluginBase
 	public static $instance;
 
 	/** @var string */
-	public static $datafolder;	//TODO PluginBase::getDataFolder()はpublicになってるから必要ないかも
+	public static $datafolder;    //TODO PluginBase::getDataFolder()はpublicになってるから必要ないかも
 
 	/** @var bool */
 	public static $isDev = true;
 
-	public function onLoad(): void {
+	public function onLoad(): void
+	{
 		self::$instance = $this;
 		$this->registerCommands();
 	}
 
-	protected function onEnable(): void {
+	protected function onEnable(): void
+	{
 		$this->init();
-		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオンラインになりました。**__");
 		$this->getLogger()->info(self::START_MESSAGE);
+		Discord::SendEmbed("SERVER STATUS", "ONLINE", "サーバーがオンラインになりました。", 65280);
 	}
 
-	protected function onDisable(): void {
-		Discord::SendMessage("**<SERVER STATUS>** __**サーバーがオフラインになりました。**__");
+	protected function onDisable(): void
+	{
+		Discord::SendEmbed("SERVER STATUS", "OFFLINE", "サーバーがオフラインになりました。", 16711680);
 		$this->getLogger()->info(TextFormat::RED . "Games_Coreを終了しました。");
 	}
 
-	private function init(): void {
+	private function init(): void
+	{
 		date_default_timezone_set("Asia/Tokyo");
 		self::$datafolder = $this->getDataFolder();
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -102,7 +107,8 @@ class Main extends PluginBase
 		FormApi::register($this);
 	}
 
-	private function setLevelsTime(): self {
+	private function setLevelsTime(): self
+	{
 		foreach ($this->getServer()->getLevels() as $level) {
 			$level->setTime(6000);
 			$level->stopTime();
@@ -111,7 +117,8 @@ class Main extends PluginBase
 		return $this;
 	}
 
-	private function runTasks(): self {
+	private function runTasks(): self
+	{
 		$this->getScheduler()->scheduleRepeatingTask(new Tip($this), 180 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new AutoSavingTask($this), 10 * 20);
 		$this->getScheduler()->scheduleRepeatingTask(new RemoveItemTask($this), 30 * 20);
@@ -120,7 +127,8 @@ class Main extends PluginBase
 		return $this;
 	}
 
-	private function registerRecipes(): self {
+	private function registerRecipes(): self
+	{
 		$recipes = [
 			"豪華なベッド" => new ShapedRecipe(
 				[
@@ -138,8 +146,8 @@ class Main extends PluginBase
 			)
 		];
 
-		foreach( $recipes as $recipe ) {
-			$this->getServer()->getCraftingManager()->registerRecipe( $recipe );
+		foreach ($recipes as $recipe) {
+			$this->getServer()->getCraftingManager()->registerRecipe($recipe);
 		}
 
 		return $this;

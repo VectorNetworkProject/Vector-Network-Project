@@ -36,15 +36,18 @@ class Npc extends PluginCommand
 		}
 		switch(strtolower($args[0])) {
 			case "gamemaster":
-				$this->factory->createGameMaster();
+				$npc = $this->factory->createGameMaster();
+				$npc->level->addEntity($npc);
 				$sender->sendMessage("配置しました");
 				break;
 			case "mazai":
-				$this->factory->createMazai();
+				$npc = $this->factory->createMazai();
+				$npc->level->addEntity($npc);
 				$sender->sendMessage("配置しました");
 				break;
 			case "mazaimaster":
-				$this->factory->createMazaiMaster();
+				$npc = $this->factory->createMazaiMaster();
+				$npc->level->addEntity($npc);
 				$sender->sendMessage("配置しました");
 				break;
 			default:

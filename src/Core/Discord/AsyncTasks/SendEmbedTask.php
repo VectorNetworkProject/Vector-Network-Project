@@ -34,6 +34,6 @@ class SendEmbedTask extends AsyncTask
 
 	public function onRun()
 	{
-		Internet::postURL(Discord::getWebhook(), ["embeds" => [["title" => "ステータスメッセージ", "type" => "rich","fields" => [["name" => self::$status,"value" => self::$message,"inline" => false]],"footer" => ["text" => "Developed by VectorNetworkProject","icon_url" => "https://avatars2.githubusercontent.com/u/41660146?s=200&v=4"]]]]);
+        Internet::postURL(Discord::getWebhook(), ["embeds" => [["title" => "ステータスメッセージ", "type" => "rich","fields" => [["name" => self::$status,"value" => self::$message,"inline" => false]],"footer" => ["text" => "Developed by VectorNetworkProject","icon_url" => "https://avatars2.githubusercontent.com/u/41660146?s=200&v=4"]]]]);
 	}
 }

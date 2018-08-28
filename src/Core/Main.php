@@ -26,6 +26,7 @@ use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Discord\Discord;
+use Core\Entity\VectorNPC;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -46,6 +47,7 @@ use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
+use pocketmine\entity\Entity;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\item\Item;
 use pocketmine\plugin\PluginBase;
@@ -101,7 +103,7 @@ class Main extends PluginBase
 		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 		// TODO: $this->registerEvents();
 		$this->saveDefaultConfig();
-		$this->loadLevels()->setLevelsTime()->runTasks()->registerRecipes();
+		$this->loadLevels()->setLevelsTime()->runTasks()->registerRecipes()->registerEntites();
 		Tag::registerColors();
 		FormApi::register($this);
 	}
@@ -149,6 +151,12 @@ class Main extends PluginBase
 			$this->getServer()->getCraftingManager()->registerRecipe($recipe);
 		}
 
+		return $this;
+	}
+
+	private function registerEntites(): self
+	{
+		Entity::registerEntity(VectorNPC::class, true);
 		return $this;
 	}
 

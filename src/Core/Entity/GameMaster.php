@@ -24,7 +24,7 @@ use pocketmine\Player;
 use tokyo\pmmp\libform\element\Button;
 use tokyo\pmmp\libform\FormApi;
 
-class GameMaster extends EntityBase
+class GameMaster extends VectorNPC
 {
 	const ENTITY_ID = 1;
 

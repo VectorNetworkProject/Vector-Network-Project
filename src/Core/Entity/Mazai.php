@@ -21,7 +21,7 @@ use pocketmine\Player;
 use tokyo\pmmp\libform\element\Button;
 use tokyo\pmmp\libform\FormApi;
 
-class Mazai extends EntityBase
+class Mazai extends VectorNPC
 {
 	const ENTITY_ID = 2;
 

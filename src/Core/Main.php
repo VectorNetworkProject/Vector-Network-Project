@@ -26,6 +26,7 @@ use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Discord\Discord;
+use Core\Discord\Threads\SendEmbed;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -84,13 +85,13 @@ class Main extends PluginBase
 	protected function onEnable(): void
 	{
 		$this->init();
-		Discord::SendEmbed("ONLINE", "サーバーがオンラインになりました。", 65280);
 		$this->getLogger()->info(self::START_MESSAGE);
+		Discord::SendEmbed("SERVER STATUS", "ONLINE", "サーバーがオンラインになりました。", 65280);
 	}
 
 	protected function onDisable(): void
 	{
-		Discord::SendEmbed("OFFLINE", "サーバーがオフラインになりました。", 16711680);
+		Discord::SendEmbed("SERVER STATUS", "OFFLINE", "サーバーがオフラインになりました。", 16711680);
 		$this->getLogger()->info(TextFormat::RED . "Games_Coreを終了しました。");
 	}
 

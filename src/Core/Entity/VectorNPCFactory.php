@@ -62,7 +62,7 @@ class VectorNPCFactory
 							case 0:
 								if ($mazaiMaster->getMazai()->reduceMazai($player->getName(), 1)) {
 									$player->sendMessage(MessagesEnum::MAZAI_SUCCESS);
-									$mazaiMaster->level->addExp($player->getName(), 300);
+									$mazaiMaster->getVLevel()->addExp($player->getName(), 300);
 									Main::$instance->getScheduler()->scheduleDelayedTask(new LevelCheckingTask(Main::$instance, $player), 20);
 								} else {
 									$player->sendMessage(MessagesEnum::MAZAI_ERROR);
@@ -71,7 +71,7 @@ class VectorNPCFactory
 							case 1:
 								if ($mazaiMaster->getMazai()->reduceMazai($player->getName(), 1)) {
 									$player->sendMessage(MessagesEnum::MAZAI_SUCCESS);
-									$mazaiMaster->getMazai()->addMoney($player->getName(), 10000);
+									$mazaiMaster->getMoney()->addMoney($player->getName(), 10000);
 								} else {
 									$player->sendMessage(MessagesEnum::MAZAI_ERROR);
 								}

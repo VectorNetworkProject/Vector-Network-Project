@@ -15,6 +15,7 @@ use pocketmine\entity\NPC;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\level\Level;
+use Core\Player\Level as VLevel;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
@@ -31,7 +32,7 @@ class VectorNPC extends Human implements NPC
 	{
 		parent::__construct($level, $nbt);
 		$this->money = new Money();
-		$this->vLevel = new \Core\Player\Level();
+		$this->vLevel = new VLevel();
 		$this->mazai = new MazaiPoint();
 	}
 
@@ -59,7 +60,7 @@ class VectorNPC extends Human implements NPC
 	/**
 	 * @return \Core\Player\Level
 	 */
-	public function getVLevel(): \Core\Player\Level
+	public function getVLevel(): VLevel
 	{
 		return $this->vLevel;
 	}

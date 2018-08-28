@@ -32,6 +32,11 @@ class VectorNPCFactory
 {
 	/** @var Main */
 	private $plugin;
+	public function __construct(Main $plugin)
+	{
+		$this->plugin = $plugin;
+	}
+
 	public function createGameMaster(): VectorNPC
 	{
 		if (($level = Server::getInstance()->getLevelByName("lobby")) === null )

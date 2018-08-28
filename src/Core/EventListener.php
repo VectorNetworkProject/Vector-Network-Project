@@ -8,9 +8,7 @@
 
 namespace Core;
 
-use Core\Entity\GameMaster;
-use Core\Entity\Mazai;
-use Core\Entity\MazaiMaster;
+use Core\Entity\VectorNPC\VectorNPCFactory;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -50,9 +48,6 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
-use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\item\Item;
-use pocketmine\math\Vector3;
 
 class EventListener implements Listener
 {
@@ -79,6 +74,7 @@ class EventListener implements Listener
 	protected $entityinventorychange;
 	protected $entityshootbowevent;
 	protected $playerexhaustevent;
+	protected $vectorNpcFactory;
 
 	public function __construct(Main $plugin)
 	{
@@ -87,9 +83,6 @@ class EventListener implements Listener
 		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
 		$this->athletic = new AthleticCore();
 		$this->survival = new SurvivalCore($this->plugin);
-		$this->mazainpc = new Mazai();
-		$this->gamemasternpc = new GameMaster($this->plugin);
-		$this->mazaimasternpc = new MazaiMaster();
 		$this->playerjoinevent = new PlayerJoin($this->plugin);
 		$this->playerquitevent = new PlayerQuit($this->plugin);
 		$this->playerloginevent = new PlayerLogin($this->plugin);
@@ -105,15 +98,14 @@ class EventListener implements Listener
 		$this->entityinventorychange = new EntityInventoryChange($this->plugin);
 		$this->entityshootbowevent = new EntityShootBow($this->plugin);
 		$this->playerexhaustevent = new PlayerExhaust($this->plugin);
+		$this->vectorNpcFactory = new VectorNPCFactory($this->plugin);
+
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
 	{
 		$this->playerjoinevent->event($event);
-		$player = $event->getPlayer();
-		$this->mazainpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1), Mazai::ENTITY_ID);
-		$this->gamemasternpc->Create($player, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1), GameMaster::ENTITY_ID);
-		$this->mazaimasternpc->Create($player, "§a魔剤§7マスター", "MazaiNPC", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1), MazaiMaster::ENTITY_ID);
+
 	}
 
 	public function onQuit(PlayerQuitEvent $event)
@@ -122,9 +114,6 @@ class EventListener implements Listener
 		$player = $event->getPlayer();
 		$this->speedcorepvp->GameQuit($player);
 		$this->survival->SaveData($event);
-		$this->mazainpc->Remove($player, Mazai::ENTITY_ID);
-		$this->gamemasternpc->Remove($player, GameMaster::ENTITY_ID);
-		$this->mazaimasternpc->Remove($player, MazaiMaster::ENTITY_ID);
 		// $this->athletic->onQuit($event);
 	}
 
@@ -138,7 +127,7 @@ class EventListener implements Listener
 		$this->playerdeathevent->event($event);
 	}
 
-	public function pnPreLogin(PlayerPreLoginEvent $event)
+	public function onPreLogin(PlayerPreLoginEvent $event)
 	{
 		$this->playerprelogin->event($event);
 	}
@@ -206,9 +195,6 @@ class EventListener implements Listener
 	{
 		$this->speedcorepvp->LevelChange($event);
 		$this->survival->LoadData($event);
-		$this->mazainpc->Check($event);
-		$this->gamemasternpc->Check($event);
-		$this->mazaimasternpc->Check($event);
 	}
 
 	public function onChat(PlayerChatEvent $event)

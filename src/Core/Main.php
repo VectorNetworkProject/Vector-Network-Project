@@ -19,6 +19,7 @@ use Core\Commands\adtag;
 use Core\Commands\debug;
 use Core\Commands\gamestatus;
 use Core\Commands\killsound;
+use Core\Commands\Npc;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
 use Core\Commands\selectgame;
@@ -174,6 +175,7 @@ class Main extends PluginBase
 	private function registerCommands(): self
 	{
 		$commands = [
+			new Npc($this),
 			new ping($this),
 			new stats($this),
 			new rankshop($this),

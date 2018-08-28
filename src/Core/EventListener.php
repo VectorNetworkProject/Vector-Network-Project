@@ -8,7 +8,9 @@
 
 namespace Core;
 
-use Core\Entity\VectorNPC\VectorNPCFactory;
+use Core\Entity\GameMaster;
+use Core\Entity\Mazai;
+use Core\Entity\MazaiMaster;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -48,6 +50,9 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\item\Item;
+use pocketmine\math\Vector3;
 
 class EventListener implements Listener
 {
@@ -56,9 +61,6 @@ class EventListener implements Listener
 	protected $speedcorepvp;
 	protected $athletic;
 	protected $survival;
-	protected $mazainpc;
-	protected $gamemasternpc;
-	protected $mazaimasternpc;
 	protected $playerjoinevent;
 	protected $playerquitevent;
 	protected $playerloginevent;
@@ -74,7 +76,6 @@ class EventListener implements Listener
 	protected $entityinventorychange;
 	protected $entityshootbowevent;
 	protected $playerexhaustevent;
-	protected $vectorNpcFactory;
 
 	public function __construct(Main $plugin)
 	{
@@ -98,14 +99,11 @@ class EventListener implements Listener
 		$this->entityinventorychange = new EntityInventoryChange($this->plugin);
 		$this->entityshootbowevent = new EntityShootBow($this->plugin);
 		$this->playerexhaustevent = new PlayerExhaust($this->plugin);
-		$this->vectorNpcFactory = new VectorNPCFactory($this->plugin);
-
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
 	{
 		$this->playerjoinevent->event($event);
-
 	}
 
 	public function onQuit(PlayerQuitEvent $event)
@@ -127,7 +125,7 @@ class EventListener implements Listener
 		$this->playerdeathevent->event($event);
 	}
 
-	public function onPreLogin(PlayerPreLoginEvent $event)
+	public function pnPreLogin(PlayerPreLoginEvent $event)
 	{
 		$this->playerprelogin->event($event);
 	}

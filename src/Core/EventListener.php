@@ -7,10 +7,6 @@
  */
 
 namespace Core;
-
-use Core\Entity\GameMaster;
-use Core\Entity\Mazai;
-use Core\Entity\MazaiMaster;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -50,9 +46,6 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
-use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\item\Item;
-use pocketmine\math\Vector3;
 
 class EventListener implements Listener
 {

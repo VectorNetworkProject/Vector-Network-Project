@@ -2,6 +2,7 @@
 branches:
 - master
 - dev/adjustment
+- develop
 projects:
   Games_Core:
     path: ""

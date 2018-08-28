@@ -8,6 +8,10 @@
 
 namespace Core\Entity;
 
+use pocketmine\entity\Human;
+use pocketmine\entity\NPC;
+use pocketmine\level\Level;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 use pocketmine\math\Vector3;
 use pocketmine\item\Item;
@@ -17,18 +21,15 @@ use pocketmine\entity\Entity;
 use pocketmine\network\mcpe\protocol\PlayerListPacket;
 use pocketmine\network\mcpe\protocol\types\PlayerListEntry;
 use pocketmine\entity\Skin;
-use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
-use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 
-//NOTICE NPCクラスを継承元にしたほうが使いやすいと思う
-abstract class EntityBase
+abstract class VectorNPC extends Human implements NPC
 {
 	protected static $players = [];
 
-	public function __construct()
+	public function __construct(Level $level, CompoundTag $nbt)
 	{
-
+		parent::__construct($level, $nbt);
 	}
 
 	/**
@@ -77,43 +78,6 @@ abstract class EntityBase
 		}
 		static::$players[$player->getName()][$id] = $eid;
 	}
-
-
-	/**
-	 * @param Player $player
-	 * @param int $id
-	 */
-	public function Remove(Player $player, int $id): void
-	{
-		if (isset(static::$players[$player->getName()][$id])) {
-			$eid = static::$players[$player->getName()][$id];
-			$removeEntityPacket = new RemoveEntityPacket();
-			$removeEntityPacket->entityUniqueId = $eid;
-			$player->sendDataPacket($removeEntityPacket);
-			unset(static::$players[$player->getName()][$id]);
-		}
-	}
-
-	/**
-	 * @param Player $player
-	 * @param int $id
-	 * @return int
-	 */
-	public static function getEid(Player $player, int $id): int
-	{
-		if (isset(static::$players[$player->getName()][$id])) {
-			$eid = static::$players[$player->getName()][$id];
-			return $eid;
-		} else {
-			return 0;
-		}
-	}
-
-	/**
-	 * @param EntityLevelChangeEvent $event
-	 * @return mixed
-	 */
-	abstract public function Check(EntityLevelChangeEvent $event): void;
 
 	/**
 	 * @param DataPacketReceiveEvent $event

@@ -6,7 +6,7 @@
  * Time: 0:07
  */
 
-namespace Core\Entity;
+namespace Core\Entity\VectorNPC;
 
 use Core\Player\MazaiPoint;
 use Core\Player\Money;
@@ -71,7 +71,8 @@ class VectorNPC extends Human implements NPC
 			parent::attack($source);
 		} else {
 			if (($player = $source->getEntity()) instanceof Player) {
-				$this->callable( $source->getEntity() );
+				$callable = $this->callable;
+				$callable( $player );
 			}
 		}
 	}

@@ -34,21 +34,6 @@ class Mazai extends VectorNPC
 		$this->mazai = new MazaiPoint();
 	}
 
-	/**
-	 * @param EntityLevelChangeEvent $event
-	 */
-	public function Check(EntityLevelChangeEvent $event): void
-	{
-		$entity = $event->getEntity();
-		if ($entity instanceof Player) {
-			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1), self::ENTITY_ID);
-			} else {
-				$this->Remove($entity, self::ENTITY_ID);
-			}
-		}
-	}
-
 	public function ClickEntity(DataPacketReceiveEvent $event): void
 	{
 		$packet = $event->getPacket();

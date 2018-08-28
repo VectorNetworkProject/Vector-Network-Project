@@ -138,13 +138,6 @@ class EventListener implements Listener
 		$this->playerdeathevent->event($event);
 	}
 
-	public function onReceive(DataPacketReceiveEvent $event)
-	{
-		$this->mazainpc->ClickEntity($event);
-		$this->gamemasternpc->ClickEntity($event);
-		$this->mazaimasternpc->ClickEntity($event);
-	}
-
 	public function pnPreLogin(PlayerPreLoginEvent $event)
 	{
 		$this->playerprelogin->event($event);

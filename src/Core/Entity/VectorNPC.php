@@ -8,20 +8,31 @@
 
 namespace Core\Entity;
 
+use Core\Player\MazaiPoint;
+use Core\Player\Money;
 use pocketmine\entity\Human;
 use pocketmine\entity\NPC;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\Player;
 
-abstract class VectorNPC extends Human implements NPC
+class VectorNPC extends Human implements NPC
 {
 	/** @var callable */
 	public $callable;
 
+	protected $money;
+	protected $vLevel;
+	protected $mazai;
+
 	public function __construct(Level $level, CompoundTag $nbt)
 	{
 		parent::__construct($level, $nbt);
+		$this->money = new Money();
+		$this->vLevel = new \Core\Player\Level();
+		$this->mazai = new MazaiPoint();
 	}
 
 	public function setCallable(callable $callable): void
@@ -30,11 +41,37 @@ abstract class VectorNPC extends Human implements NPC
 	}
 
 	/**
-	 * @param DataPacketReceiveEvent $event
-	 * @return mixed
+	 * @return Money
 	 */
-	final public function ClickEntity(DataPacketReceiveEvent $event): void
+	public function getMoney(): Money
 	{
-		$this->callable( $event );
+		return $this->money;
+	}
+
+	/**
+	 * @return MazaiPoint
+	 */
+	public function getMazai(): MazaiPoint
+	{
+		return $this->mazai;
+	}
+
+	/**
+	 * @return \Core\Player\Level
+	 */
+	public function getVLevel(): \Core\Player\Level
+	{
+		return $this->vLevel;
+	}
+
+	public function attack(EntityDamageEvent $source): void
+	{
+		if (!$source instanceof EntityDamageByEntityEvent) {
+			parent::attack($source);
+		} else {
+			if (($player = $source->getEntity()) instanceof Player) {
+				$this->callable( $source->getEntity() );
+			}
+		}
 	}
 }

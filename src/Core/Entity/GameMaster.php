@@ -35,21 +35,6 @@ class GameMaster extends VectorNPC
 		$this->plugin = $plugin;
 	}
 
-	/**
-	 * @param EntityLevelChangeEvent $event
-	 */
-	public function Check(EntityLevelChangeEvent $event): void
-	{
-		$entity = $event->getEntity();
-		if ($entity instanceof Player) {
-			if ($event->getTarget()->getName() === 'lobby') {
-				$this->Create($entity, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1), self::ENTITY_ID);
-			} else {
-				$this->Remove($entity, self::ENTITY_ID);
-			}
-		}
-	}
-
 	public function ClickEntity(DataPacketReceiveEvent $event): void
 	{
 		$packet = $event->getPacket();

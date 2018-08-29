@@ -14,7 +14,7 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class ping extends PluginCommand
+class PingCommand extends PluginCommand
 {
     protected $plugin;
     public function __construct(Main $plugin)

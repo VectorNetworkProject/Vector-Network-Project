@@ -52,7 +52,7 @@ commands:
 permissions:
   vnp.command.ping:
     permission: true
-  vnp.command.stats:
+  vnp.command.status:
     permission: true
   vnp.command.rankshop:
     permission: true

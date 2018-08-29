@@ -16,7 +16,7 @@ use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Dropdown;
 use tokyo\pmmp\libform\FormApi;
 
-class killsound extends PluginCommand
+class KillSoundCommand extends PluginCommand
 {
 	private static $sounds = [
 		"サウンド無し",

@@ -14,7 +14,7 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class debug extends PluginCommand
+class DebugCommand extends PluginCommand
 {
 	protected $plugin;
 

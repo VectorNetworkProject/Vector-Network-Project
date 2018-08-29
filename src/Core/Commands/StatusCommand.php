@@ -24,7 +24,7 @@ use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
 
-class stats extends PluginCommand
+class StatusCommand extends PluginCommand
 {
 	protected $plugin;
 	protected $level;
@@ -92,10 +92,39 @@ class stats extends PluginCommand
 				if (!FormApi::formCancelled($response)) {}
 			});
 			$custom->setTitle("§l$name のステータス")
-				->addElement(new Label("現在の§bレベル§r: $level\n現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n§6V§bN§eCoin§r: $money\n§aMAZAI§r: $mazai\nRank: $rank\nタグ: $tag\n参加した日: $firstlogin\n最終ログイン日: $lastlogin"))
-				->addElement(new Label("---=== §6FFA§cPvP §r===---\n§eキル数§r: $ffapvp_kill\n§cデス数§r: $ffapvp_death\n§eK§7/§cD§r: $ffapvp_kd"))
-				->addElement(new Label("---=== §bSpeed§aCore§cPvP §r===---\n§eキル数§r: $speedcorepvp_kill\n§cデス数§r: $speedcorepvp_death\n§aコア§c破壊回数§r: $speedcorepvp_breakcore\n§aWin§r: $speedcorepvp_win\n§cLose§r: $speedcorepvp_lose\n§eK§7/§cD§r: $speedcorepvp_kd\n§aW§7/§cL§r: $speedcorepvp_wl"))
-				->addElement(new Label("---=== §aSurvival §r===---\n§eキル数§r: $survival_kill\n§cデス数§r: $survival_death\n§aブロック§c破壊数§r: §s$survival_breakblock\n§aブロック§e設置数§r: $survival_place\n§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n§a採掘した§0石炭鉱石§aの数§r: $survival_breakcoal"))
+				->addElement(new Label("
+					現在の§bレベル§r: $level\n
+					現在の§e経験値§r: $exp XP (次のレベルアップまで: $maxexp xp必要です。)\n
+					§6V§bN§eCoin§r: $money\n
+					§aMAZAI§r: $mazai\n
+					Rank: $rank\n
+					タグ: $tag\n
+					参加した日: $firstlogin\n
+					最終ログイン日: $lastlogin"))
+				->addElement(new Label("
+					---=== §6FFA§cPvP §r===---\n
+					§eキル数§r: $ffapvp_kill\n
+					§cデス数§r: $ffapvp_death\n
+					§eK§7/§cD§r: $ffapvp_kd"))
+				->addElement(new Label("
+					---=== §bSpeed§aCore§cPvP §r===---\n
+					§eキル数§r: $speedcorepvp_kill\n
+					§cデス数§r: $speedcorepvp_death\n
+					§aコア§c破壊回数§r: $speedcorepvp_breakcore\n
+					§aWin§r: $speedcorepvp_win\n
+					§cLose§r: $speedcorepvp_lose\n
+					§eK§7/§cD§r: $speedcorepvp_kd\n
+					§aW§7/§cL§r: $speedcorepvp_wl"))
+				->addElement(new Label("
+					---=== §aSurvival §r===---\n
+					§eキル数§r: $survival_kill\n
+					§cデス数§r: $survival_death\n
+					§aブロック§c破壊数§r: §s$survival_breakblock\n
+					§aブロック§e設置数§r: $survival_place\n
+					§a採掘した§bダイヤモンド§aの数§r: $survival_breakdiamond\n
+					§a採掘した§e金鉱石§aの数§r: $survival_breakgold\n
+					§a採掘した§7鉄鉱石§aの数§r: $survival_breakiron\n
+					§a採掘した§0石炭鉱石§aの数§r: $survival_breakcoal"))
 				->sendToPlayer($sender);
 			return true;
 		}

@@ -91,21 +91,7 @@ class EventListener implements Listener
 		$this->mazainpc = new Mazai();
 		$this->gamemasternpc = new GameMaster($this->plugin);
 		$this->mazaimasternpc = new MazaiMaster();
-		$this->playerjoinevent = new PlayerJoin($this->plugin);
-		$this->playerquitevent = new PlayerQuit($this->plugin);
-		$this->playerloginevent = new PlayerLogin($this->plugin);
-		$this->playerdeathevent = new PlayerDeath($this->plugin);
-		$this->playerprelogin = new PlayerPreLogin($this->plugin);
-		$this->playermoveevent = new PlayerMove($this->plugin);
-		$this->entitydamage = new EntityDamage($this->plugin);
-		$this->blockbreakevent = new BlockBreak($this->plugin);
-		$this->blockplaceevent = new BlockPlace($this->plugin);
-		$this->playerinteractevent = new PlayerInteract($this->plugin);
-		$this->playercommandpreprocessevent = new PlayerCommandPreprocess($this->plugin);
-		$this->playerrespawnevent = new PlayerRespawn($this->plugin);
-		$this->entityinventorychange = new EntityInventoryChange($this->plugin);
-		$this->entityshootbowevent = new EntityShootBow($this->plugin);
-		$this->playerexhaustevent = new PlayerExhaust($this->plugin);
+		$this->survival = new SurvivalCore($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -165,7 +151,7 @@ class EventListener implements Listener
 
 	public function onBreak(BlockBreakEvent $event)
 	{
-		$this->blockbreakevent->event($event);
+		$this->survival->AddBreakCount($event->getPlayer());
 		$this->speedcorepvp->BreakCore($event);
 		$this->speedcorepvp->DropItem($event);
 		$this->survival->BreakBlock($event);

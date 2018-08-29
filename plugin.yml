@@ -42,7 +42,7 @@ commands:
     permission: vector.network.player
     description: 敵を倒した時のサウンドを設定します。
   adtag:
-    usage: /adtag
+    usage: /addTag
     permission: vector.network.admin
     description: Admin Command
   gamestatus:

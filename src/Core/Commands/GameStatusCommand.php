@@ -18,7 +18,7 @@ use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
 
-class gamestatus extends PluginCommand
+class GameStatusCommand extends PluginCommand
 {
 	public function __construct(Plugin $plugin)
 	{

@@ -14,21 +14,6 @@ use Core\Entity\Bossbar;
 use Core\Entity\GameMaster;
 use Core\Entity\Mazai;
 use Core\Entity\MazaiMaster;
-use Core\Event\BlockBreak;
-use Core\Event\BlockPlace;
-use Core\Event\EntityDamage;
-use Core\Event\EntityInventoryChange;
-use Core\Event\EntityShootBow;
-use Core\Event\PlayerCommandPreprocess;
-use Core\Event\PlayerDeath;
-use Core\Event\PlayerExhaust;
-use Core\Event\PlayerInteract;
-use Core\Event\PlayerJoin;
-use Core\Event\PlayerLogin;
-use Core\Event\PlayerMove;
-use Core\Event\PlayerPreLogin;
-use Core\Event\PlayerQuit;
-use Core\Event\PlayerRespawn;
 use Core\Game\Athletic\AthleticCore;
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
@@ -69,41 +54,26 @@ class EventListener implements Listener
 {
 	private $plugin = null;
 	protected $ffapvp;
-	protected $speedcorepvp;
+	protected $speedCorePvp;
 	protected $athletic;
 	protected $survival;
-	protected $mazainpc;
-	protected $gamemasternpc;
-	protected $mazaimasternpc;
-	protected $playerjoinevent;
-	protected $playerquitevent;
-	protected $playerloginevent;
-	protected $playerdeathevent;
-	protected $playerprelogin;
-	protected $playermoveevent;
-	protected $entitydamage;
-	protected $blockbreakevent;
-	protected $blockplaceevent;
-	protected $playerinteractevent;
-	protected $playercommandpreprocessevent;
-	protected $playerrespawnevent;
-	protected $entityinventorychange;
-	protected $entityshootbowevent;
-	protected $playerexhaustevent;
-	private $killsound;
+	protected $mazaiNpc;
+	protected $gameMasterNpc;
+	protected $mazaiMasterNpc;
+	private $killSound;
 
 	public function __construct(Main $plugin)
 	{
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
-		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
+		$this->speedCorePvp = new SpeedCorePvPCore($this->plugin);
 		$this->athletic = new AthleticCore();
 		$this->survival = new SurvivalCore($this->plugin);
-		$this->mazainpc = new Mazai();
-		$this->gamemasternpc = new GameMaster($this->plugin);
-		$this->mazaimasternpc = new MazaiMaster();
+		$this->mazaiNpc = new Mazai();
+		$this->gameMasterNpc = new GameMaster($this->plugin);
+		$this->mazaiMasterNpc = new MazaiMaster();
 		$this->survival = new SurvivalCore($this->plugin);
-		$this->killsound = new KillSound($this->plugin);
+		$this->killSound = new KillSound($this->plugin);
 	}
 
 	public function onJoin(PlayerJoinEvent $event)
@@ -120,9 +90,9 @@ class EventListener implements Listener
 		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");
 		$this->plugin->getScheduler()->scheduleDelayedTask(new JoinTitle($this->plugin, $player), 100);
 		$player = $event->getPlayer();
-		$this->mazainpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1), Mazai::ENTITY_ID);
-		$this->gamemasternpc->Create($player, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1), GameMaster::ENTITY_ID);
-		$this->mazaimasternpc->Create($player, "§a魔剤§7マスター", "MazaiNPC", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1), MazaiMaster::ENTITY_ID);
+		$this->mazaiNpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1), Mazai::ENTITY_ID);
+		$this->gameMasterNpc->Create($player, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1), GameMaster::ENTITY_ID);
+		$this->mazaiMasterNpc->Create($player, "§a魔剤§7マスター", "MazaiNPC", new Vector3(287, 10, 270), Item::get(Item::POTION, 11, 1), MazaiMaster::ENTITY_ID);
 	}
 
 	public function onQuit(PlayerQuitEvent $event)
@@ -137,11 +107,11 @@ class EventListener implements Listener
 		$user["lastlogin"] = date("Y年m月d日 H時i分s秒");
 		$data->write("USERDATA", $user);
 		$player = $event->getPlayer();
-		$this->speedcorepvp->GameQuit($player);
+		$this->speedCorePvp->GameQuit($player);
 		$this->survival->SaveData($event);
-		$this->mazainpc->Remove($player, Mazai::ENTITY_ID);
-		$this->gamemasternpc->Remove($player, GameMaster::ENTITY_ID);
-		$this->mazaimasternpc->Remove($player, MazaiMaster::ENTITY_ID);
+		$this->mazaiNpc->Remove($player, Mazai::ENTITY_ID);
+		$this->gameMasterNpc->Remove($player, GameMaster::ENTITY_ID);
+		$this->mazaiMasterNpc->Remove($player, MazaiMaster::ENTITY_ID);
 		// $this->athletic->onQuit($event);
 	}
 
@@ -232,7 +202,7 @@ class EventListener implements Listener
 						$damager->setMaxHealth($damager->getMaxHealth() + 1);
 					}
 					$damager->getInventory()->addItem(Item::get(Item::GOLDEN_APPLE, 0, 1));
-					$this->killsound->PlaySound($damager);
+					$this->killSound->PlaySound($damager);
 				}
 			} else {
 				$this->DeathMessage('ffapvp', $player->getName());
@@ -242,14 +212,14 @@ class EventListener implements Listener
 			if ($cause instanceof EntityDamageByEntityEvent) {
 				$damager = $cause->getDamager();
 				if ($damager instanceof Player) {
-					$this->speedcorepvp->AddKillCount($damager);
-					$this->speedcorepvp->addDeathCount($player);
-					$this->killsound->PlaySound($damager);
+					$this->speedCorePvp->AddKillCount($damager);
+					$this->speedCorePvp->addDeathCount($player);
+					$this->killSound->PlaySound($damager);
 					$this->DeathMessage('corepvp', $player->getName(), $damager->getName());
 				}
 			} else {
 				$this->DeathMessage('corepvp', $player->getName());
-				$this->speedcorepvp->addDeathCount($player);
+				$this->speedCorePvp->addDeathCount($player);
 			}
 		} elseif ($player->getLevel()->getName() === "Survival") {
 			if ($cause instanceof EntityDamageByEntityEvent) {
@@ -257,7 +227,7 @@ class EventListener implements Listener
 				if ($damager instanceof Player) {
 					$this->survival->AddKillCount($damager);
 					$this->survival->AddDeathCount($player);
-					$this->killsound->PlaySound($damager);
+					$this->killSound->PlaySound($damager);
 					$this->DeathMessage("Survival", $player->getName(), $damager->getName());
 				}
 			} else {
@@ -269,9 +239,9 @@ class EventListener implements Listener
 
 	public function onReceive(DataPacketReceiveEvent $event)
 	{
-		$this->mazainpc->ClickEntity($event);
-		$this->gamemasternpc->ClickEntity($event);
-		$this->mazaimasternpc->ClickEntity($event);
+		$this->mazaiNpc->ClickEntity($event);
+		$this->gameMasterNpc->ClickEntity($event);
+		$this->mazaiMasterNpc->ClickEntity($event);
 	}
 
 	public function pnPreLogin(PlayerPreLoginEvent $event)
@@ -305,21 +275,21 @@ class EventListener implements Listener
 				}
 			}
 		}
-		$this->speedcorepvp->Damage($event);
+		$this->speedCorePvp->Damage($event);
 	}
 
 	public function onBreak(BlockBreakEvent $event)
 	{
 		$this->survival->AddBreakCount($event->getPlayer());
-		$this->speedcorepvp->BreakCore($event);
-		$this->speedcorepvp->DropItem($event);
+		$this->speedCorePvp->BreakCore($event);
+		$this->speedCorePvp->DropItem($event);
 		$this->survival->BreakBlock($event);
 	}
 
 	public function onPlace(BlockPlaceEvent $event)
 	{
 		$this->survival->AddPlaceCount($event->getPlayer());
-		$this->speedcorepvp->AntiPlace($event);
+		$this->speedCorePvp->AntiPlace($event);
 	}
 
 	public function onInteract(PlayerInteractEvent $event)
@@ -327,8 +297,8 @@ class EventListener implements Listener
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$this->ffapvp->FFAPvPKit($player, $block);
-		$this->speedcorepvp->GameJoin($player, $event->getBlock());
-		$this->speedcorepvp->Interact($event);
+		$this->speedCorePvp->GameJoin($player, $event->getBlock());
+		$this->speedCorePvp->Interact($event);
 		$this->survival->Join($event);
 		//$this->athletic->isAthleticFinish($event, $event->getPlayer());
 		//$this->athletic->touch($event);
@@ -339,9 +309,9 @@ class EventListener implements Listener
 	{
 		$player = $event->getPlayer();
 		$name = $player->getName();
-		$level = $this->level->getLevel($name);
-		$rank = $this->rank->getRank($name);
-		$tag = $this->tag->getTag($player);
+		$level = (new Level)->getLevel($name);
+		$rank = (new Rank($this->plugin))->getRank($name);
+		$tag = (new Tag())->getTag($player);
 		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");
 		switch ($event->getMessage()) {
 			case '/whitelist on':
@@ -357,12 +327,12 @@ class EventListener implements Listener
 
 	public function onRespawn(PlayerRespawnEvent $event)
 	{
-		$this->speedcorepvp->Respawn($event->getPlayer());
+		$this->speedCorePvp->Respawn($event->getPlayer());
 	}
 
 	public function onEntityInventoryChange(EntityInventoryChangeEvent $event)
 	{
-		$this->speedcorepvp->CancelChange($event);
+		$this->speedCorePvp->CancelChange($event);
 	}
 
 	public function onEntityShootBow(EntityShootBowEvent $event)
@@ -372,16 +342,16 @@ class EventListener implements Listener
 
 	public function EntityLevelChange(EntityLevelChangeEvent $event)
 	{
-		$this->speedcorepvp->LevelChange($event);
+		$this->speedCorePvp->LevelChange($event);
 		$this->survival->LoadData($event);
-		$this->mazainpc->Check($event);
-		$this->gamemasternpc->Check($event);
-		$this->mazaimasternpc->Check($event);
+		$this->mazaiNpc->Check($event);
+		$this->gameMasterNpc->Check($event);
+		$this->mazaiMasterNpc->Check($event);
 	}
 
 	public function onChat(PlayerChatEvent $event)
 	{
-		$this->speedcorepvp->TeamChat($event);
+		$this->speedCorePvp->TeamChat($event);
 	}
 
 	public function onPlayerAchievementAwarded(PlayerAchievementAwardedEvent $event)
@@ -392,7 +362,7 @@ class EventListener implements Listener
 	public function onSignChange(SignChangeEvent $event)
 	{
 		$this->survival->Sign($event);
-		$this->speedcorepvp->Sign($event);
+		$this->speedCorePvp->Sign($event);
 	}
 
 	public function onPlayerExhaust(PlayerExhaustEvent $event)

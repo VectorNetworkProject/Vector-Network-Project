@@ -23,7 +23,7 @@ use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Button;
 use tokyo\pmmp\libform\FormApi;
 
-class selectgame extends PluginCommand
+class SelectGameCommand extends PluginCommand
 {
     protected $plugin;
     public function __construct(Main $plugin)

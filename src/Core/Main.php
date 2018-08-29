@@ -21,7 +21,7 @@ use Core\Commands\GameStatusCommand;
 use Core\Commands\KillSoundCommand;
 use Core\Commands\PingCommand;
 use Core\Commands\RankShopCommand;
-use Core\Commands\selectgame;
+use Core\Commands\SelectGameCommand;
 use Core\Commands\setmoney;
 use Core\Commands\settag;
 use Core\Commands\stats;
@@ -172,7 +172,7 @@ class Main extends PluginBase
 			new RankShopCommand($this),
 			new setmoney($this),
 			new settag($this),
-			new selectgame($this),
+			new SelectGameCommand($this),
 			new DebugCommand($this),
 			new KillSoundCommand($this),
 			new AddTagCommand($this),

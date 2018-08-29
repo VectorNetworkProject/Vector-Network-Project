@@ -9,6 +9,7 @@
 namespace Core\Event;
 
 use Core\DataFile;
+use Core\Discord\Discord;
 use Core\Entity\Bossbar;
 use Core\Entity\GameMaster;
 use Core\Entity\Mazai;
@@ -336,7 +337,22 @@ class EventListener implements Listener
 
 	public function onPlayerCommandPreprocess(PlayerCommandPreprocessEvent $event)
 	{
-		$this->playercommandpreprocessevent->event($event);
+		$player = $event->getPlayer();
+		$name = $player->getName();
+		$level = $this->level->getLevel($name);
+		$rank = $this->rank->getRank($name);
+		$tag = $this->tag->getTag($player);
+		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");
+		switch ($event->getMessage()) {
+			case '/whitelist on':
+				if (!$player->isOp()) return;
+				Discord::SendEmbed("SERVER STATUS", "WHITELIST ON", "メンテナンスが開始されました。", 16776960);
+				break;
+			case '/whitelist off':
+				if (!$player->isOp()) return;
+				Discord::SendEmbed("SERVER STATUS", "WHITELIST OFF", "メンテナンスが終了しました。", 8847104);
+				break;
+		}
 	}
 
 	public function onRespawn(PlayerRespawnEvent $event)

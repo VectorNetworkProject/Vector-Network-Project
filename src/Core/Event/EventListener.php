@@ -285,7 +285,6 @@ class EventListener implements Listener
 
 	public function onMove(PlayerMoveEvent $event)
 	{
-		$this->playermoveevent->event($event);
 		$this->athletic->loop($event);
 	}
 

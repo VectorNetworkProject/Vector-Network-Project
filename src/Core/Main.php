@@ -23,8 +23,8 @@ use Core\Commands\PingCommand;
 use Core\Commands\RankShopCommand;
 use Core\Commands\SelectGameCommand;
 use Core\Commands\SetMoneyCommand;
-use Core\Commands\settag;
-use Core\Commands\stats;
+use Core\Commands\SetTagCommand;
+use Core\Commands\Status;
 use Core\Discord\Discord;
 use Core\Discord\Threads\SendEmbed;
 use Core\Event\BlockBreak;
@@ -168,10 +168,10 @@ class Main extends PluginBase
 	{
 		$commands = [
 			new PingCommand($this),
-			new stats($this),
+			new Status($this),
 			new RankShopCommand($this),
 			new SetMoneyCommand($this),
-			new settag($this),
+			new SetTagCommand($this),
 			new SelectGameCommand($this),
 			new DebugCommand($this),
 			new KillSoundCommand($this),

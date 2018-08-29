@@ -29,7 +29,7 @@ class SelectGameCommand extends PluginCommand
     public function __construct(Main $plugin)
     {
         parent::__construct("selectgame", $plugin);
-        $this->setPermission("vector.network.player");
+        $this->setPermission("vnp.command.selectgame");
         $this->setDescription("遊びたいゲームを選択できます。");
         $this->plugin = $plugin;
     }

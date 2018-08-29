@@ -34,6 +34,7 @@ use Core\Main;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
@@ -54,6 +55,7 @@ use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
+use pocketmine\Player;
 
 class EventListener implements Listener
 {
@@ -145,7 +147,20 @@ class EventListener implements Listener
 
 	public function onEntityDamage(EntityDamageEvent $event)
 	{
-		$this->entitydamage->event($event);
+		$entity = $event->getEntity();
+		if ($entity->getLevel()->getName() === "ffapvp" or $entity->getLevel()->getName() === "corepvp") {
+			if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
+				$event->setCancelled(true);
+			}
+		}
+		if ($event instanceof EntityDamageByEntityEvent && $entity instanceof Player) {
+			$damager = $event->getDamager();
+			if ($damager instanceof Player) {
+				if ($damager->getName() === $entity->getName()) {
+					$event->setCancelled(true);
+				}
+			}
+		}
 		$this->speedcorepvp->Damage($event);
 	}
 

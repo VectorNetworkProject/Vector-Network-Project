@@ -159,7 +159,7 @@ class EventListener implements Listener
 
 	public function onPlace(BlockPlaceEvent $event)
 	{
-		$this->blockplaceevent->event($event);
+		$this->survival->AddPlaceCount($event->getPlayer());
 		$this->speedcorepvp->AntiPlace($event);
 	}
 

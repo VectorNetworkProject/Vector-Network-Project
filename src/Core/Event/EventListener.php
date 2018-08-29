@@ -123,7 +123,15 @@ class EventListener implements Listener
 
 	public function onQuit(PlayerQuitEvent $event)
 	{
-		$this->playerquitevent->event($event);
+		$player = $event->getPlayer();
+		$name = $player->getName();
+		$event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
+		$bossBar = new Bossbar();
+		$bossBar->RemoveBar($player);
+		$data = new DataFile($player->getName());
+		$user = $data->get("USERDATA");
+		$user["lastlogin"] = date("Y年m月d日 H時i分s秒");
+		$data->write("USERDATA", $user);
 		$player = $event->getPlayer();
 		$this->speedcorepvp->GameQuit($player);
 		$this->survival->SaveData($event);

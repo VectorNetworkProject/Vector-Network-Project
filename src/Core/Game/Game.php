@@ -11,12 +11,11 @@ namespace Core\Game;
 
 use pocketmine\Player;
 
-interface Game
+interface IGame
 {
 	public function start();
 	public function finish();
 	public function isPlaying();
-	public function join(Player $player);
-	public function quit(Player $player);
-	public function powerQuit(Player $player);
+	public function onJoin(Player $player);
+	public function onQuit(Player $player);
 }

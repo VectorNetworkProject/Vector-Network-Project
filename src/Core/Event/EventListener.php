@@ -397,7 +397,9 @@ class EventListener implements Listener
 
 	public function onPlayerExhaust(PlayerExhaustEvent $event)
 	{
-		$this->playerexhaustevent->event($event);
+		if ($event->getPlayer()->getLevel()->getName() === 'lobby') {
+			$event->setCancelled(true);
+		}
 	}
 
 	public function DeathMessage(string $levelname, string $killed = null, string $killer = null): void

@@ -15,7 +15,7 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 
-class setmoney extends PluginCommand
+class SetMoneyCommand extends PluginCommand
 {
 	protected $plugin;
 	protected $money;

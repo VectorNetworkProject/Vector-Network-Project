@@ -22,7 +22,7 @@ use Core\Commands\KillSoundCommand;
 use Core\Commands\PingCommand;
 use Core\Commands\RankShopCommand;
 use Core\Commands\SelectGameCommand;
-use Core\Commands\setmoney;
+use Core\Commands\SetMoneyCommand;
 use Core\Commands\settag;
 use Core\Commands\stats;
 use Core\Discord\Discord;
@@ -170,7 +170,7 @@ class Main extends PluginBase
 			new PingCommand($this),
 			new stats($this),
 			new RankShopCommand($this),
-			new setmoney($this),
+			new SetMoneyCommand($this),
 			new settag($this),
 			new SelectGameCommand($this),
 			new DebugCommand($this),

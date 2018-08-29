@@ -24,7 +24,7 @@ use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
 
-class Status extends PluginCommand
+class StatusCommand extends PluginCommand
 {
 	protected $plugin;
 	protected $level;

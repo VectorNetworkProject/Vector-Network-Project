@@ -9,6 +9,7 @@
 namespace Core\Event;
 
 
+use Core\Discord\Discord;
 use Core\Main;
 use Core\Player\Level;
 use Core\Player\Rank;
@@ -39,5 +40,15 @@ class PlayerCommandPreprocess implements Listener
 		$rank = $this->rank->getRank($name);
 		$tag = $this->tag->getTag($player);
 		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");
+		switch ($event->getMessage()) {
+			case '/whitelist on':
+				if (!$player->isOp()) return;
+				Discord::SendEmbed("SERVER STATUS", "WHITELIST ON", "メンテナンスが開始されました。", 16776960);
+				break;
+			case '/whitelist off':
+				if (!$player->isOp()) return;
+				Discord::SendEmbed("SERVER STATUS", "WHITELIST OFF", "メンテナンスが終了しました。", 8847104);
+				break;
+		}
 	}
 }

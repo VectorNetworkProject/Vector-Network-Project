@@ -9,6 +9,7 @@
 namespace Core\Event;
 
 use Core\DataFile;
+use Core\Entity\Bossbar;
 use Core\Entity\GameMaster;
 use Core\Entity\Mazai;
 use Core\Entity\MazaiMaster;
@@ -32,6 +33,10 @@ use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Game\Survival\SurvivalCore;
 use Core\Main;
+use Core\Player\Level;
+use Core\Player\Rank;
+use Core\Player\Tag;
+use Core\Task\JoinTitle;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
@@ -99,7 +104,17 @@ class EventListener implements Listener
 
 	public function onJoin(PlayerJoinEvent $event)
 	{
-		$this->playerjoinevent->event($event);
+		$player = $event->getPlayer();
+		$name = $player->getName();
+		$level = (new Level())->getLevel($name);
+		$rank = (new Rank($this->plugin))->getRank($name);
+		$tag = (new Tag())->getTag($player);
+		$event->setJoinMessage("§b[§a参加§b] §7$name が参加しました。");
+		$bossBar = new Bossbar();
+		$bossBar->sendBar($player);
+		$player->setNameTag("§7[§r $rank §7] §r$name");
+		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");
+		$this->plugin->getScheduler()->scheduleDelayedTask(new JoinTitle($this->plugin, $player), 100);
 		$player = $event->getPlayer();
 		$this->mazainpc->Create($player, "§a魔剤§e売りの§a魔剤§eさん", "MazaiNPC", new Vector3(260, 4, 265), Item::get(Item::POTION, 11, 1), Mazai::ENTITY_ID);
 		$this->gamemasternpc->Create($player, "§aGame§7Master", "GameMaster", new Vector3(252, 4, 265), Item::get(Item::COMPASS, 0, 1), GameMaster::ENTITY_ID);

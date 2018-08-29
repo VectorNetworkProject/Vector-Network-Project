@@ -275,7 +275,12 @@ class EventListener implements Listener
 
 	public function pnPreLogin(PlayerPreLoginEvent $event)
 	{
-		$this->playerprelogin->event($event);
+		$player = $event->getPlayer();
+		if ($this->plugin->getServer()->hasWhitelist()) {
+			if (!$this->plugin->getServer()->isWhitelisted(strtolower($player->getName()))) {
+				$player->close($player->getLeaveMessage(), "     §6Vector §bNetwork\n§7現在ホワイトリストです。\n§7詳しい情報はLobiまたはDiscordから得ることができます。\n§7Discord: https://hxbot.tk/VNP-D\n§7Lobi: https://hxbot.tk/VNP-L");
+			}
+		}
 	}
 
 	public function onMove(PlayerMoveEvent $event)

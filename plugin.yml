@@ -50,7 +50,27 @@ commands:
     permission: vector.network.player
     description: どのゲームに何人居るか表示します。
 permissions:
+  vnp.command.ping:
+    permission: true
+  vnp.command.stats:
+    permission: true
+  vnp.command.rankshop:
+    permission: true
+  vnp.command.setmoney:
+    permission: op
+  vnp.command.settag:
+    permission: op
+  vnp.command.selectgame:
+    permission: true
+  vnp.command.debug:
+    permission: op
+  vnp.command.killsound:
+    permission: true
+  vnp.command.addtag:
+    permission: op
+  vnp.command.gamestatus:
+    permission: true
   vector.network.player:
-    default: true
+    permission: true
   vector.network.admin:
-    default: op
+    permission: op

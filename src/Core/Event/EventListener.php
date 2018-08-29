@@ -323,8 +323,10 @@ class EventListener implements Listener
 
 	public function onInteract(PlayerInteractEvent $event)
 	{
-		$this->playerinteractevent->event($event);
-		$this->speedcorepvp->GameJoin($event->getPlayer(), $event->getBlock());
+		$player = $event->getPlayer();
+		$block = $event->getBlock();
+		$this->ffapvp->FFAPvPKit($player, $block);
+		$this->speedcorepvp->GameJoin($player, $event->getBlock());
 		$this->speedcorepvp->Interact($event);
 		$this->survival->Join($event);
 		//$this->athletic->isAthleticFinish($event, $event->getPlayer());

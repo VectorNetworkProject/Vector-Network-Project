@@ -35,7 +35,7 @@ class KillSoundCommand extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("killsound", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vnp.command.killsound");
 		$this->setDescription("敵を倒した時のサウンドを設定します。");
 		$this->plugin = $plugin;
 		$this->killsound = new \Core\Player\KillSound($plugin);

@@ -37,7 +37,7 @@ class RankShopCommand extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("rankshop", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vnp.command.rankshop");
 		$this->setDescription("§6V§bN§eCoin§rでランク買います。");
 		$this->plugin = $plugin;
 		$this->money = new Money();

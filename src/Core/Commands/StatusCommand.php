@@ -36,7 +36,7 @@ class StatusCommand extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("stats", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vpn.command.status");
 		$this->setDescription("自分のステータスを表示します。");
 		$this->plugin = $plugin;
 		$this->level = new Level();

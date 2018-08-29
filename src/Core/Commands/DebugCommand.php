@@ -21,7 +21,7 @@ class DebugCommand extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("debug", $plugin);
-		$this->setPermission("vector.network.admin");
+		$this->setPermission("vnp.command.debug");
 		$this->setDescription("Admin Command");
 		$this->plugin = $plugin;
 	}

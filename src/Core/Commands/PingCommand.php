@@ -20,7 +20,7 @@ class PingCommand extends PluginCommand
     public function __construct(Main $plugin)
     {
         parent::__construct("ping", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vnp.command.ping");
 		$this->setDescription("応答速度を計測します。");
         $this->plugin = $plugin;
     }

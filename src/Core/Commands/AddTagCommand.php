@@ -23,7 +23,7 @@ class AddTagCommand extends PluginCommand
 	{
 		parent::__construct("addTag", $plugin);
 		$this->setDescription("Admin Command");
-		$this->setPermission("vector.network.admin");
+		$this->setPermission("vnp.command.addTag");
 		$this->tag = new Tag();
 	}
 

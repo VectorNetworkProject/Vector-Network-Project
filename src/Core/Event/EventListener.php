@@ -6,7 +6,7 @@
  * Time: 14:41
  */
 
-namespace Core;
+namespace Core\Event;
 
 use Core\Entity\GameMaster;
 use Core\Entity\Mazai;
@@ -30,6 +30,7 @@ use Core\Game\Athletic\AthleticCore;
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Game\Survival\SurvivalCore;
+use Core\Main;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;

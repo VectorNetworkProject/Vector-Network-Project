@@ -362,7 +362,6 @@ class EventListener implements Listener
 
 	public function onEntityInventoryChange(EntityInventoryChangeEvent $event)
 	{
-		$this->entityinventorychange->event($event);
 		$this->speedcorepvp->CancelChange($event);
 	}
 

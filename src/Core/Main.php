@@ -18,7 +18,7 @@ namespace Core;
 use Core\Commands\AddTagCommand;
 use Core\Commands\DebugCommand;
 use Core\Commands\GameStatusCommand;
-use Core\Commands\killsound;
+use Core\Commands\KillSoundCommand;
 use Core\Commands\ping;
 use Core\Commands\rankshop;
 use Core\Commands\selectgame;
@@ -174,7 +174,7 @@ class Main extends PluginBase
 			new settag($this),
 			new selectgame($this),
 			new DebugCommand($this),
-			new killsound($this),
+			new KillSoundCommand($this),
 			new AddTagCommand($this),
 			new GameStatusCommand($this)
 		];

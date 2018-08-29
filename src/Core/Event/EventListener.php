@@ -357,7 +357,6 @@ class EventListener implements Listener
 
 	public function onRespawn(PlayerRespawnEvent $event)
 	{
-		$this->playerrespawnevent->event($event);
 		$this->speedcorepvp->Respawn($event->getPlayer());
 	}
 

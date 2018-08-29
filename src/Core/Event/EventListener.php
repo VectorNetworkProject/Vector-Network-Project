@@ -367,7 +367,7 @@ class EventListener implements Listener
 
 	public function onEntityShootBow(EntityShootBowEvent $event)
 	{
-		$this->entityshootbowevent->event($event);
+		$event->setForce($event->getForce() + 0.5);
 	}
 
 	public function EntityLevelChange(EntityLevelChangeEvent $event)

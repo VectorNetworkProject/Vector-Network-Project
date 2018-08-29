@@ -22,7 +22,7 @@ use tokyo\pmmp\libform\element\Input;
 use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
 
-class settag extends PluginCommand
+class SetTagCommand extends PluginCommand
 {
 	private $plugin;
 	private $money;

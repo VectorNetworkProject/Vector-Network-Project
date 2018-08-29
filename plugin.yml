@@ -70,3 +70,7 @@ permissions:
     permission: op
   vnp.command.gamestatus:
     permission: true
+  vector.network.player:
+    permission: true
+  vector.network.admin:
+    permission: op

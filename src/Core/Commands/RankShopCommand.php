@@ -19,7 +19,7 @@ use tokyo\pmmp\libform\element\Dropdown;
 use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
 
-class rankshop extends PluginCommand
+class RankShopCommand extends PluginCommand
 {
 	private static $ranks = [
 		"§6V§bN",

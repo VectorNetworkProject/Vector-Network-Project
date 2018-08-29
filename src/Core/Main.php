@@ -20,7 +20,7 @@ use Core\Commands\DebugCommand;
 use Core\Commands\GameStatusCommand;
 use Core\Commands\KillSoundCommand;
 use Core\Commands\PingCommand;
-use Core\Commands\rankshop;
+use Core\Commands\RankShopCommand;
 use Core\Commands\selectgame;
 use Core\Commands\setmoney;
 use Core\Commands\settag;
@@ -169,7 +169,7 @@ class Main extends PluginBase
 		$commands = [
 			new PingCommand($this),
 			new stats($this),
-			new rankshop($this),
+			new RankShopCommand($this),
 			new setmoney($this),
 			new settag($this),
 			new selectgame($this),

@@ -22,5 +22,6 @@ class AutoSavingTask extends PluginTask
 		$this->owner->getServer()->getLevelByName("ffapvp")->save(true);
 		$this->owner->getServer()->getLevelByName("lobby")->save(true);
 		$this->owner->getServer()->getLevelByName("Survival")->save(true);
+		$this->owner->getServer()->getLevelByName("duel")->save(true);
 	}
 }

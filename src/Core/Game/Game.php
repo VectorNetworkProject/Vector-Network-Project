@@ -9,7 +9,13 @@
 namespace Core\Game;
 
 
-interface Game
-{
+use pocketmine\Player;
 
+interface IGame
+{
+	public function start();
+	public function finish();
+	public function isPlaying();
+	public function onJoin(Player $player);
+	public function onQuit(Player $player);
 }

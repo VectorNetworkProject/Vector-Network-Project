@@ -418,7 +418,7 @@ class SpeedCorePvPCore
 			"leather_boots" => Item::get(Item::LEATHER_BOOTS, 0, 1)
 		];
 		$weapons = [
-			"stone_sword" => Item::get(Item::STONE_SWORD, 0, 1),
+			"wooden_sword" => Item::get(Item::WOODEN_SWORD, 0, 1),
 			"gold_pickaxe" => Item::get(Item::GOLD_PICKAXE, 0, 1),
 			"stone_axe" => Item::get(Item::STONE_AXE, 0, 1),
 			"stone_shovel" => Item::get(Item::STONE_SHOVEL, 0, 1)
@@ -440,7 +440,7 @@ class SpeedCorePvPCore
 		$armor->setChestplate($armors['leather_tunic']);
 		$armor->setLeggings($armors['leather_pants']);
 		$armor->setBoots($armors['leather_boots']);
-		$player->getInventory()->addItem($weapons['stone_sword']);
+		$player->getInventory()->addItem($weapons['wooden_sword']);
 		$player->getInventory()->addItem($weapons['gold_pickaxe']);
 		$player->getInventory()->addItem($weapons['stone_axe']);
 		$player->getInventory()->addItem($weapons['stone_shovel']);

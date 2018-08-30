@@ -61,6 +61,36 @@ class PlayerDeath implements Listener
 				$this->ffapvp->AddDeathCount($player);
 			}
 		} elseif ($player->getLevel()->getName() === "corepvp") {
+			$drops = $event->getDrops();
+			foreach ($drops as $slot => $item) {
+				switch ($item->getId()) {
+					case Item::LEATHER_CAP:
+						unset($drops[$slot]);
+						break;
+					case Item::LEATHER_CHESTPLATE:
+						unset($drops[$slot]);
+						break;
+					case Item::LEATHER_LEGGINGS:
+						unset($drops[$slot]);
+						break;
+					case Item::LEATHER_BOOTS:
+						unset($drops[$slot]);
+						break;
+					case Item::GOLD_PICKAXE:
+						unset($drops[$slot]);
+						break;
+					case Item::WOODEN_SWORD:
+						unset($drops[$slot]);
+						break;
+					case Item::STONE_AXE:
+						unset($drops[$slot]);
+						break;
+					case Item::STONE_SHOVEL:
+						unset($drops[$slot]);
+						break;
+				}
+			}
+			$event->setDrops($drops);
 			if ($cause instanceof EntityDamageByEntityEvent) {
 				$damager = $cause->getDamager();
 				if ($damager instanceof Player) {

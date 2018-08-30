@@ -4,32 +4,32 @@ api: 4.0.0
 version: 3.0.0
 author: VectorNetworkDevelopmentTeam
 authors:
-  - InkoHX
-  - MazaiCrafty
-  - yuko fuyutsuki
-  - DusKong
+- InkoHX
+- MazaiCrafty
+- yuko fuyutsuki
+- DusKong
 permissions:
   vnp.command.ping:
-    permission: true
-  vnp.command.status:
-    permission: true
+    default: true
+  vnp.command.stats:
+    default: true
   vnp.command.rankshop:
-    permission: true
+    default: true
   vnp.command.setmoney:
-    permission: op
+    default: op
   vnp.command.settag:
-    permission: op
+    default: op
   vnp.command.selectgame:
-    permission: true
+    default: true
   vnp.command.debug:
-    permission: op
+    default: op
   vnp.command.killsound:
-    permission: true
+    default: true
   vnp.command.addtag:
-    permission: op
+    default: op
   vnp.command.gamestatus:
-    permission: true
+    default: true
   vector.network.player:
-    permission: true
+    default: true
   vector.network.admin:
-    permission: op
+    default: op

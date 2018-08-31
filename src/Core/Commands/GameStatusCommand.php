@@ -23,7 +23,7 @@ class GameStatusCommand extends PluginCommand
 	public function __construct(Plugin $plugin)
 	{
 		parent::__construct("gamestatus", $plugin);
-		$this->setPermission("vnp.command.gamestatus");
+		$this->setPermission("vector.network.player");
 		$this->setDescription("どのゲームに何人居るか表示します。");
 	}
 

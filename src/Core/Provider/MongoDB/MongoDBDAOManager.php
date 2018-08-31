@@ -9,12 +9,12 @@
 namespace Core\Provider\MongoDB;
 
 
-use Core\Provider\AbstractProviderFactory;
+use Core\Provider\AbstractDAOManager;
 use pocketmine\utils\Utils;
 
-class MongoDBProviderFactory extends AbstractProviderFactory
+class MongoDBDAOManager extends AbstractDAOManager
 {
-	public function registerDAO( string $name, string $className )
+	public function registerDAO( string $name, string $className ): void
 	{
 		Utils::testValidInstance( $className, self::class );
 
@@ -23,10 +23,5 @@ class MongoDBProviderFactory extends AbstractProviderFactory
 		}
 
 		$this->daos[$name] = new $className();
-	}
-
-	public function createAccountDAO( string $name )
-	{
-		// TODO: Implement createAccountDAO() method.
 	}
 }

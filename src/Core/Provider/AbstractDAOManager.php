@@ -9,7 +9,7 @@
 namespace Core\Provider;
 
 
-abstract class AbstractProviderFactory
+abstract class AbstractDAOManager
 {
 	final public static function getInstance() : self
 	{
@@ -26,7 +26,7 @@ abstract class AbstractProviderFactory
 	 *
 	 * @return mixed
 	 */
-	abstract public function registerDAO( string $name, string $className );
+	abstract public function registerDAO( string $name, string $className ): void;
 
 	/**
 	 * @param string $name
@@ -34,7 +34,7 @@ abstract class AbstractProviderFactory
 	 * @return IDAO
 	 * @throws \Exception
 	 */
-	public function getDAO( string $name ) : IDAO
+	public final function getDAO( string $name ) : IDAO
 	{
 		if (!isset($this->$daos[$name])) {
 			throw new \InvalidArgumentException( "Instance $name does not exist" );

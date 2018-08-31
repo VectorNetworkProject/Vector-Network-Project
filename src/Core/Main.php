@@ -41,6 +41,7 @@ use Core\Event\PlayerMove;
 use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
+use Core\Provider\MongoDB\MongoDBDAOManager;
 use Core\Task\AutoSavingTask;
 use Core\Task\MOTDTip;
 use Core\Task\RemoveItemTask;
@@ -85,6 +86,7 @@ class Main extends PluginBase
 	protected function onEnable(): void
 	{
 		$this->init();
+		MongoDBDAOManager::getInstance();	//プロバイダ起動用
 		$this->getLogger()->info(self::START_MESSAGE);
 		Discord::SendEmbed("SERVER STATUS", "ONLINE", "サーバーがオンラインになりました。", 65280);
 	}

@@ -6,10 +6,10 @@
  * Time: 21:53
  */
 
-namespace Core\AccountProvider;
+namespace Core\Provider;
 
 
-abstract class AbstractAccountProviderFactory
+abstract class AbstractProviderFactory
 {
 	final public static function getInstance() : self
 	{
@@ -17,5 +17,9 @@ abstract class AbstractAccountProviderFactory
 		return $instance = $instance ?: new static();
 	}
 
-	abstract public function createAccountDAO();
+	/** @var resource[] */
+	protected $daos;
+
+	abstract public function registerDAO( string $name, IDAO $dao );
+	abstract public function getDAO( string $name );
 }

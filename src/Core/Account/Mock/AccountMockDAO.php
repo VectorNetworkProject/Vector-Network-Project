@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: UramnOIL
  * Date: 2018/08/31
- * Time: 21:59
+ * Time: 22:41
  */
 
-namespace Core\AccountProvider;
+namespace Core\Account;
 
 
-class MockAccountProviderFactory
+class AccountMockDAO
 {
 
 }

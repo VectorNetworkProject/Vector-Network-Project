@@ -183,26 +183,6 @@ class Main extends PluginBase
 		return $this;
 	}
 
-	private function registerEvents(): self
-	{
-		$plm = $this->getServer()->getPluginManager();
-		$plm->registerEvents(new BlockBreak($this), $this);
-		$plm->registerEvents(new BlockPlace($this), $this);
-		$plm->registerEvents(new EntityDamage($this), $this);
-		$plm->registerEvents(new EntityInventoryChange($this), $this);
-		$plm->registerEvents(new EntityShootBow($this), $this);
-		$plm->registerEvents(new PlayerCommandPreprocess($this), $this);
-		$plm->registerEvents(new PlayerDeath($this), $this);
-		$plm->registerEvents(new PlayerExhaust($this), $this);
-		$plm->registerEvents(new PlayerJoin($this), $this);
-		$plm->registerEvents(new PlayerLogin($this), $this);
-		$plm->registerEvents(new PlayerMove($this), $this);
-		$plm->registerEvents(new PlayerPreLogin($this), $this);
-		$plm->registerEvents(new PlayerQuit($this), $this);
-		$plm->registerEvents(new PlayerRespawn($this), $this);
-		return $this;
-	}
-
 	public static function isDev(): bool
 	{
 		return self::$isDev;

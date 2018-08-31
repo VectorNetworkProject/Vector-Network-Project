@@ -11,5 +11,6 @@ namespace Core\Provider;
 
 interface IDAO
 {
-
+	public function close(string $name): void;
+	public function closeAll(): void;
 }

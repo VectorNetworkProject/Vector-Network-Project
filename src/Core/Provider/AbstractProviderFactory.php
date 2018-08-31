@@ -37,7 +37,7 @@ abstract class AbstractProviderFactory
 	public function getDAO( string $name ) : IDAO
 	{
 		if (!isset($this->$daos[$name])) {
-			throw new \InvalidArgumentException( "$name instance does not exist" );	//TODO
+			throw new \InvalidArgumentException( "Instance $name does not exist" );
 		}
 
 		return $this->daos[$name];

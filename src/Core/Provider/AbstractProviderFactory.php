@@ -17,9 +17,29 @@ abstract class AbstractProviderFactory
 		return $instance = $instance ?: new static();
 	}
 
-	/** @var resource[] */
+	/** @var IDAO[] */
 	protected $daos;
 
-	abstract public function registerDAO( string $name, IDAO $dao );
-	abstract public function getDAO( string $name );
+	/**
+	 * @param string $name
+	 * @param string $className
+	 *
+	 * @return mixed
+	 */
+	abstract public function registerDAO( string $name, string $className );
+
+	/**
+	 * @param string $name
+	 *
+	 * @return IDAO
+	 * @throws \Exception
+	 */
+	public function getDAO( string $name ) : IDAO
+	{
+		if (!isset($this->$daos[$name])) {
+			throw new \InvalidArgumentException( "$name instance does not exist" );	//TODO
+		}
+
+		return $this->daos[$name];
+	}
 }

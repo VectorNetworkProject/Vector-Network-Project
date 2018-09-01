@@ -31,7 +31,7 @@ class SetTagCommand extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("settag", $plugin);
-		$this->setPermission("vnp.command.settag");
+		$this->setPermission("vector.network.player");
 		$this->setDescription("§6V§bN§eCoin§rを使ってタグを設定します。");
 		$this->plugin = $plugin;
 		$this->money = new Money();

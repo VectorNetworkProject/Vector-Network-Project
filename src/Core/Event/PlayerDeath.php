@@ -8,6 +8,7 @@
 
 namespace Core\Event;
 
+use Core\Game\Duel\DuelCore;
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Game\Survival\SurvivalCore;
@@ -116,6 +117,9 @@ class PlayerDeath implements Listener
 				$this->DeathMessage("Survival", $player->getName());
 				$this->survival->AddDeathCount($player);
 			}
+		} elseif ($player->getLevel()->getName() === "duel") {
+			$duel = new DuelCore();
+			$duel->endGame($player);
 		}
 	}
 

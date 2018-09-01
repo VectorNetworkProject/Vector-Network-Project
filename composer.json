@@ -43,7 +43,8 @@
     "pocketmine/nbt": "^0.2.0",
     "pocketmine/math": "^0.2.0",
     "pocketmine/snooze": "^0.1.0",
-    "fuyutsuki/libform": "^0.3.1"
+    "fuyutsuki/libform": "^0.3.1",
+    "vectornetworkproject/discord-pmmp": "^1.0.0"
   },
   "autoload": {
     "psr-4": {
@@ -82,6 +83,10 @@
     {
       "type": "git",
       "url": "https://github.com/fuyutsuki/libform"
+    },
+    {
+      "type": "git",
+      "url": "https://github.com/VectorNetworkProject/Discord-pmmp.git"
     }
   ]
 }

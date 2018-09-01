@@ -25,8 +25,6 @@ use Core\Commands\SelectGameCommand;
 use Core\Commands\SetMoneyCommand;
 use Core\Commands\SetTagCommand;
 use Core\Commands\StatusCommand;
-use Core\Discord\Discord;
-use Core\Discord\Threads\SendEmbed;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -47,6 +45,7 @@ use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
+use DiscordPMMP\Discord;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\item\Item;
 use pocketmine\plugin\PluginBase;

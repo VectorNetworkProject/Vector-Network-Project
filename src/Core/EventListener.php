@@ -27,6 +27,7 @@ use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
 use Core\Game\Athletic\AthleticCore;
+use Core\Game\Duel\DuelCore;
 use Core\Game\FFAPvP\FFAPvPCore;
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Game\Survival\SurvivalCore;
@@ -59,6 +60,7 @@ class EventListener implements Listener
 	private $plugin = null;
 	protected $ffapvp;
 	protected $speedcorepvp;
+	protected $duel;
 	protected $athletic;
 	protected $survival;
 	protected $mazainpc;
@@ -85,6 +87,7 @@ class EventListener implements Listener
 		$this->plugin = $plugin;
 		$this->ffapvp = new FFAPvPCore($this->plugin);
 		$this->speedcorepvp = new SpeedCorePvPCore($this->plugin);
+		$this->duel = new DuelCore();
 		$this->athletic = new AthleticCore();
 		$this->survival = new SurvivalCore($this->plugin);
 		$this->mazainpc = new Mazai();
@@ -125,6 +128,7 @@ class EventListener implements Listener
 		$this->mazainpc->Remove($player, Mazai::ENTITY_ID);
 		$this->gamemasternpc->Remove($player, GameMaster::ENTITY_ID);
 		$this->mazaimasternpc->Remove($player, MazaiMaster::ENTITY_ID);
+		$this->duel->Quit($event);
 		// $this->athletic->onQuit($event);
 	}
 
@@ -182,6 +186,7 @@ class EventListener implements Listener
 		$this->speedcorepvp->GameJoin($event->getPlayer(), $event->getBlock());
 		$this->speedcorepvp->Interact($event);
 		$this->survival->Join($event);
+		$this->duel->Join($event);
 		//$this->athletic->isAthleticFinish($event, $event->getPlayer());
 		//$this->athletic->touch($event);
 		//$this->athletic->getAthleticData($event);

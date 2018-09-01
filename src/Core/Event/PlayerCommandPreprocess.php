@@ -9,11 +9,11 @@
 namespace Core\Event;
 
 
-use Core\Discord\Discord;
 use Core\Main;
 use Core\Player\Level;
 use Core\Player\Rank;
 use Core\Player\Tag;
+use DiscordPMMP\Discord;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 

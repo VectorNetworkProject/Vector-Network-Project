@@ -9,9 +9,9 @@
 namespace Core\Account;
 
 
-use Core\Provider\MongoDB\IMongoDAO;
+use Core\Provider\IDAO;
 
-class AbstractAccountDAO implements IMongoDAO
+class AbstractAccountDAO implements IDAO
 {
 	protected $db;
 }

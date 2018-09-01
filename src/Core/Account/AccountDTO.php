@@ -12,7 +12,29 @@ namespace Core\Account;
 class AccountDTO
 {
 	/** @var string */
-	public $name;
+	private $id;
 	/** @var string */
-	public $id;
+	private $name;
+
+	public function __construct( string $id, string $name )
+	{
+		$this->id = $id;
+		$this->name = $name;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getId() : int
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName() : string
+	{
+		return $this->name;
+	}
 }

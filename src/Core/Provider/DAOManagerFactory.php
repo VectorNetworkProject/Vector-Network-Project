@@ -16,6 +16,6 @@ class DAOManagerFactory
 	public static function getDaoManager()
 	{
 		static $manager;
-		return $manager = $manager ?: new MongoDBDAOManager();
+		return $manager = $manager ?: new MongoDBDAOManager();	//MongoDB
 	}
 }

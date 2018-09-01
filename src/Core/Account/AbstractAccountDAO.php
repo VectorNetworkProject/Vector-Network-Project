@@ -11,7 +11,10 @@ namespace Core\Account;
 
 use Core\Provider\IDAO;
 
-class AbstractAccountDAO implements IDAO
+abstract class AbstractAccountDAO implements IDAO
 {
+	public const COLLECTION_NAME = 'accounts';
 	protected $db;
+	abstract public function getAccount(string $name): ?AccountDTO;
+	abstract public function registerAccount(string $name): AccountDTO;
 }

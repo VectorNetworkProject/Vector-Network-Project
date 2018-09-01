@@ -10,7 +10,6 @@ namespace Core\Account\MongoDB;
 
 
 use Core\Account\AccountDTO;
-use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use pocketmine\utils\MainLogger;
 
@@ -27,21 +26,25 @@ class AccountMongoDBDAO
 		}
 	}
 
-	public function createAccount(string $name): AccountDTO
+	/**
+	 * @param string $name
+	 * @return AccountDTO|null
+	 */
+	public function createAccount(string $name): ?AccountDTO
 	{
 		$name = strtolower($name);
-
 		try {
-			$coll = $this->db->selectCollection(accounts);
+			$coll = $this->db->selectCollection("accounts");
 			$query = ['user_name' => $name];
 			$$coll->insert($query, ['w' => 1]);
 			$dto = new AccountDTO();
 			$dto->name = $query['user_name'];
 			$dto->id = $query['_id'];
 			return $dto;
-		} catch( \Exception $e ) {
+		} catch (\Exception $e) {
 			MainLogger::getLogger()->logException($e);
 			Server::getInstance()->getPluginManager()->getPlugin('')->setEnabled(false);
+			return null;
 		}
 	}
 }

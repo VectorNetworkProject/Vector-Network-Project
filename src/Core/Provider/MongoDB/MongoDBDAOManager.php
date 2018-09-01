@@ -14,9 +14,9 @@ use pocketmine\utils\Utils;
 
 class MongoDBDAOManager extends AbstractDAOManager
 {
-	public function registerDAO( string $name, string $className ): void
+	public function registerDAO(string $name, string $className): void
 	{
-		Utils::testValidInstance( $className, self::class );
+		Utils::testValidInstance($className, self::class);
 
 		if (isset($this->daos[$name])) {
 			throw new \InvalidArgumentException("Instance $name has already been registered");

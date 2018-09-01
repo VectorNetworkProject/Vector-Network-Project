@@ -13,5 +13,4 @@ use Core\Account\AbstractAccountDAO;
 
 class MockAccountProviderFactory extends AbstractAccountDAO
 {
-
 }

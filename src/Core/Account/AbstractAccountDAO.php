@@ -13,5 +13,5 @@ use Core\Provider\MongoDB\IMongoDAO;
 
 class AbstractAccountDAO implements IMongoDAO
 {
-
+	protected $db;
 }

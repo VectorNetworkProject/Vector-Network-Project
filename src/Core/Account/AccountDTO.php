@@ -13,6 +13,6 @@ class AccountDTO
 {
 	/** @var string */
 	public $name;
-	/** @var int */
-	public $uid;
+	/** @var string */
+	public $id;
 }

@@ -24,6 +24,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\item\Armor;
@@ -329,7 +330,7 @@ class SpeedCorePvPCore
 					$event->setDrops([Item::get(Item::MELON, 0, 16)]);
 					break;
 				case Block::LOG:
-					$event->setDrops([Item::get(Item::LOG, 0, 1)]);
+					$event->setDrops([Item::get(Item::WOODEN_PLANKS, 0, 4)]);
 					break;
 			}
 			if (isset(self::$blockids[$block->getId()])) {
@@ -338,6 +339,17 @@ class SpeedCorePvPCore
 					$event->setDrops([Item::get(Item::AIR, 0, 0)]);
 					$this->plugin->getScheduler()->scheduleDelayedTask(new AutosetBlockTask($this->plugin, $block), self::$blockids[$block->getId()] * 20);
 				}
+			}
+		}
+	}
+
+	public function CancelCraft(CraftItemEvent $event)
+	{
+		$player = $event->getPlayer();
+		if ($player->getLevel()->getName() !== $this->fieldName) return;
+		foreach ($event->getOutputs() as $item) {
+			if ($item->getId() === Item::MELON_BLOCK) {
+				$event->setCancelled(true);
 			}
 		}
 	}

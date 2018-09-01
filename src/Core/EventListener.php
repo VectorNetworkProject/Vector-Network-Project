@@ -38,6 +38,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
+use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerAchievementAwardedEvent;
 use pocketmine\event\player\PlayerChatEvent;
@@ -242,5 +243,10 @@ class EventListener implements Listener
 	public function onPlayerExhaust(PlayerExhaustEvent $event)
 	{
 		$this->playerexhaustevent->event($event);
+	}
+
+	public function onCraftItem(CraftItemEvent $event)
+	{
+		$this->speedcorepvp->CancelCraft($event);
 	}
 }

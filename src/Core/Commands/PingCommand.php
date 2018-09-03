@@ -14,13 +14,13 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class ping extends PluginCommand
+class PingCommand extends PluginCommand
 {
     protected $plugin;
     public function __construct(Main $plugin)
     {
         parent::__construct("ping", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vnp.command.ping");
 		$this->setDescription("応答速度を計測します。");
         $this->plugin = $plugin;
     }

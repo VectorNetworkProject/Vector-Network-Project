@@ -16,7 +16,7 @@ use pocketmine\utils\TextFormat;
 use tokyo\pmmp\libform\element\Dropdown;
 use tokyo\pmmp\libform\FormApi;
 
-class killsound extends PluginCommand
+class KillSoundCommand extends PluginCommand
 {
 	private static $sounds = [
 		"サウンド無し",
@@ -35,7 +35,7 @@ class killsound extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("killsound", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vnp.command.killsound");
 		$this->setDescription("敵を倒した時のサウンドを設定します。");
 		$this->plugin = $plugin;
 		$this->killsound = new \Core\Player\KillSound($plugin);

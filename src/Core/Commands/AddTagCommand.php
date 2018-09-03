@@ -15,15 +15,15 @@ use pocketmine\command\PluginCommand;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat;
 
-class adtag extends PluginCommand
+class AddTagCommand extends PluginCommand
 {
 	protected $tag;
 
 	public function __construct(Plugin $plugin)
 	{
-		parent::__construct("adtag", $plugin);
+		parent::__construct("addTag", $plugin);
 		$this->setDescription("Admin Command");
-		$this->setPermission("vector.network.admin");
+		$this->setPermission("vnp.command.addTag");
 		$this->tag = new Tag();
 	}
 

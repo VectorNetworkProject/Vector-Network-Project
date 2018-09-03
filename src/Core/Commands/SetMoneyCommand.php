@@ -15,7 +15,7 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 
-class setmoney extends PluginCommand
+class SetMoneyCommand extends PluginCommand
 {
 	protected $plugin;
 	protected $money;
@@ -23,7 +23,7 @@ class setmoney extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("setmoney", $plugin);
-		$this->setPermission("vector.network.admin");
+		$this->setPermission("vnp.command.setmoney");
 		$this->setDescription("Admin Command");
 		$this->plugin = $plugin;
 		$this->money = new Money();

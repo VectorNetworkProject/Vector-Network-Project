@@ -27,7 +27,7 @@ class Bossbar extends Vector3
 	 * @param float $hp
 	 * @param float $maxHp
 	 */
-	public function __construct(string $title = "  §l§6Vector §bNetwork §eProject\n\n    §r§7Welcome to Games Server", float $hp = 100, float $maxHp = 100)
+	public function __construct(string $title = "  §l§6Vector §bNetwork §eProject\n\n    §r§7Welcome to Games Server", float $hp = 1, float $maxHp = 1)
 	{
 		parent::__construct(0, 0, 0);
 		$flags = (
@@ -82,8 +82,11 @@ class Bossbar extends Vector3
 	/**
 	 * @param Player $player
 	 * @param bool $isViewer
+	 * @param int $color
+	 * @param int $overlay
+	 * @param int $unknownShort
 	 */
-	public function sendBar(Player $player, bool $isViewer = true)
+	public function sendBar(Player $player, bool $isViewer = true, int $color = 0, int $overlay = 0, int $unknownShort = 0)
 	{
 		$pk = new AddEntityPacket;
 		$pk->entityRuntimeId = $this->entityId;
@@ -97,9 +100,9 @@ class Bossbar extends Vector3
 		$pk2->eventType = BossEventPacket::TYPE_SHOW;
 		$pk2->title = $this->getMetadata(Entity::DATA_NAMETAG);
 		$pk2->healthPercent = $this->healthPercent;
-		$pk2->overlay = 0;
-		$pk2->unknownShort = 0;
-		$pk2->color = 0;
+		$pk2->overlay = $overlay;
+		$pk2->unknownShort = $unknownShort;
+		$pk2->color = $color;
 		$player->sendDataPacket($pk2);
 		if ($isViewer) {
 			$this->viewers[$player->getLoaderId()] = $player;
@@ -116,15 +119,7 @@ class Bossbar extends Vector3
 		$pk->eventType = BossEventPacket::TYPE_TITLE;
 		$pk->healthPercent = $this->healthPercent;
 		$pk->title = $this->getMetadata(Entity::DATA_NAMETAG);
-		$pk2 = clone $pk;
 		$player->sendDataPacket($pk);
-		$pk2->eventType = BossEventPacket::TYPE_HEALTH_PERCENT;
-		$player->sendDataPacket($pk2);
-		$player->sendDataPacket($this->getHealthPacket());
-		$mpk = new SetEntityDataPacket;
-		$mpk->entityRuntimeId = $this->entityId;
-		$mpk->metadata = $this->metadata;
-		$player->sendDataPacket($mpk);
 	}
 
 	public function BossbarUpdateAll(): void

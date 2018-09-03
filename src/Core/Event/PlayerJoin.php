@@ -41,7 +41,7 @@ class PlayerJoin implements Listener
 		$tag = $this->tag->getTag($player);
 		$event->setJoinMessage("§b[§a参加§b] §7$name が参加しました。");
 		$bossbar = new Bossbar();
-		$bossbar->sendBar($player);
+		$bossbar->sendBar($player, true, 16752128);
 		$player->setNameTag("§7[§r $rank §7] §r$name");
 		$player->setDisplayName("§7[§r $rank §7][ §rLv.$level §7][§r $tag §7] §r$name");
 		$this->plugin->getScheduler()->scheduleDelayedTask(new JoinTitle($this->plugin, $player), 100);

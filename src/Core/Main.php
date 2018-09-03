@@ -15,18 +15,16 @@
 
 namespace Core;
 
-use Core\Commands\adtag;
-use Core\Commands\debug;
-use Core\Commands\gamestatus;
-use Core\Commands\killsound;
-use Core\Commands\ping;
-use Core\Commands\rankshop;
-use Core\Commands\selectgame;
-use Core\Commands\setmoney;
-use Core\Commands\settag;
-use Core\Commands\stats;
-use Core\Discord\Discord;
-use Core\Discord\Threads\SendEmbed;
+use Core\Commands\AddTagCommand;
+use Core\Commands\DebugCommand;
+use Core\Commands\GameStatusCommand;
+use Core\Commands\KillSoundCommand;
+use Core\Commands\PingCommand;
+use Core\Commands\RankShopCommand;
+use Core\Commands\SelectGameCommand;
+use Core\Commands\SetMoneyCommand;
+use Core\Commands\SetTagCommand;
+use Core\Commands\StatusCommand;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
 use Core\Event\EntityDamage;
@@ -47,6 +45,7 @@ use Core\Task\RemoveItemTask;
 use Core\Task\Tip;
 use Core\Player\Tag;
 
+use DiscordPMMP\Discord;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\item\Item;
 use pocketmine\plugin\PluginBase;
@@ -167,16 +166,16 @@ class Main extends PluginBase
 	private function registerCommands(): self
 	{
 		$commands = [
-			new ping($this),
-			new stats($this),
-			new rankshop($this),
-			new setmoney($this),
-			new settag($this),
-			new selectgame($this),
-			new debug($this),
-			new killsound($this),
-			new adtag($this),
-			new gamestatus($this)
+			new PingCommand($this),
+			new StatusCommand($this),
+			new RankShopCommand($this),
+			new SetMoneyCommand($this),
+			new SetTagCommand($this),
+			new SelectGameCommand($this),
+			new DebugCommand($this),
+			new KillSoundCommand($this),
+			new AddTagCommand($this),
+			new GameStatusCommand($this)
 		];
 		$this->getServer()->getCommandMap()->registerAll($this->getName(), $commands);
 		return $this;

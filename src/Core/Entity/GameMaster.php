@@ -10,6 +10,7 @@ namespace Core\Entity;
 
 use Core\Main;
 use Core\Task\Teleport\TeleportAthleticTask;
+use Core\Task\Teleport\TeleportDuelTask;
 use Core\Task\Teleport\TeleportFFAPvPTask;
 use Core\Task\Teleport\TeleportLobbyTask;
 use Core\Task\Teleport\TeleportSpeedCorePvPTask;
@@ -138,6 +139,23 @@ class GameMaster extends EntityBase
 										->setButtonText(false, "いや俺の端末はクソだから...")
 										->sendToPlayer($player);
 									break;
+								case 5:
+									if ($player->isOp()) {
+										if ($level->getName() === "duel") {
+											$player->sendMessage("§c既にDuelに居ます");
+										} else {
+											if ($level->getName() === "lobby") {
+												$player->teleport(new Position(254, 4, 254, $this->plugin->getServer()->getLevelByName("duel")));
+												$player->sendMessage("§aテレポートしました。");
+											} else {
+												$player->sendMessage("§e10秒後テレポートします。");
+												$this->plugin->getScheduler()->scheduleDelayedTask(new TeleportDuelTask($this->plugin, $player), 10 * 20);
+											}
+										}
+									} else {
+										$player->sendMessage("現在開発者のみがテレポートする事が出来ます。");
+									}
+									break;
 							}
 						}
 					})->setTitle("ゲーム選択")
@@ -147,6 +165,7 @@ class GameMaster extends EntityBase
 						->addButton(new Button("§bSpeed§aCore§cPvP"))
 						->addButton(new Button("§dAthletic"))
 						->addButton(new Button("§aSurvival"))
+						->addButton(new Button("§7Duel"))
 						->sendToPlayer($player);
 				}
 			}

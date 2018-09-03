@@ -14,14 +14,14 @@ use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-class debug extends PluginCommand
+class DebugCommand extends PluginCommand
 {
 	protected $plugin;
 
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("debug", $plugin);
-		$this->setPermission("vector.network.admin");
+		$this->setPermission("vnp.command.debug");
 		$this->setDescription("Admin Command");
 		$this->plugin = $plugin;
 	}

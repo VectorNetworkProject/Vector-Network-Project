@@ -15,6 +15,7 @@ use Core\Player\Level;
 use Core\Player\Money;
 use Core\Task\Teleport\TeleportDuelStageTask;
 use Core\Game\Duel\stages\Stage1;
+use pocketmine\block\Block;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -59,7 +60,7 @@ class DuelCore
 	public function DuelJoin(Player $player, int $gameId = 0)
 	{
 		$name = $player->getName();
-		if ($player->getLevel()->getName() === self::LEVEL_NAME) return;
+		if ($player->getLevel()->getName() !== self::LEVEL_NAME) return;
 		if (!$this->status[$gameId]) {
 			if (empty($this->datas[$name])) {
 				$data["gameId"] = $gameId;
@@ -173,7 +174,7 @@ class DuelCore
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		if ($player->getLevel()->getName() !== self::LEVEL_NAME) return;
-		if ($block->getId() === 42) {
+		if ($block->getId() === Block::IRON_BLOCK) {
 			$this->DuelJoin($player);
 			//$this->DuelJoin($player, self::$gameId);
 		}

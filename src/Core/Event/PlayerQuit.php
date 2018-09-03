@@ -27,7 +27,8 @@ class PlayerQuit implements Listener
 	{
 		$player = $event->getPlayer();
 		$name = $player->getName();
-		$event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
+		//$event->setQuitMessage("§b[§c退出§b] §7$name が退出しました。");
+		$event->setQuitMessage(null);
 		$bossbar = new Bossbar();
 		$bossbar->RemoveBar($player);
 		$data = new DataFile($player->getName());

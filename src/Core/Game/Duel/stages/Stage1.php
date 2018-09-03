@@ -10,8 +10,8 @@ class Stage1
 	public function getSpawnPosition()
 	{
 		return [
-			new Vector3(0, 0, 0),
-			new Vector3(0, 0, 0),
+			new Vector3(244, 4, 144),
+			new Vector3(244, 4, 76),
 		];
 	}
 }

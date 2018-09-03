@@ -19,7 +19,7 @@ use tokyo\pmmp\libform\element\Dropdown;
 use tokyo\pmmp\libform\element\Label;
 use tokyo\pmmp\libform\FormApi;
 
-class rankshop extends PluginCommand
+class RankShopCommand extends PluginCommand
 {
 	private static $ranks = [
 		"§6V§bN",
@@ -37,7 +37,7 @@ class rankshop extends PluginCommand
 	public function __construct(Main $plugin)
 	{
 		parent::__construct("rankshop", $plugin);
-		$this->setPermission("vector.network.player");
+		$this->setPermission("vnp.command.rankshop");
 		$this->setDescription("§6V§bN§eCoin§rでランク買います。");
 		$this->plugin = $plugin;
 		$this->money = new Money();

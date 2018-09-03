@@ -60,7 +60,7 @@ class DuelCore
 	public function DuelJoin(Player $player, int $gameId = 0)
 	{
 		$name = $player->getName();
-		if ($player->getLevel()->getName() === self::LEVEL_NAME) return;
+		if ($player->getLevel()->getName() !== self::LEVEL_NAME) return;
 		if (!$this->status[$gameId]) {
 			if (empty($this->datas[$name])) {
 				$data["gameId"] = $gameId;

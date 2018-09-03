@@ -16,7 +16,7 @@ use pocketmine\Player;
 trait AccountTrait
 {
 	/**
-	 * @param Player $player
+	 * @param IPlayer $player
 	 *
 	 * @return AccountDTO
 	 * @throws \Exception

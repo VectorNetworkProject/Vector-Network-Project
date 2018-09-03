@@ -36,6 +36,7 @@
     "ext-yaml": ">=2.0.0",
     "ext-zip": "*",
     "ext-zlib": ">=1.2.11",
+    "ext-mongo": "*",
     "pocketmine/pocketmine-mp": "dev-master as 3.1.3",
     "pocketmine/raklib": "^0.12.0",
     "pocketmine/spl": "^0.3.0",

@@ -142,15 +142,13 @@ class SurvivalCore
 		}
 	}
 
-	public function SaveData(PlayerQuitEvent $event)
+	public function SaveData(Player $player)
 	{
-		$player = $event->getPlayer();
-		if ($player->getLevel()->getName() === self::LEVEL_NAME) {
-			self::SaveFood($player);
-			self::SaveHeath($player);
-			self::SaveInventory($player);
-			self::SaveSpawn($player->getName(), self::LEVEL_NAME, $player->getX(), $player->getY(), $player->getZ());
-		}
+		if ($player->getLevel()->getName() === self::LEVEL_NAME) return;
+		self::SaveFood($player);
+		self::SaveHeath($player);
+		self::SaveInventory($player);
+		self::SaveSpawn($player->getName(), self::LEVEL_NAME, $player->getX(), $player->getY(), $player->getZ());
 	}
 
 	/**

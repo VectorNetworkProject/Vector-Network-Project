@@ -67,9 +67,9 @@ class SpeedCorePvPCore
 	/** @var Color */
 	private $blueColor;
 	/** @var int */
-	private $redHp = 100;
+	private $redHp = 300;
 	/** @var int */
-	private $blueHp = 100;
+	private $blueHp = 300;
 	/** @var int */
 	private $redCount = 0;
 	/** @var int */
@@ -611,11 +611,11 @@ class SpeedCorePvPCore
 				switch ($team) {
 					case 'Red':
 						$player->addTitle("", "§cRed§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §9" . $name . "\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a100");
+						$player->sendTip("§c攻撃者: §9" . $name . "\n§e残り§aHP: §c" . $this->getHP(1) . "§7/§a300");
 						break;
 					case 'Blue':
 						$player->addTitle("", "§9Blue§eの§aコア§eが§c攻撃§eされています。", 20, 60, 20);
-						$player->sendTip("§c攻撃者: §c" . $name . "\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a100");
+						$player->sendTip("§c攻撃者: §c" . $name . "\n§e残り§aHP: §c" . $this->getHP(2) . "§7/§a300");
 						break;
 				}
 			}
@@ -809,8 +809,8 @@ class SpeedCorePvPCore
 			}
 		}
 		unset($this->team);
-		$this->setHP(1, 100);
-		$this->setHP(2, 100);
+		$this->setHP(1, 300);
+		$this->setHP(2, 300);
 		$this->SetPlayerCount(1, 0);
 		$this->SetPlayerCount(2, 0);
 		$this->setGameMode(false);

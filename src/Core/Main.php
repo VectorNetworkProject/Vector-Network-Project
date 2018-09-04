@@ -38,6 +38,7 @@ use Core\Event\PlayerChat;
 use Core\Event\PlayerCommandPreprocess;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerExhaust;
+use Core\Event\PlayerInteract;
 use Core\Event\PlayerJoin;
 use Core\Event\PlayerLogin;
 use Core\Event\PlayerMove;
@@ -202,6 +203,7 @@ class Main extends PluginBase
 		$plm->registerEvents(new PlayerDeath($this), $this);
 		$plm->registerEvents(new PlayerAchievementAwarded($this), $this);
 		$plm->registerEvents(new PlayerExhaust($this), $this);
+		$plm->registerEvents(new PlayerInteract($this), $this);
 		$plm->registerEvents(new PlayerJoin($this), $this);
 		$plm->registerEvents(new PlayerLogin($this), $this);
 		$plm->registerEvents(new PlayerMove($this), $this);

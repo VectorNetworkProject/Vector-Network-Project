@@ -2,28 +2,27 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/07/30
- * Time: 8:17
+ * Date: 2018/09/04
+ * Time: 11:34
  */
 
 namespace Core\Event;
 
+
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
-use pocketmine\event\entity\EntityInventoryChangeEvent;
+use pocketmine\event\inventory\CraftItemEvent;
 use pocketmine\event\Listener;
 
-class EntityInventoryChange implements Listener
+class CraftItem implements Listener
 {
 	private $speedcorepvp;
-
 	public function __construct(Main $plugin)
 	{
 		$this->speedcorepvp = new SpeedCorePvPCore($plugin);
 	}
-
-	public function event(EntityInventoryChangeEvent $event): void
+	public function event(CraftItemEvent $event)
 	{
-		$this->speedcorepvp->CancelChange($event);
+		$this->speedcorepvp->CancelCraft($event);
 	}
 }

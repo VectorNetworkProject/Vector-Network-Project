@@ -8,20 +8,24 @@
 
 namespace Core\Event;
 
+use Core\Game\Duel\DuelCore;
 use Core\Game\FFAPvP\FFAPvPCore;
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
+use Core\Game\Survival\SurvivalCore;
 use Core\Main;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 
 class PlayerInteract implements Listener
 {
-	private $plugin;
-	private $ffapvp;
+	private $ffapvp, $speedcorepvp, $survival, $duel;
 
 	public function __construct(Main $plugin)
 	{
-		$this->plugin = $plugin;
-		$this->ffapvp = new FFAPvPCore($this->plugin);
+		$this->ffapvp = new FFAPvPCore($plugin);
+		$this->speedcorepvp = new SpeedCorePvPCore($plugin);
+		$this->survival = new SurvivalCore($plugin);
+		$this->duel = new DuelCore();
 	}
 
 	public function event(PlayerInteractEvent $event): void
@@ -29,5 +33,9 @@ class PlayerInteract implements Listener
 		$player = $event->getPlayer();
 		$block = $event->getBlock();
 		$this->ffapvp->FFAPvPKit($player, $block);
+		$this->speedcorepvp->GameJoin($player, $block);
+		$this->speedcorepvp->Interact($event);
+		$this->survival->Join($event);
+		$this->duel->Join($event);
 	}
 }

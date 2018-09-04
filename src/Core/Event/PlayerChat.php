@@ -2,28 +2,28 @@
 /**
  * Created by PhpStorm.
  * User: InkoHX
- * Date: 2018/07/30
- * Time: 8:17
+ * Date: 2018/09/04
+ * Time: 11:42
  */
 
 namespace Core\Event;
 
+
 use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
-use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerChatEvent;
 
-class EntityInventoryChange implements Listener
+class PlayerChat implements Listener
 {
 	private $speedcorepvp;
-
 	public function __construct(Main $plugin)
 	{
 		$this->speedcorepvp = new SpeedCorePvPCore($plugin);
 	}
 
-	public function event(EntityInventoryChangeEvent $event): void
+	public function event(PlayerChatEvent $event)
 	{
-		$this->speedcorepvp->CancelChange($event);
+		$this->speedcorepvp->TeamChat($event);
 	}
 }

@@ -8,6 +8,7 @@
 
 namespace Core\Event;
 
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -16,16 +17,17 @@ use pocketmine\Player;
 
 class EntityDamage implements Listener
 {
-	private $plugin;
+	private $speedcorepvp;
 
 	public function __construct(Main $plugin)
 	{
-		$this->plugin = $plugin;
+		$this->speedcorepvp = new SpeedCorePvPCore($plugin);
 	}
 
 	public function event(EntityDamageEvent $event)
 	{
 		$entity = $event->getEntity();
+		$this->speedcorepvp->damage($event);
 		if ($entity->getLevel()->getName() === "ffapvp" or $entity->getLevel()->getName() === "corepvp") {
 			if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
 				$event->setCancelled(true);

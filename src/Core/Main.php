@@ -27,9 +27,14 @@ use Core\Commands\SetTagCommand;
 use Core\Commands\StatusCommand;
 use Core\Event\BlockBreak;
 use Core\Event\BlockPlace;
+use Core\Event\CraftItem;
+use Core\Event\DataPacketReceive;
 use Core\Event\EntityDamage;
 use Core\Event\EntityInventoryChange;
+use Core\Event\EntityLevelChange;
 use Core\Event\EntityShootBow;
+use Core\Event\PlayerAchievementAwarded;
+use Core\Event\PlayerChat;
 use Core\Event\PlayerCommandPreprocess;
 use Core\Event\PlayerDeath;
 use Core\Event\PlayerExhaust;
@@ -39,6 +44,7 @@ use Core\Event\PlayerMove;
 use Core\Event\PlayerPreLogin;
 use Core\Event\PlayerQuit;
 use Core\Event\PlayerRespawn;
+use Core\Event\SignChange;
 use Core\Task\AutoSavingTask;
 use Core\Task\MOTDTip;
 use Core\Task\RemoveItemTask;
@@ -98,7 +104,8 @@ class Main extends PluginBase
 	{
 		date_default_timezone_set("Asia/Tokyo");
 		self::$datafolder = $this->getDataFolder();
-		$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		//$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+		self::registerEvents();
 		// TODO: $this->registerEvents();
 		$this->saveDefaultConfig();
 		$this->loadLevels()->setLevelsTime()->runTasks()->registerRecipes();
@@ -188,9 +195,12 @@ class Main extends PluginBase
 		$plm->registerEvents(new BlockPlace($this), $this);
 		$plm->registerEvents(new EntityDamage($this), $this);
 		$plm->registerEvents(new EntityInventoryChange($this), $this);
+		$plm->registerEvents(new EntityLevelChange($this), $this);
 		$plm->registerEvents(new EntityShootBow($this), $this);
 		$plm->registerEvents(new PlayerCommandPreprocess($this), $this);
+		$plm->registerEvents(new PlayerChat($this), $this);
 		$plm->registerEvents(new PlayerDeath($this), $this);
+		$plm->registerEvents(new PlayerAchievementAwarded($this), $this);
 		$plm->registerEvents(new PlayerExhaust($this), $this);
 		$plm->registerEvents(new PlayerJoin($this), $this);
 		$plm->registerEvents(new PlayerLogin($this), $this);
@@ -198,6 +208,9 @@ class Main extends PluginBase
 		$plm->registerEvents(new PlayerPreLogin($this), $this);
 		$plm->registerEvents(new PlayerQuit($this), $this);
 		$plm->registerEvents(new PlayerRespawn($this), $this);
+		$plm->registerEvents(new CraftItem($this), $this);
+		$plm->registerEvents(new DataPacketReceive($this), $this);
+		$plm->registerEvents(new SignChange($this), $this);
 		return $this;
 	}
 

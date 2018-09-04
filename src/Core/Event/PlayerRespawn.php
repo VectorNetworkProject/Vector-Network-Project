@@ -8,21 +8,22 @@
 
 namespace Core\Event;
 
+use Core\Game\SpeedCorePvP\SpeedCorePvPCore;
 use Core\Main;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerRespawnEvent;
 
 class PlayerRespawn implements Listener
 {
-	private $plugin;
+	private $speedcorepvp;
 
 	public function __construct(Main $plugin)
 	{
-		$this->plugin = $plugin;
+		$this->speedcorepvp = new SpeedCorePvPCore($plugin);
 	}
 
 	public function event(PlayerRespawnEvent $event): void
 	{
-		// なにもしない
+		$this->speedcorepvp->Respawn($event->getPlayer());
 	}
 }

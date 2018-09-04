@@ -421,7 +421,7 @@ class SpeedCorePvPCore
 	 * @param Player $player
 	 * @return SpeedCorePvPCore
 	 */
-	public function kit(Player $player): self
+	public function Kit(Player $player): self
 	{
 		$armors = [
 			"leather_cap" => Item::get(Item::LEATHER_CAP, 0, 1),
@@ -463,16 +463,16 @@ class SpeedCorePvPCore
 	 * @param Player $player
 	 * @return SpeedCorePvPCore
 	 */
-	public function respawn(Player $player): self
+	public function Respawn(Player $player): self
 	{
 		if ($player->getLevel()->getName() === $this->fieldName) {
-			$this->kit($player);
+			$this->Kit($player);
 			$player->addTitle("§cYou are dead", "§cあなたは死んでしまった", 20, 40, 20);
 		}
 		return $this;
 	}
 
-	public function teamChat(PlayerChatEvent $event): void
+	public function TeamChat(PlayerChatEvent $event): void
 	{
 		if ($event->getPlayer()->getLevel()->getName() === $this->fieldName) {
 			if (isset($this->team[$event->getPlayer()->getName()])) {
